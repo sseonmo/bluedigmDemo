@@ -1,0 +1,151 @@
+CREATE TABLE ADMN
+(
+	ADMN_ID              VARCHAR(20) NOT NULL COMMENT '관리자 아이디',
+	ADMN_NM              VARCHAR(50) NULL COMMENT '관리자 이름',
+	ADMN_PW              VARCHAR(50) NULL COMMENT '관리자 비밀번호',
+	ADMN_EMAL            VARCHAR(100) NULL COMMENT '관리자 이메일',
+	ADMN_PHNNUM          VARCHAR(20) NULL COMMENT '관리자 전화번호',
+	DEL_YN               CHAR(1) NOT NULL COMMENT '삭제 여부',
+	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
+	COR_DT                DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
+	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
+	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
+	PRIMARY KEY (ADMN_ID)
+
+) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='ADMN';
+
+CREATE UNIQUE INDEX ADMN_PK ON ADMN
+(
+	ADMN_ID
+);
+
+--
+
+CREATE TABLE RULE
+(
+	RULE_ID              INT(11) NOT NULL AUTO_INCREMENT COMMENT '권한 아이디',
+	RULE_NM              VARCHAR(50) NULL COMMENT '권한_이름',
+	RULE_EXPL            VARCHAR(500) NULL COMMENT '권한_설명',
+	DEL_YN               CHAR(1) NOT NULL COMMENT '삭제 여부',
+	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
+	COR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
+	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
+	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
+	PRIMARY KEY (RULE_ID)
+
+) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='RULE';
+
+CREATE UNIQUE INDEX RULE_PK ON RULE
+(
+	RULE_ID
+);
+
+--
+
+
+CREATE TABLE ADMN_RULE
+(
+	RULE_ID              INT(11) NOT NULL COMMENT '권한 아이디',
+	ADMN_ID              VARCHAR(20) NOT NULL COMMENT '관리자 아이디',
+	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
+	COR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
+	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
+	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
+	PRIMARY KEY (RULE_ID,ADMN_ID)
+
+) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='ADMN_ROLL';
+
+CREATE UNIQUE INDEX ADMN_RULE_PK ON ADMN_RULE
+(
+	RULE_ID,
+	ADMN_ID
+);
+
+--
+
+CREATE TABLE MENU
+(
+	MENU_ID              INT(11) NOT NULL  AUTO_INCREMENT COMMENT '메뉴 아이디',
+	MENU_NM              VARCHAR(50) NULL COMMENT '메뉴 이름',
+	MENU_URL             VARCHAR(100) NULL COMMENT '메뉴 Url',
+	MENU_DEPTH           VARCHAR(2) NULL COMMENT '메뉴 깊이',
+	MENU_TYPE_CD         VARCHAR(20) NULL COMMENT '메뉴 타입 코드',
+	MENU_LVL_NUM         VARCHAR(20) NULL COMMENT '메뉴 레벨 번호',
+	PRNT_MENU_ID         INT(11) NULL COMMENT '부모 메뉴 아이디',
+	MENU_EXPL            VARCHAR(500) NULL COMMENT '메뉴 설명',
+	ORD_SEQ              INT(3) NULL COMMENT '정렬 순서',
+	DSPLY_YN             CHAR(1) NOT NULL COMMENT '표시 여부',
+	DEL_YN               CHAR(1) NOT NULL COMMENT '삭제 여부',
+	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
+	COR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
+	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
+	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
+	PRIMARY KEY (MENU_ID)
+
+) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='MENU';
+
+CREATE UNIQUE INDEX MENU_PK ON MENU
+(
+	MENU_ID
+);
+
+
+--
+
+
+CREATE TABLE RULE_MENU
+(
+	RULE_ID              int(11) NOT NULL COMMENT '권한 아이디',
+	MENU_ID              int(11) NOT NULL COMMENT '메뉴 아이디',
+	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
+	COR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
+	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
+	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
+	PRIMARY KEY (RULE_ID,MENU_ID)
+
+) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='RULE_MENU';
+
+CREATE UNIQUE INDEX RULE_MENU_PK ON RULE_MENU
+(
+	RULE_ID,
+	MENU_ID
+);
+
+--
+
+
+CREATE TABLE CD_GRP
+(
+	GRP_CD_ID            VARCHAR(20) NOT NULL COMMENT '그룹 코드 아이디',
+	GRP_CD               VARCHAR(6) NULL COMMENT '그룹 코드',
+	GRP_CD_NM            VARCHAR(50) NULL COMMENT '그룹 코드 이름',
+	GRP_CD_EXPL          VARCHAR(500) NULL COMMENT '그룹 코드 설명',
+	DEL_YN               CHAR(1) NOT NULL DEFAULT 'N' COMMENT '삭제 여부',
+	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
+	COR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
+	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
+	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
+	PRIMARY KEY (GRP_CD_ID)
+
+) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='코드 그룹';
+
+--
+
+CREATE TABLE CD
+(
+	CD_ID                VARCHAR(20) NOT NULL COMMENT '코드 아이디',
+	GRP_CD_ID            VARCHAR(20) NOT NULL COMMENT '그룹 코드 아이디',
+	CD                   VARCHAR(6) NULL COMMENT '코드',
+	CD_NM                VARCHAR(50) NULL COMMENT '코드 이름',
+	CD_EXPL              VARCHAR(500) NULL COMMENT '코드 설명',
+	CD_ORD_NUM           INTEGER(5) NULL COMMENT '코드 정렬 번호',
+	CD_USE_YN            CHAR(1) NULL DEFAULT 'Y' COMMENT '코드 사용 여부',
+	DEL_YN               CHAR(1) NOT NULL DEFAULT 'N' COMMENT '삭제 여부',
+	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
+	COR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
+	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
+	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
+	PRIMARY KEY (CD_ID)
+) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='공통 코드';
+
+

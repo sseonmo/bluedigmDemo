@@ -18,4 +18,11 @@ public class SamplePageController {
 		logger.info("info - SamplePageController - welcome");
 		return "index";
 	}
+	
+	@GetMapping("/commonCode")
+	public String commonCode(){
+		logger.debug("debug  - SamplePageController - commonCode");
+		logger.info("info - SamplePageController - commonCode");
+		return "commonCode";
+	}
 }

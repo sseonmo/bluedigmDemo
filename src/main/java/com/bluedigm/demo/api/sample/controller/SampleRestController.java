@@ -25,4 +25,10 @@ public class SampleRestController {
 		logger.info("SampleRestController - selectSample");
 		return sampleService.selectSample();
 	}
+	
+	@GetMapping("/selectCommonCode")
+	public List<SampleModel> selectCommonCode() throws Exception{
+		logger.info("SampleRestController - selectSample");
+		return sampleService.selectSample();
+	}
 }

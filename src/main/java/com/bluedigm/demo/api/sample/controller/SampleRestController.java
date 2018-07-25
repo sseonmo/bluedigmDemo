@@ -18,17 +18,30 @@ public class SampleRestController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
+	private Messages messages;
+
+	@Autowired
 	private SampleService sampleService;
 
 	@GetMapping
-	public List<SampleModel> selectSample() throws Exception{
+	public List<SampleModel> selectSample(){
 		logger.info("SampleRestController - selectSample");
 		return sampleService.selectSample();
 	}
-	
+
 	@GetMapping("/selectCommonCode")
 	public List<SampleModel> selectCommonCode() throws Exception{
 		logger.info("SampleRestController - selectSample");
 		return sampleService.selectSample();
+	}
+
+	@GetMapping(value = "/messageTest")
+	public String messageTest() {
+		logger.info("SampleRestController - messageTest");
+		StringBuffer sbMessage = new StringBuffer();
+		sbMessage.append(messages.getMessage(MessageCode.RESOURCE_NOT_FOUND, "Error Message Test!!"));
+		sbMessage.append("<br>");
+		sbMessage.append(messages.getMessage(MessageCode.MESSAGE_TEST, "Message Test!!"));
+		return sbMessage.toString();
 	}
 }

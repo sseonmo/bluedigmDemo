@@ -31,12 +31,6 @@ public class SampleRestController {
 		return sampleService.selectSample();
 	}
 
-	@GetMapping("/selectCommonCode")
-	public List<SampleModel> selectCommonCode() throws Exception{
-		logger.info("SampleRestController - selectSample");
-		return sampleService.selectSample();
-	}
-
 	@GetMapping(value = "/messageTest")
 	public String messageTest() {
 		logger.info("SampleRestController - messageTest");

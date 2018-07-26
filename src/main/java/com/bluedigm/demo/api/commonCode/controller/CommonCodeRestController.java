@@ -25,7 +25,7 @@ import com.bluedigm.demo.api.commonCode.service.CommonCodeService;
  *
  */
 @RestController
-@RequestMapping(value = "/api/sample")
+@RequestMapping(value = "/api/commonCode")
 public class CommonCodeRestController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

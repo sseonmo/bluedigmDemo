@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  */
 @Controller
-@RequestMapping(value="/system/sample")
+@RequestMapping(value="/system/commonCode")
 public class CommonCodePageController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@GetMapping("/commonCode")
+	@GetMapping
 	public String commonCode(){
 		logger.debug("debug  - SamplePageController - commonCode");
 		logger.info("info - SamplePageController - commonCode");

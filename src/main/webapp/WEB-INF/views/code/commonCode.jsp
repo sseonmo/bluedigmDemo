@@ -22,7 +22,7 @@
 		
 		$("#tree").dynatree({
 			initAjax: {
-	            url: "/api/sample/selectCommonCodeGroupList",
+	            url: "/api/commonCode/selectCommonCodeGroupList",
 	            data: {
 	            	key: "root",
 	            	mode: "all"
@@ -34,31 +34,12 @@
 				alert("You activated " + node.data.title);
 			}
 		});
-
-		$("#apiSample").on('click', function() {
-
-			$.ajax({
-				url : '/api/sample',
-				type : 'GET',
-				dataType : 'json',
-				success : function(data) {
-					$('#resultArea').html(JSON.stringify(data));
-				}
-			})
-
-		});
+		
 	});
 </script>
 </head>
 <body>
 	<div>Common Code</div>
-	<div>
-		<ul>
-			<li><a href="#none" id="apiSample">api/sample</a></li>
-		</ul>
-	</div>
-	<br>
-	<div>Result Area</div>
 	<div id="tree"></div>
 </body>
 </html>

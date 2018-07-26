@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
 @Configuration
+//@EnableWebMvc
 public class WebConfiguration implements WebMvcConfigurer {
 
 	private static final String[] RESOURCE_LOCATIONS = {
@@ -21,6 +22,5 @@ public class WebConfiguration implements WebMvcConfigurer {
 				.resourceChain(true)
 				.addResolver(new PathResourceResolver());
 	}
-
 
 }

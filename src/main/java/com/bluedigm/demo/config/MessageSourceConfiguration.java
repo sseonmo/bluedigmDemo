@@ -16,9 +16,9 @@ public class MessageSourceConfiguration {
 
     @Value("${spring.messages.basename}")
     private String messageBeans;
-
-    @Value("${spring.errormessages.basename}")
-    private String errorMessageBeans;
+//
+//    @Value("${spring.errormessages.basename}")
+//    private String errorMessageBeans;
 
 
     @Bean
@@ -26,9 +26,10 @@ public class MessageSourceConfiguration {
 
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 
-        LOGGER.debug("messageBeans : {}|{}", messageBeans, errorMessageBeans);
+//        LOGGER.debug("messageBeans : {}|{}", messageBeans, errorMessageBeans);
 
-        messageSource.setBasenames(messageBeans, errorMessageBeans);
+//        messageSource.setBasenames(messageBeans, errorMessageBeans);
+        messageSource.setBasenames(messageBeans);
         messageSource.setCacheSeconds(10); // reload messages every 10 seconds
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setUseCodeAsDefaultMessage(true);

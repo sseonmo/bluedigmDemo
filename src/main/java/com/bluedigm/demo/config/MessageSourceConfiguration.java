@@ -9,37 +9,48 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
+/**
+ * The type Message source configuration.
+ */
 @Configuration
 public class MessageSourceConfiguration {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageSourceConfiguration.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MessageSourceConfiguration.class);
 
-    @Value("${spring.messages.basename}")
-    private String messageBeans;
-//
-//    @Value("${spring.errormessages.basename}")
-//    private String errorMessageBeans;
+	@Value("${spring.messages.basename}")
+	private String messageBeans;
 
 
-    @Bean
-    public ReloadableResourceBundleMessageSource messageSource() {
+	/**
+	 * Message source reloadable resource bundle message source.
+	 *
+	 * @return the reloadable resource bundle message source
+	 */
+	@Bean
+	public ReloadableResourceBundleMessageSource messageSource() {
 
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 
-//        LOGGER.debug("messageBeans : {}|{}", messageBeans, errorMessageBeans);
+        LOGGER.debug("messageBeans : {}", messageBeans);
+		String[] msgBeans = messageBeans.split(",");
 
-//        messageSource.setBasenames(messageBeans, errorMessageBeans);
-        messageSource.setBasenames(messageBeans);
-        messageSource.setCacheSeconds(10); // reload messages every 10 seconds
-        messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setUseCodeAsDefaultMessage(true);
-        messageSource.setFallbackToSystemLocale(false); // True -> locale 에 해당하는 프로퍼티가 없으면 System locale 파일을 찾아간다.
+		messageSource.setBasenames(msgBeans[0], msgBeans[1]);
+		messageSource.setCacheSeconds(10); // reload messages every 10 seconds
+		messageSource.setDefaultEncoding("UTF-8");
+		messageSource.setUseCodeAsDefaultMessage(true);
+		messageSource.setFallbackToSystemLocale(false); // True -> locale 에 해당하는 프로퍼티가 없으면 System locale 파일을 찾아간다.
 
-        return messageSource;
-    }
+		return messageSource;
+	}
 
-    @Bean
-    public Messages messages(MessageSource messageSource) {
-        return new Messages(messageSource);
-    }
+	/**
+	 * Messages messages.
+	 *
+	 * @param messageSource the message source
+	 * @return the messages
+	 */
+	@Bean
+	public Messages messages(MessageSource messageSource) {
+		return new Messages(messageSource);
+	}
 }

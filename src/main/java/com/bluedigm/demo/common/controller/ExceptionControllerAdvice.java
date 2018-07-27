@@ -47,9 +47,17 @@ public class ExceptionControllerAdvice {
 		logger.debug("ErrorMessage : {}", errMsg.toString());
 		request.setAttribute("errMsg", errMsg);
 
-		return "forward:/errorHandling";
+		return "forward:/error/handling";
 	}
 
+	/**
+	 * Handle any exception string.
+	 *
+	 * @param request  the request
+	 * @param response the response
+	 * @param e        the e
+	 * @return the string
+	 */
 	@ExceptionHandler(Exception.class)
 	public String handleAnyException(HttpServletRequest request, HttpServletResponse response, Exception e) {
 		logger.debug("ExceptionControllerAdvice - {}", "handleAnyException");
@@ -58,7 +66,7 @@ public class ExceptionControllerAdvice {
 		logger.debug("ErrorMessage : {}", errMsg.toString());
 		request.setAttribute("errMsg", errMsg);
 
-		return "forward:/errorHandling";
+		return "forward:/error/handling";
 	}
 
 }

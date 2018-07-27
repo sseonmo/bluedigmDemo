@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  * The type Exception controller.
  */
 @Controller
+@RequestMapping(value = "/error")
 public class ExceptionController implements ErrorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ExceptionController.class);
@@ -28,7 +29,7 @@ public class ExceptionController implements ErrorController {
 	 * @param request the request
 	 * @return the model and view
 	 */
-	@RequestMapping(value = "/errorHandling")
+	@RequestMapping(value = "/handling")
 	public ModelAndView handlerExceptionForHtml(HttpServletRequest request) {
 
 		logger.debug("ExceptionController - handlerExceptionForHtml");
@@ -45,7 +46,7 @@ public class ExceptionController implements ErrorController {
 	 * @param request the request
 	 * @return the response entity
 	 */
-	@RequestMapping(value = "/errorHandling", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@RequestMapping(value = "/handling", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
 	@ResponseBody
 	public ErrorMessage handlerExceptionForJson(HttpServletRequest request) {
 
@@ -53,8 +54,14 @@ public class ExceptionController implements ErrorController {
 		return (ErrorMessage) request.getAttribute("errMsg");
 	}
 
-	@RequestMapping("/error")
-	public String handleError(HttpServletRequest request) {
+	/**
+	 * Handle error string.
+	 *
+	 * @param request the request
+	 * @return the string
+	 */
+	@RequestMapping
+	public String handlerError(HttpServletRequest request) {
 
 		String errorPage = getErrorPath();
 

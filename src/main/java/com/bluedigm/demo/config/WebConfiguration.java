@@ -8,8 +8,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
+/**
+ * The type Web configuration.
+ */
 @Configuration
 @EnableWebMvc
 public class WebConfiguration implements WebMvcConfigurer {
@@ -18,7 +20,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 			"classpath:/static/"
 	};
 
-	// 정적리소스 config
+	//정적리소스
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**")
@@ -28,12 +30,17 @@ public class WebConfiguration implements WebMvcConfigurer {
 				.addResolver(new PathResourceResolver());
 	}
 
+	/**
+	 * Get view resolver view resolver.
+	 *
+	 * @return the view resolver
+	 */
 	@Bean
 	public ViewResolver getViewResolver(){
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
 		resolver.setPrefix("/WEB-INF/views/");
 		resolver.setSuffix(".jsp");
-//		resolver.setViewClass(JstlView.class);
+//		resolver.setOrder(0);
 		return resolver;
 	}
 

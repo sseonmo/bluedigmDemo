@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  */
 @Controller
-@RequestMapping(value="/system/commonCode")
+@RequestMapping(value = "/commonCode")
 public class CommonCodePageController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -23,6 +23,6 @@ public class CommonCodePageController {
 	public String commonCode(){
 		logger.debug("debug  - SamplePageController - commonCode");
 		logger.info("info - SamplePageController - commonCode");
-		return "code/commonCode";
+		return "/code/commonCode";
 	}
 }

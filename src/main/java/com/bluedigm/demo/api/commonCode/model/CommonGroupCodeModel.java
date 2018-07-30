@@ -9,7 +9,7 @@ import java.util.Date;
  * @author Ayeon
  *
  */
-public class CommonCodeGroupModel {
+public class CommonGroupCodeModel {
 
 	/**
 	 * COLUMN : 	GRP_CD_ID

@@ -18,29 +18,48 @@
 
 <!-- Add code to initialize the tree when the document is loaded: -->
 <script type="text/javascript">
+	
+	var commonGroupCodeList;
+
 	$(document).ready(function() {
 		
-		$("#tree").dynatree({
+		$("#commonCodeTree").dynatree({
 			initAjax: {
-	            url: "/api/commonCode/selectCommonCodeGroupList",
+	            url: "/api/commonCode/selectCommonGroupCodeList",
 	            data: {
 	            	key: "root",
 	            	mode: "all"
 	            }
 		    },
 			onActivate : function(node) {
-				// A DynaTreeNode object is passed to the activation handler
-				// Note: we also get this event, if persistence is on, and the page is reloaded.
-				alert("You activated " + node.data.title);
 			}
 		});
 		
 	});
+	
+	var commonGroupCode = {
+		searchList: function() {
+			$.ajax({
+				url: "/api/commonCode/selectCommonGroupCodeList",
+				type: "GET",
+				dataType: "json",
+				success: function(data) {
+					return data;
+				}
+			});
+		}
+	}
+	
+	function convertToTreeType(data) {
+		
+	}
+	
 </script>
 </head>
 <body>
 	<div>Common Code</div>
-	<div id="tree"></div>
+	<div id="commonCodeTree"></div>
+	<div id="commonCodeForm"></div>
 </body>
 </html>
 

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bluedigm.demo.api.commonCode.model.CommonCodeGroupModel;
+import com.bluedigm.demo.api.commonCode.model.CommonGroupCodeModel;
 import com.bluedigm.demo.api.commonCode.model.CommonCodeModel;
 import com.bluedigm.demo.api.commonCode.service.CommonCodeService;
 
@@ -33,20 +33,20 @@ public class CommonCodeRestController {
 	@Autowired
 	private CommonCodeService commonCodeService;
 	
-	@GetMapping("/selectCommonCodeGroupList")
+	@GetMapping("/selectCommonGroupCodeList")
 	public List<Map<String, Object>> selectCommonCode() throws Exception{
-		List<CommonCodeGroupModel> grpCdList = commonCodeService.selectCommonCodeGroupList();
-		Iterator<CommonCodeGroupModel> itr = grpCdList.iterator();
+		List<CommonGroupCodeModel> grpCdList = commonCodeService.searchCommonGroupCodeList();
+		Iterator<CommonGroupCodeModel> itr = grpCdList.iterator();
 		List<Map<String, Object>> tmpGrpCdList = new ArrayList<>();
 		
 		while(itr.hasNext()) {
-			CommonCodeGroupModel next = itr.next();
+			CommonGroupCodeModel next = itr.next();
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("key", next.getGrpCd());
 			map.put("title", next.getGrpCdNm());
 			map.put("isFolder", true);
 			
-			List<CommonCodeModel> cdList = commonCodeService.selectCommonCodeListByCdGrp(next.getGrpCdId());
+			List<CommonCodeModel> cdList = commonCodeService.searchCommonCodeListByGrpCd(next.getGrpCdId());
 			if(cdList.size() > 0) {
 				map.put("isLazy", true);
 				

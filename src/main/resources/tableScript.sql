@@ -65,13 +65,13 @@ CREATE UNIQUE INDEX ADMN_RULE_PK ON ADMN_RULE
 
 CREATE TABLE MENU
 (
-	MENU_ID              INT(11) NOT NULL  AUTO_INCREMENT COMMENT '메뉴 아이디',
+	MENU_ID              VARCHAR(15) NOT NULL COMMENT '메뉴 아이디',
 	MENU_NM              VARCHAR(50) NULL COMMENT '메뉴 이름',
 	MENU_URL             VARCHAR(100) NULL COMMENT '메뉴 Url',
 	MENU_DEPTH           VARCHAR(2) NULL COMMENT '메뉴 깊이',
 	MENU_TYPE_CD         VARCHAR(20) NULL COMMENT '메뉴 타입 코드',
 	MENU_LVL_NUM         VARCHAR(20) NULL COMMENT '메뉴 레벨 번호',
-	PRNT_MENU_ID         INT(11) NULL COMMENT '부모 메뉴 아이디',
+	PRNT_MENU_ID         VARCHAR(15) NULL COMMENT '부모 메뉴 아이디',
 	MENU_EXPL            VARCHAR(500) NULL COMMENT '메뉴 설명',
 	ORD_SEQ              INT(3) NULL COMMENT '정렬 순서',
 	DSPLY_YN             CHAR(1) NOT NULL COMMENT '표시 여부',
@@ -96,7 +96,7 @@ CREATE UNIQUE INDEX MENU_PK ON MENU
 CREATE TABLE RULE_MENU
 (
 	RULE_ID              int(11) NOT NULL COMMENT '권한 아이디',
-	MENU_ID              int(11) NOT NULL COMMENT '메뉴 아이디',
+	MENU_ID              VARCHAR(15) NOT NULL COMMENT '메뉴 아이디',
 	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
 	COR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
 	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',

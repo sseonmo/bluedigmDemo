@@ -10,4 +10,10 @@
 		  from ADMN
     </select>
 
+	<select id="insertSample" parameterType="SampleModel">
+		INSERT INTO ADMN
+			(ADMN_ID, ADMN_NM, ADMN_PW, ADMN_EMAL, ADMN_PHNNUM, DEL_YN, COR_ID, COR_DT, MOR_ID, MOR_DT)
+			VALUES (#{ADMN_ID}, #{ADMN_NM}, #{ADMN_PW}, #{ADMN_EMAL}, #{ADMN_PHNNUM}, #{DEL_YN}, 'admin', now(), 'amdin', now());
+    </select>
+
 </mapper>

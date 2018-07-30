@@ -25,6 +25,13 @@
 				<input type="button" id="exceptionHtml2" value="ExceptionHtml2"/>
 				<input type="button" id="exceptionJson" value="ExceptionJson"/>
 			</div>
+
+			<br>
+			<div> mybatis - handler</div>
+			<div>
+				<input type="button" id="booleanHeadler" value="boolean headler"/>  convert - select( Y / N => true/false ) / insert( true/false => Y / N )
+			</div>
+
 		</div>
 		<br>
 		<div>Result Area</div>
@@ -80,6 +87,19 @@
 					}
 				})
 			});
+
+			$("#booleanHeadler").on('click', function() {
+
+				$.ajax({
+					url:'/api/sample/booleanHeadlerTest',
+					type:'POST',
+					dataType:'json',
+					success:function(data){
+						$('#resultArea').html(JSON.stringify(data));
+					}
+				})
+			});
+
 		});
 	</script>
 </html>

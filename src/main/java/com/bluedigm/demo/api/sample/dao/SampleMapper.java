@@ -6,9 +6,25 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * The interface Sample mapper.
+ */
 @Mapper
 @Repository
 public interface SampleMapper {
 
+	/**
+	 * Select sample list.
+	 *
+	 * @return the list
+	 */
 	List<SampleModel> selectSample();
+
+	/**
+	 * Insert sample.
+	 *
+	 * @param model the model
+	 */
+	void insertSample(SampleModel model);
+
 }

@@ -94,6 +94,27 @@
 					}
 				})
 			});
+
+			$("#booleanHeadler").on('click', function() {
+
+				$.ajax({
+					url:'/api/sample/booleanHeadlerTest',
+					type:'POST',
+					dataType:'json',
+					success:function(data){
+						$('#resultArea').html(JSON.stringify(data));
+					}
+				})
+			});
+
+
+			$("#viewCode").on('click', function() {
+				location.href = "/commonCode";
+			});
+			$("#viewMenu").on('click', function() {
+				location.href = "/api/authorization/menu/menu";
+			});
+
 		});
 	</script>
 </html>

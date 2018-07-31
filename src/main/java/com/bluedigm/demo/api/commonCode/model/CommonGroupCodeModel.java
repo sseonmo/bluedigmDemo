@@ -5,11 +5,13 @@ package com.bluedigm.demo.api.commonCode.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author Ayeon
  *
  */
-public class CommonCodeGroupModel {
+public class CommonGroupCodeModel {
 
 	/**
 	 * COLUMN : 	GRP_CD_ID

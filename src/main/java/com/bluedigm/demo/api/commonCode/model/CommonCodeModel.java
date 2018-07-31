@@ -40,11 +40,11 @@ public class CommonCodeModel {
 	String cdExplnatn;
 	
 	/**
-	 * COLUMN : 	CD_ORD_NM
+	 * COLUMN : 	CD_ORD_NUM
 	 * TYPE : 		INT(5)
 	 * COMMENTS : 	코드 정렬 번호
 	 */
-	int cdOrdNm;
+	int cdOrdNum;
 	
 	/**
 	 * COLUMN : 	CD_USE_YN
@@ -61,11 +61,11 @@ public class CommonCodeModel {
 	String delYn;
 	
 	/**
-	 * COLUMN : 	FERNC_CD
+	 * COLUMN : 	FEFRNC_CD
 	 * TYPE : 		VARCHAR(20)
 	 * COMMENTS : 	참조 코드
 	 */
-	String ferncCd;
+	String fefrncCd;
 	
 	/**
 	 * COLUMN : 	COR_ID
@@ -93,7 +93,14 @@ public class CommonCodeModel {
 	 * TYPE : 		DATETIME
 	 * COMMENTS : 	변경 일시
 	 */
-	Date mdfId;
+	Date mdfDt;
+	
+	/**
+	 * COLUMN : 	X
+	 * TYPE : 		X
+	 * COMMENTS : 	그룹 코드 객체
+	 */
+	public CommonGroupCodeModel grpCdObject;
 
 	public String getCdId() {
 		return cdId;
@@ -135,12 +142,12 @@ public class CommonCodeModel {
 		this.cdExplnatn = cdExplnatn;
 	}
 
-	public int getCdOrdNm() {
-		return cdOrdNm;
+	public int getcdOrdNum() {
+		return cdOrdNum;
 	}
 
-	public void setCdOrdNm(int cdOrdNm) {
-		this.cdOrdNm = cdOrdNm;
+	public void setcdOrdNum(int cdOrdNum) {
+		this.cdOrdNum = cdOrdNum;
 	}
 
 	public String getCdUseYn() {
@@ -159,12 +166,12 @@ public class CommonCodeModel {
 		this.delYn = delYn;
 	}
 
-	public String getFerncCd() {
-		return ferncCd;
+	public String getfefrncCd() {
+		return fefrncCd;
 	}
 
-	public void setFerncCd(String ferncCd) {
-		this.ferncCd = ferncCd;
+	public void setfefrncCd(String fefrncCd) {
+		this.fefrncCd = fefrncCd;
 	}
 
 	public String getCorId() {
@@ -191,12 +198,20 @@ public class CommonCodeModel {
 		this.morId = morId;
 	}
 
-	public Date getMdfId() {
-		return mdfId;
+	public Date getMdfDt() {
+		return mdfDt;
 	}
 
-	public void setMdfId(Date mdfId) {
-		this.mdfId = mdfId;
+	public void setMdfDt(Date mdfDt) {
+		this.mdfDt = mdfDt;
+	}
+
+	public CommonGroupCodeModel getGrpCdObject() {
+		return grpCdObject;
+	}
+
+	public void setGrpCdObject(CommonGroupCodeModel grpCdObject) {
+		this.grpCdObject = grpCdObject;
 	}
 	
 }

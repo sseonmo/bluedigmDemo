@@ -146,29 +146,29 @@
             	<div style="float: center;" >
                     <div style="padding: 15px;">
 			            <div style="margin-bottom: 15px;">
-			            	<button style="color: #fff; background-color: #337ab7;border-color: #2e6da4;" onclick="fn_menuNew()" >추가</button>
+			            	<button style="color: #fff; background-color: #337ab7;border-color: #2e6da4;" onclick="fn_menuNew()" >폴더 추가</button>
 						</div>
 		                <input name="menuId" id="menuId" type="hidden" value="">
 			            <div style="margin-bottom: 15px;">
-			            	<label style="position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;" >그룹명</label>
+			            	<label>그룹명</label>
 			            	<div style="position: relative;min-height: 1px;padding-right: 15px; padding-left: 15px;" >
-				 				<input name="menuName" id="menuName" type="text" maxlength="100" value="" style="display:block;width:100%;height:34px;padding:6px 12px;font-size:14px;line-height:1.42857143;color:#555;background-color:#fff;background-image:none;border:1px solid #ccc;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075);-webkit-transition:border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;-o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s">
+				 				<input name="menuName" id="menuName" type="text" maxlength="100" value="" >
 			            	</div>
 						</div>
 			            <div style="margin-bottom: 15px;">
 			            	<label>메뉴경로</label>
 			            	<div style="position: relative;min-height: 1px;padding-right: 15px; padding-left: 15px;" >
-				 				<input name="menuUrl" id="menuUrl" type="text" maxlength="100" value="" style="display:block;width:100%;height:34px;padding:6px 12px;font-size:14px;line-height:1.42857143;color:#555;background-color:#fff;background-image:none;border:1px solid #ccc;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075);-webkit-transition:border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;-o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s">
+				 				<input name="menuUrl" id="menuUrl" type="text" maxlength="100" value="" >
 			            	</div>
 						</div>
 			            <div style="margin-bottom: 15px;">
 			            	<labe>메뉴 설명</label>
 			            	<div style="position: relative;min-height: 1px;padding-right: 15px; padding-left: 15px;" >
-				 				<input name="menuExpl" id="menuExpl" type="text" maxlength="100" value="" style="display:block;width:100%;height:34px;padding:6px 12px;font-size:14px;line-height:1.42857143;color:#555;background-color:#fff;background-image:none;border:1px solid #ccc;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075);-webkit-transition:border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;-o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s">
+				 				<input name="menuExpl" id="menuExpl" type="text" maxlength="100" value="" >
 			            	</div>
 						</div>
 						<div style="margin-bottom: 15px;">
-			            	<label style="position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;" >사용여부</label>
+			            	<label>사용여부</label>
 			            	<div style="position: relative;min-height: 1px;padding-right: 15px; padding-left: 15px;" >
 							 	<label><input name="displayYn" id="displayYn" type="radio" checked="checked" value="Y">사용함</label>
 							 	<label><input name="displayYn" id="displayYn" type="radio" value="N">사용안함</label>

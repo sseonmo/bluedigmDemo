@@ -94,6 +94,13 @@ public class CommonCodeModel {
 	 * COMMENTS : 	변경 일시
 	 */
 	Date mdfDt;
+	
+	/**
+	 * COLUMN : 	X
+	 * TYPE : 		X
+	 * COMMENTS : 	그룹 코드 객체
+	 */
+	public CommonGroupCodeModel grpCdObject;
 
 	public String getCdId() {
 		return cdId;
@@ -197,6 +204,14 @@ public class CommonCodeModel {
 
 	public void setMdfDt(Date mdfDt) {
 		this.mdfDt = mdfDt;
+	}
+
+	public CommonGroupCodeModel getGrpCdObject() {
+		return grpCdObject;
+	}
+
+	public void setGrpCdObject(CommonGroupCodeModel grpCdObject) {
+		this.grpCdObject = grpCdObject;
 	}
 	
 }

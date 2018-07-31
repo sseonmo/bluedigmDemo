@@ -13,6 +13,7 @@ import com.bluedigm.demo.api.commonCode.model.CommonCodeModel;
 
 /**
  * @author Ayeon
+ * @date 2018. 7. 25.
  * CommonCode DAO Mapper
  */
 @Mapper

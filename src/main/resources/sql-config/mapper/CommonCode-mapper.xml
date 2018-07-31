@@ -32,6 +32,7 @@
 	  <result property="crtDt" column="CRT_DT"/>
 	  <result property="morId" column="MOR_ID"/>
 	  <result property="mdfDt" column="MDF_DT"/>
+	  <association property="grpCdObject" column="{grpCdId=GRP_CD_ID}" javaType="CommonGroupCodeModel" select="selectCommonGroupCodeDetail"/>
 	</resultMap>
 	
 	<!-- 공통 그룹 코드 등록 -->
@@ -229,9 +230,9 @@
 		<if test="grpCdExplnatn != null and !grpCdExplnatn.equals('')">
 		   AND	GRP_CD_EXPLNATN = #{grpCdExplnatn}
 		</if>
-		<if test="grpCdLngth != null and !grpCdLngth.equals('')">
+		<!-- <if test="grpCdLngth != null and !grpCdLngth.equals('')">
 		   AND	GRP_CD_LNGTH = #{grpCdLngth}
-		</if>
+		</if> -->
 		<if test="delYn != null and !delYn.equals('')">
 		   AND	DEL_YN = #{delYn}
 		</if>

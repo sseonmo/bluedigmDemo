@@ -5,6 +5,8 @@ package com.bluedigm.demo.api.commonCode.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author Ayeon
  *

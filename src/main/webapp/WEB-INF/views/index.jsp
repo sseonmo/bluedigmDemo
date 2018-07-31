@@ -25,6 +25,15 @@
 				<input type="button" id="exceptionHtml2" value="ExceptionHtml2"/>
 				<input type="button" id="exceptionJson" value="ExceptionJson"/>
 			</div>
+
+
+			<br>
+			<div> 메뉴</div>
+			<div>
+				<input type="button" id="viewCode" value="공통코드"/>
+				<input type="button" id="viewMenu" value="메뉴"/>
+			</div>
+
 		</div>
 		<br>
 		<div>Result Area</div>
@@ -80,6 +89,14 @@
 					}
 				})
 			});
+
+			$("#viewCode").on('click', function() {
+				location.href = "/commonCode";
+			});
+			$("#viewMenu").on('click', function() {
+				location.href = "/api/authorization/menu/menu";
+			});
+
 		});
 	</script>
 </html>

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.bluedigm.demo.common.model;
+package com.bluedigm.demo.api.common.model;
 
 import java.util.List;
 

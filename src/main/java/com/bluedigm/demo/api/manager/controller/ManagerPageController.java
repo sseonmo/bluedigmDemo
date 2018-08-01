@@ -27,10 +27,10 @@ public class ManagerPageController {
 		return "/authorization/menu";
 	}*/
 	
-	@GetMapping(value = "/managerMain")
+	@GetMapping
 	public String managerList(ModelMap modelMap){
 	   
-	    return "authorization/manager/managerMain";
+	    return "manager/managerMain";
 	}
 
 		

@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.bluedigm.demo.api.authorization.dao.MenuMapper">
+<mapper namespace="com.bluedigm.demo.api.menu.dao.MenuMapper">
 	
     <resultMap id="MenuMap" type="Menu">
         <result property="menuId" column="MENU_ID" />
@@ -23,7 +23,7 @@
         <result property="morDt" column="MOR_DT" />
     </resultMap>	
 	
-	 <select id="selectMenuList" resultType="com.bluedigm.demo.api.authorization.model.SelectedMenu" >
+	 <select id="selectMenuList" resultType="com.bluedigm.demo.api.menu.model.SelectedMenu" >
 	     SELECT MENU_ID 'KEY', MENU_NM TITLE, PRNT_MENU_ID PARENT
 	       FROM MENU
 	      WHERE DEL_YN='N'

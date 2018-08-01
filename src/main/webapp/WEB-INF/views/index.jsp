@@ -112,7 +112,7 @@
 				location.href = "/system/commonCode";
 			});
 			$("#viewMenu").on('click', function() {
-				location.href = "/api/authorization/menu/menu";
+				location.href = "/system/menu/menu";
 			});
 
 		});

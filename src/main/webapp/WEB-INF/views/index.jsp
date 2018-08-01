@@ -12,6 +12,14 @@
 		<div> Demo</div>
 		<br>
 		<div>
+			<div> 메뉴</div>
+			<div>
+				<input type="button" id="viewCode" value="공통코드"/>
+				<input type="button" id="viewMenu" value="메뉴"/>
+			</div>
+
+			<br>
+			<div>RestController Call</div>
 			<input type="button" id="apiSample" value="RestController Call" />
 
 			<br><br>
@@ -33,11 +41,16 @@
 			</div>
 
 			<br>
-			<div> 메뉴</div>
+			<div> xssFilter</div>
 			<div>
-				<input type="button" id="viewCode" value="공통코드"/>
-				<input type="button" id="viewMenu" value="메뉴"/>
+				<input type="text" id="xssFilterText" placeholder="xss filter"/><input type="button" id="xssFilterBtn" value="GO"/>
+				<div>xss filter result</div>
+				<div>
+					<input type="text" id="xssResultInput" placeholder="xss filter" e/>
+					<p id="xssResultP"></p>
+				</div>
 			</div>
+
 
 		</div>
 		<br>
@@ -113,6 +126,22 @@
 			});
 			$("#viewMenu").on('click', function() {
 				location.href = "/system/menu/menu";
+			});
+
+			$("#xssFilterBtn").on('click', function() {
+
+				$.ajax({
+					url:'/api/sample/xssFilter',
+					type:'POST',
+					data : { testText : $("#xssFilterText").val() },
+					dataType:'json',
+					success:function(data){
+						$("#xssResultInput").val(data);
+						$("#xssResultP").text(data);
+						$("#resultArea").html(data);
+					}
+				})
+
 			});
 
 		});

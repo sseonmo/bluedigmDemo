@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bluedigm.demo.api.common.model.DynaTreeModel;
 import com.bluedigm.demo.api.commonCode.model.CommonCodeModel;
 import com.bluedigm.demo.api.commonCode.model.CommonGroupCodeModel;
 import com.bluedigm.demo.api.commonCode.service.CommonCodeService;
-import com.bluedigm.demo.common.model.DynaTreeModel;
+
 
 /**
  * @author Ayeon

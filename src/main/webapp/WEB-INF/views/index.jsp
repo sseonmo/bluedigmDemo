@@ -109,7 +109,7 @@
 
 
 			$("#viewCode").on('click', function() {
-				location.href = "/commonCode";
+				location.href = "/system/commonCode";
 			});
 			$("#viewMenu").on('click', function() {
 				location.href = "/api/authorization/menu/menu";

@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author Ayeon
+ * @date 2018. 7. 25.
  *
  */
 @Controller
-@RequestMapping(value="/system/commonCode")
+@RequestMapping(value = "/system/commonCode")
 public class CommonCodePageController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -23,6 +24,6 @@ public class CommonCodePageController {
 	public String commonCode(){
 		logger.debug("debug  - SamplePageController - commonCode");
 		logger.info("info - SamplePageController - commonCode");
-		return "code/commonCode";
+		return "/code/commonCode";
 	}
 }

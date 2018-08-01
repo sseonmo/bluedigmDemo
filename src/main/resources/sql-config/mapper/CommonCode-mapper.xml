@@ -4,18 +4,462 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.bluedigm.demo.api.commonCode.dao.CommonCodeMapper">
+
+	<resultMap id="commonGroupCodeModelMap" type="CommonGroupCodeModel">
+	  <id property="grpCdId" column="GRP_CD_ID" />
+	  <result property="grpCd" column="GRP_CD"/>
+	  <result property="grpCdNm" column="GRP_CD_NM"/>
+	  <result property="grpCdExplnatn" column="GRP_CD_EXPLNATN"/>
+	  <result property="grpCdLngth" column="GRP_CD_LNGTH"/>
+	  <result property="delYn" column="DEL_YN"/>
+	  <result property="corId" column="COR_ID"/>
+	  <result property="crtDt" column="CRT_DT"/>
+	  <result property="morId" column="MOR_ID"/>
+	  <result property="mdfDt" column="MDF_DT"/>
+	</resultMap>
+	
+	<resultMap id="commonCodeModelMap" type="CommonCodeModel">
+	  <id property="cdId" column="CD_ID" />
+	  <result property="grpCdId" column="GRP_CD_ID"/>
+	  <result property="cd" column="CD"/>
+	  <result property="cdNm" column="CD_NM"/>
+	  <result property="cdExplnatn" column="CD_EXPLNATN"/>
+	  <result property="cdOrdNum" column="CD_ORD_NUM"/>
+	  <result property="cdUseYn" column="CD_USE_YN"/>
+	  <result property="delYn" column="DEL_YN"/>
+	  <result property="fefrncCd" column="FEFRNC_CD"/>
+	  <result property="corId" column="COR_ID"/>
+	  <result property="crtDt" column="CRT_DT"/>
+	  <result property="morId" column="MOR_ID"/>
+	  <result property="mdfDt" column="MDF_DT"/>
+	  <association property="grpCdObject" column="{grpCdId=GRP_CD_ID}" javaType="CommonGroupCodeModel" select="selectCommonGroupCodeDetail"/>
+	</resultMap>
+	
+	<!-- 공통 그룹 코드 등록 -->
+	<insert id="insertCommonGroupCode" parameterType="CommonGroupCodeModel">
+		INSERT 
+		  INTO	CD_GRP 
+		  	 (
+					GRP_CD_ID
+				<if test="grpCd != null and !grpCd.equals('')">
+				,	GRP_CD
+				</if>
+				<if test="grpCdNm != null and !grpCdNm.equals('')">
+				,	GRP_CD_NM
+				</if>
+				<if test="grpCdExplnatn != null and !grpCdExplnatn.equals('')">
+				,	GRP_CD_EXPLNATN
+				</if>
+				<if test="grpCdLngth != null and !grpCdLngth.equals('')">
+				,	GRP_CD_LNGTH
+				</if>
+				<if test="delYn != null and !delYn.equals('')">
+				,	DEL_YN
+				</if>
+				<if test="corId != null and !corId.equals('')">
+				,	COR_ID
+				</if>
+				<if test="crtDt != null and !crtDt.equals('')">
+				,	CRT_DT
+				</if>
+				<if test="morId != null and !morId.equals('')">
+				,	MOR_ID
+				</if>
+				<if test="mdfDt != null and !mdfDt.equals('')">
+				,	MDF_DT
+				</if>
+			 )
+		VALUES	
+			 (
+					#{grpCdId}
+				<if test="grpCd != null and !grpCd.equals('')">
+				,	#{grpCd}
+				</if>
+				<if test="grpCdNm != null and !grpCdNm.equals('')">
+				,	#{grpCdNm}
+				</if>
+				<if test="grpCdExplnatn != null and !grpCdExplnatn.equals('')">
+				,	#{grpCdExplnatn}
+				</if>
+				<if test="grpCdLngth != null and !grpCdLngth.equals('')">
+				,	#{grpCdLngth}
+				</if>
+				<if test="delYn != null and !delYn.equals('')">
+				,	#{delYn}
+				</if>
+				<if test="corId != null and !corId.equals('')">
+				,	#{corId}
+				</if>
+				<if test="crtDt != null and !crtDt.equals('')">
+				,	#{crtDt}
+				</if>
+				<if test="morId != null and !morId.equals('')">
+				,	#{morId}
+				</if>
+				<if test="mdfDt != null and !mdfDt.equals('')">
+				,	#{mdfDt}
+				</if>
+			 )
+	</insert>
+	
+	<!-- 공통  코드 등록 -->
+	<insert id="insertCommonCode" parameterType="CommonCodeModel">
+		INSERT 
+		  INTO	CD
+		  	 (
+					CD_ID
+				<if test="grpCdId != null and !grpCdId.equals('')">
+				,	GRP_CD_ID
+				</if>
+				<if test="cd != null and !cd.equals('')">
+				,	CD
+				</if>
+				<if test="cdNm != null and !cdNm.equals('')">
+				,	CD_NM
+				</if>
+				<if test="cdExplnatn != null and !cdExplnatn.equals('')">
+				,	CD_EXPLNATN
+				</if>
+				<if test="cdOrdNum != null and !cdOrdNum.equals('')">
+				,	CD_ORD_NUM
+				</if>
+				<if test="cdUseYn != null and !cdUseYn.equals('')">
+				,	CD_USE_YN
+				</if>
+				<if test="delYn != null and !delYn.equals('')">
+				,	DEL_YN
+				</if>
+				<if test="fefrncCd != null and !fefrncCd.equals('')">
+				,	FEFRNC_CD
+				</if>
+				<if test="corId != null and !corId.equals('')">
+				,	COR_ID
+				</if>
+				<if test="crtDt != null and !crtDt.equals('')">
+				,	CRT_DT
+				</if>
+				<if test="morId != null and !morId.equals('')">
+				,	MOR_ID
+				</if>
+				<if test="mdfDt != null and !mdfDt.equals('')">
+				,	MDF_DT
+				</if>
+			 )
+		VALUES	
+			 (
+					#{cdId}
+				<if test="grpCdId != null and !grpCdId.equals('')">
+				,	#{grpCdId}
+				</if>
+				<if test="cd != null and !cd.equals('')">
+				,	#{cd}
+				</if>
+				<if test="cdNm != null and !cdNm.equals('')">
+				,	#{cdNm}
+				</if>
+				<if test="cdExplnatn != null and !cdExplnatn.equals('')">
+				,	#{cdExplnatn}
+				</if>
+				<if test="cdOrdNum != null and !cdOrdNum.equals('')">
+				,	#{cdOrdNum}
+				</if>
+				<if test="cdUseYn != null and !cdUseYn.equals('')">
+				,	#{cdUseYn}
+				</if>
+				<if test="delYn != null and !delYn.equals('')">
+				,	#{delYn}
+				</if>
+				<if test="fefrncCd != null and !fefrncCd.equals('')">
+				,	#{fefrncCd}
+				</if>
+				<if test="corId != null and !corId.equals('')">
+				,	#{corId}
+				</if>
+				<if test="crtDt != null and !crtDt.equals('')">
+				,	#{crtDt}
+				</if>
+				<if test="morId != null and !morId.equals('')">
+				,	#{morId}
+				</if>
+				<if test="mdfDt != null and !mdfDt.equals('')">
+				,	#{mdfDt}
+				</if>
+			 )
+	</insert>
     
-    <!-- 공통 코드 그룹 리스트 조회 -->
-    <select id="selectCommonCodeGroupList" resultType="CommonCodeGroupModel">
-		select *
-		  from CD_GRP
+    <!-- 공통 그룹 코드 리스트 전체 조회 -->
+    <select id="selectCommonGroupCodeList" resultMap="commonGroupCodeModelMap">
+		SELECT	
+				GRP_CD_ID
+			,	GRP_CD
+			,	GRP_CD_NM
+			,	GRP_CD_EXPLNATN
+			,	GRP_CD_LNGTH
+			,	DEL_YN
+			,	COR_ID
+			,	CRT_DT
+			,	MOR_ID
+			,	MDF_DT
+		  FROM	CD_GRP
+    </select>
+    
+    <!-- 공통 그룹 코드 상세 조회 -->
+    <select id="selectCommonGroupCodeDetail" parameterType="CommonGroupCodeModel" resultMap="commonGroupCodeModelMap">
+		SELECT	
+				GRP_CD_ID
+			,	GRP_CD
+			,	GRP_CD_NM
+			,	GRP_CD_EXPLNATN
+			,	GRP_CD_LNGTH
+			,	DEL_YN
+			,	COR_ID
+			,	CRT_DT
+			,	MOR_ID
+			,	MDF_DT
+		  FROM	CD_GRP
+		 WHERE	1=1
+		<if test="grpCdId != null and !grpCdId.equals('')">
+		   AND	GRP_CD_ID = #{grpCdId}
+		</if>
+		<if test="grpCd != null and !grpCd.equals('')">
+		   AND	GRP_CD = #{grpCd}
+		</if>
+		<if test="grpCdNm != null and !grpCdNm.equals('')">
+		   AND	GRP_CD_NM = #{grpCdNm}
+		</if>
+		<if test="grpCdExplnatn != null and !grpCdExplnatn.equals('')">
+		   AND	GRP_CD_EXPLNATN = #{grpCdExplnatn}
+		</if>
+		<!-- <if test="grpCdLngth != null and !grpCdLngth.equals('')">
+		   AND	GRP_CD_LNGTH = #{grpCdLngth}
+		</if> -->
+		<if test="delYn != null and !delYn.equals('')">
+		   AND	DEL_YN = #{delYn}
+		</if>
+		<if test="corId != null and !corId.equals('')">
+		   AND	COR_ID = #{corId}
+		</if>
+		<if test="crtDt != null and !crtDt.equals('')">
+		   AND	CRT_DT = #{crtDt}
+		</if>
+		<if test="morId != null and !morId.equals('')">
+		   AND	MOR_ID = #{morId}
+		</if>
+		<if test="mdfDt != null and !mdfDt.equals('')">
+		   AND	MDF_DT = #{mdfDt}
+		</if>
+    </select>
+    
+    <!-- 공통 코드 리스트 전체 조회 -->
+    <select id="selectCommonCodeList" resultMap="commonCodeModelMap">
+		SELECT	
+				CD_ID
+			,	GRP_CD_ID
+			,	CD
+			,	CD_NM
+			,	CD_EXPLNATN
+			,	CD_ORD_NUM
+			,	CD_USE_YN
+			,	DEL_YN
+			,	FEFRNC_CD
+			,	COR_ID
+			,	CRT_DT
+			,	MOR_ID
+			,	MDF_DT
+		  FROM	CD
     </select>
     
     <!-- 그룹 코드에 의한 공통 코드 리스트 조회 -->
-    <select id="selectCommonCodeListByCdGrp" parameterType="String" resultType="CommonCodeModel">
-		select	*
-		  from	CD
-		 where	GRP_CD_ID = #{grpCdId}
+    <select id="selectCommonCodeListByGrpCd" parameterType="String" resultMap="commonCodeModelMap">
+		SELECT	
+				CD_ID
+			,	GRP_CD_ID
+			,	CD
+			,	CD_NM
+			,	CD_EXPLNATN
+			,	CD_ORD_NUM
+			,	CD_USE_YN
+			,	DEL_YN
+			,	FEFRNC_CD
+			,	COR_ID
+			,	CRT_DT
+			,	MOR_ID
+			,	MDF_DT
+		  FROM	CD
+		 WHERE	GRP_CD_ID = #{grpCdId}
     </select>
+    
+    <!-- 공통  코드 상세 조회 -->
+    <select id="selectCommonCodeDetail" parameterType="CommonCodeModel" resultMap="commonCodeModelMap">
+		SELECT	
+				CD_ID
+			,	GRP_CD_ID
+			,	CD
+			,	CD_NM
+			,	CD_EXPLNATN
+			,	CD_ORD_NUM
+			,	CD_USE_YN
+			,	DEL_YN
+			,	FEFRNC_CD
+			,	COR_ID
+			,	CRT_DT
+			,	MOR_ID
+			,	MDF_DT
+		  FROM	CD
+		 WHERE	1=1
+		<if test="cdId != null and !cdId.equals('')">
+	   	   AND	CD_ID = #{cdId}
+		</if>
+		<if test="grpCdId != null and !grpCdId.equals('')">
+		   AND	GRP_CD_ID = #{grpCdId}
+		</if>
+		<if test="cd != null and !cd.equals('')">
+		   AND	CD = #{cd}
+		</if>
+		<if test="cdNm != null and !cdNm.equals('')">
+		   AND	CD_NM = #{cdNm}
+		</if>
+		<if test="cdExplnatn != null and !cdExplnatn.equals('')">
+		   AND	CD_EXPLNATN = #{cdExplnatn}
+		</if>
+		<if test="cdOrdNum != null and !cdOrdNum.equals('')">
+		   AND	CD_ORD_NUM = #{cdOrdNum}
+		</if>
+		<if test="cdUseYn != null and !cdUseYn.equals('')">
+		   AND	CD_USE_YN = #{cdUseYn}
+		</if>
+		<if test="delYn != null and !delYn.equals('')">
+		   AND	DEL_YN = #{delYn}
+		</if>
+		<if test="fefrncCd != null and !fefrncCd.equals('')">
+		   AND	FEFRNC_CD = #{fefrncCd}
+		</if>
+		<if test="corId != null and !corId.equals('')">
+		   AND	COR_ID = #{corId}
+		</if>
+		<if test="crtDt != null and !crtDt.equals('')">
+		   AND	CRT_DT = #{crtDt}
+		</if>
+		<if test="morId != null and !morId.equals('')">
+		   AND	MOR_ID = #{morId}
+		</if>
+		<if test="mdfDt != null and !mdfDt.equals('')">
+		   AND	MDF_DT = #{mdfDt}
+		</if>
+    </select>
+	
+	<!-- 공통 그룹 코드 수정 -->
+	<update id="updateCommonGroupCode" parameterType="CommonGroupCodeModel">
+		UPDATE	CD_GRP
+		   <trim prefix="SET" prefixOverrides=",">
+				<if test="grpCd != null and !grpCd.equals('')">
+				,	GRP_CD = #{grpCd}
+				</if>
+				<if test="grpCdNm != null and !grpCdNm.equals('')">
+				,	GRP_CD_NM = #{grpCdNm}
+				</if>
+				<if test="grpCdExplnatn != null and !grpCdExplnatn.equals('')">
+				,	GRP_CD_EXPLNATN = #{grpCdExplnatn}
+				</if>
+				<if test="grpCdLngth != null and !grpCdLngth.equals('')">
+				,	GRP_CD_LNGTH = #{grpCdLngth}
+				</if>
+				<if test="delYn != null and !delYn.equals('')">
+				,	DEL_YN = #{delYn}
+				</if>
+				<if test="corId != null and !corId.equals('')">
+				,	COR_ID = #{corId}
+				</if>
+				<if test="crtDt != null and !crtDt.equals('')">
+				,	CRT_DT = #{crtDt}
+				</if>
+				<if test="morId != null and !morId.equals('')">
+				,	MOR_ID = #{morId}
+				</if>
+				<if test="mdfDt != null and !mdfDt.equals('')">
+				,	MDF_DT = #{mdfDt}
+				</if>
+		</trim>
+		 WHERE	1=1
+		<if test="grpCdId != null and !grpCdId.equals('')">
+		   AND	GRP_CD_ID = #{grpCdId}
+		</if>
+	</update>
+		
+	<!-- 공통 코드 수정 -->
+	<update id="updateCommonCode" parameterType="CommonCodeModel">
+		UPDATE	CD
+		   <trim prefix="SET" prefixOverrides=",">
+				<if test="grpCdId != null and !grpCdId.equals('')">
+				,	GRP_CD_ID = #{grpCdId}
+				</if>
+				<if test="cd != null and !cd.equals('')">
+				,	CD = #{cd}
+				</if>
+				<if test="cdNm != null and !cdNm.equals('')">
+				,	CD_NM = #{cdNm}
+				</if>
+				<if test="cdExplnatn != null and !cdExplnatn.equals('')">
+				,	CD_EXPLNATN = #{cdExplnatn}
+				</if>
+				<if test="cdOrdNum != null and !cdOrdNum.equals('')">
+				,	CD_ORD_NUM = #{cdOrdNum}
+				</if>
+				<if test="cdUseYn != null and !cdUseYn.equals('')">
+				,	CD_USE_YN = #{cdUseYn}
+				</if>
+				<if test="delYn != null and !delYn.equals('')">
+				,	DEL_YN = #{delYn}
+				</if>
+				<if test="fefrncCd != null and !fefrncCd.equals('')">
+				,	FEFRNC_CD = #{fefrncCd}
+				</if>
+				<if test="corId != null and !corId.equals('')">
+				,	COR_ID = #{corId}
+				</if>
+				<if test="crtDt != null and !crtDt.equals('')">
+				,	CRT_DT = #{crtDt}
+				</if>
+				<if test="morId != null and !morId.equals('')">
+				,	MOR_ID = #{morId}
+				</if>
+				<if test="mdfDt != null and !mdfDt.equals('')">
+				,	MDF_DT = #{mdfDt}
+				</if>
+		</trim>
+		 WHERE	1=1
+		<if test="cdId != null and !cdId.equals('')">
+		   AND	CD_ID = #{cdId}
+		</if>
+	</update>
+	
+	<!-- 공통 그룹 코드 삭제 -->
+	<delete id="deleteCommonGroupCode" parameterType="CommonGroupCodeModel">
+		DELETE
+		  FROM	CD_GRP
+		 WHERE	1=1
+		<if test="grpCdId != null and !grpCdId.equals('')">
+		   AND	GRP_CD_ID = #{grpCdId}
+		</if>
+		<if test="grpCd != null and !grpCd.equals('')">
+		   AND	GRP_CD = #{grpCd}
+		</if>
+	</delete>
+	
+	<!-- 공통 코드 삭제 -->
+	<delete id="deleteCommonCode" parameterType="CommonCodeModel">
+		DELETE
+		  FROM	CD
+		 WHERE	1=1
+		<if test="cdId != null and !cdId.equals('')">
+		   AND	CD_ID = #{cdId}
+		</if>
+		<if test="grpCdId != null and !grpCdId.equals('')">
+		   AND	GRP_CD_ID = #{grpCdId}
+		</if>
+		<if test="cd != null and !cd.equals('')">
+		   AND	CD = #{cd}
+		</if>
+	</delete>
 
 </mapper>

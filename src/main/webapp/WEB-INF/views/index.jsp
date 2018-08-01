@@ -32,6 +32,13 @@
 				<input type="button" id="booleanHeadler" value="boolean headler"/>  convert - select( Y / N => true/false ) / insert( true/false => Y / N )
 			</div>
 
+			<br>
+			<div> 메뉴</div>
+			<div>
+				<input type="button" id="viewCode" value="공통코드"/>
+				<input type="button" id="viewMenu" value="메뉴"/>
+			</div>
+
 		</div>
 		<br>
 		<div>Result Area</div>
@@ -98,6 +105,14 @@
 						$('#resultArea').html(JSON.stringify(data));
 					}
 				})
+			});
+
+
+			$("#viewCode").on('click', function() {
+				location.href = "/system/commonCode";
+			});
+			$("#viewMenu").on('click', function() {
+				location.href = "/api/authorization/menu/menu";
 			});
 
 		});

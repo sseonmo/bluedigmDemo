@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +20,6 @@ import com.bluedigm.demo.api.common.model.DynaTreeModel;
 import com.bluedigm.demo.api.commonCode.model.CommonCodeModel;
 import com.bluedigm.demo.api.commonCode.model.CommonGroupCodeModel;
 import com.bluedigm.demo.api.commonCode.service.CommonCodeService;
-
 
 /**
  * @author Ayeon
@@ -35,7 +36,7 @@ public class CommonCodeRestController {
 	private CommonCodeService commonCodeService;
 	
 	@GetMapping("/searchCommonGroupCodeList")
-	public List<DynaTreeModel> searchCommonGroupCodeList() throws Exception{
+	public DynaTreeModel searchCommonGroupCodeList() throws Exception{
 		List<CommonGroupCodeModel> grpCdList = commonCodeService.searchCommonGroupCodeList();
 		List<DynaTreeModel> treeList = new ArrayList<>();
 		DynaTreeModel treeModel = null;
@@ -49,6 +50,13 @@ public class CommonCodeRestController {
 			treeModel.setOriginObject(grpCdModel);
 			treeList.add(treeModel);
 		}
+
+		treeModel = new DynaTreeModel();
+		treeModel.setKey("root");
+		treeModel.setTitle("root");
+		treeModel.setFolder(true);
+		treeModel.setLazy(true);
+		treeModel.setChildren(treeList);
 		
 //		Iterator<CommonGroupCodeModel> itr = grpCdList.iterator();
 //		List<Map<String, Object>> tmpGrpCdList = new ArrayList<>();
@@ -79,7 +87,7 @@ public class CommonCodeRestController {
 //			tmpGrpCdList.add(map);
 //		}
 		
-		return treeList;
+		return treeModel;
 	}
 	
 	@GetMapping("/searchCommonCodeListByGrpCd")
@@ -112,5 +120,35 @@ public class CommonCodeRestController {
 		
 		return treeModel;
 	}
+	
+	@PostMapping("/registerCommonGroupCode")
+    public int registerCommonGroupCode(@ModelAttribute CommonGroupCodeModel commonGroupCodeModel) {
+        return commonCodeService.registerCommonGroupCode(commonGroupCodeModel);
+    }
+	
+	@PostMapping("/registerCommonCode")
+    public int registerCommonCode(@ModelAttribute CommonCodeModel commonCodeModel) {
+        return commonCodeService.registerCommonCode(commonCodeModel);
+    }
+	
+	@PostMapping("/modifyCommonGroupCode")
+    public int modifyCommonGroupCode(@ModelAttribute CommonGroupCodeModel commonGroupCodeModel) {
+        return commonCodeService.modifyCommonGroupCode(commonGroupCodeModel);
+    }
+	
+	@PostMapping("/modifyCommonCode")
+    public int modifyCommonCode(@ModelAttribute CommonCodeModel commonCodeModel) {
+        return commonCodeService.modifyCommonCode(commonCodeModel);
+    }
+	
+	@PostMapping("/removeCommonGroupCode")
+    public int removeCommonGroupCode(@ModelAttribute CommonGroupCodeModel commonGroupCodeModel) {
+        return commonCodeService.removeCommonGroupCode(commonGroupCodeModel);
+    }
+	
+	@PostMapping("/removeCommonCode")
+    public int removeCommonCode(@ModelAttribute CommonCodeModel commonCodeModel) {
+        return commonCodeService.removeCommonCode(commonCodeModel);
+    }
 	
 }

@@ -11,6 +11,13 @@
 <script src="/resources/js/jquery-ui.custom.js" type="text/javascript"></script>
 <script src="/resources/js/jquery.cookie.js" type="text/javascript"></script>
 
+<style>  
+table { display:block; table-layout:fixed; border-collapse:collapse; width:100%; height:100%; } 
+th, td { border:1px solid grey; }
+thead { width:100%; }
+tbody { display:block; overflow:auto; width:100%; max-height:95%; }
+</style>
+
 <link href="/resources/css/ui.dynatree.css" rel="stylesheet"
 	type="text/css">
 <script src="/resources/js/jquery.dynatree.min.js"
@@ -20,67 +27,23 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
+		// 공통 그룹 코드 리스트 바인딩
+		commonGroupCode.searchList();
 		
-		$("#commonCodeTree").dynatree({
-			rootVisible: true,
-	        initAjax: {
-	        	url: "/api/commonCode/searchCommonGroupCodeList"
-	        },
-	        onActivate : function(node) {
-	        	console.log(node);
-	        	bindTable(node.data.originObject);
-	        },
-	        onLazyRead: function(node){
-	        	node.appendAjax({
-	        		url: "/api/commonCode/searchCommonCodeListByGrpCd",
-	               	data: {
-	               		"grpCdId": node.data.key
-	                }
-	            });
-	        }
-	    });
-		
-		$("#btnAddCommonCode").click(function(){
-		      // Sample: add an hierarchic branch using code.
-		      // This is how we would add tree nodes programatically
-		      var activeNode = $("#commonCodeTree").dynatree("getActiveNode");
-				
-				if(activeNode.childList != null) {
-					$("#btnRegisterCommonCode").css("display", "block");
-					$("#btnModifyCommonCode").css("display", "none");
-					$("#inputCommonCode input").val("");
-					$("#inputUserInfo input").val("");
-					
-					if(activeNode.data.title == "root") {
-						$("#inputCommonGroupCode input").val("");
-						$("#inputCommonCode input").attr("readOnly", "readOnly");
-					} else {
-						$("#inputCommonGroupCode input").attr("readOnly", "readOnly");
-					}
-				}
+		// 공통 그룹 코드 추가 버튼 클릭 시
+		$("#btnAddComGrpCd").click(function(){
+			bindComGrpCdList();
 		});
 		
-		$("#btnRegisterCommonCode").click(function(){
-			var activeNode = $("#commonCodeTree").dynatree("getActiveNode");
-			if(activeNode.data.title == "root") {
-				commonGroupCode.register();
-			} else {
-				commonCode.register();
-			}
-
-			$("#btnRegisterCommonCode").css("display", "none");
-			$("#btnModifyCommonCode").css("display", "block");
+		// 공통 그룹 코드 삭제 버튼 클릭 시
+		$("#btnDeleteComGrpCd").click(function(){
+			var delGrpCdIdList = [];
+			$("input[name=chkGrpCd]:checked").each(function (index) {  
+				delGrpCdIdList.push($(this).val());  
+		    });  
+			commonGroupCode.delete(delGrpCdIdList);
 		});
 		
-		$("#btnModifyCommonCode").click(function(){
-			var activeNode = $("#commonCodeTree").dynatree("getActiveNode");
-			if(activeNode.childList != null) {
-				commonGroupCode.modify();
-			} else {
-				commonCode.modify();
-			}
-		});
-	      
 	 });
 	
 	var commonGroupCode = {
@@ -93,7 +56,7 @@
 				success: function(data) {
 					console.log(data);
 				}
-			});
+			}).done(bindComGrpCdList);
 		}
 		,
 		
@@ -161,6 +124,25 @@
 				dataType: "json",
 				success: function(data) {
 					console.log(data);
+				}
+			});
+		}
+		,
+		
+		delete: function(grpCdIdList) {
+			// ajax 배열 통신을 위한 jquery 직렬화 옵션 세팅 
+			jQuery.ajaxSettings.traditional = true;
+
+			$.ajax({
+				url: "/api/commonCode/deleteCommonGroupCode",
+				data: { "grpCdIdList" : grpCdIdList }, 
+				type: "POST",
+				dataType: "json",
+				success: function(data) {
+					$.each(grpCdIdList, function(index, item) {
+						console.log(item);
+						$("#"+item).closest("tr").remove();
+					});
 				}
 			});
 		}
@@ -241,111 +223,110 @@
 			}
 		}
 	
-	// dynatree 타입으로 변환
-	function convertToTreeType(key, title, data) {
-		console.log(JSON.stringify(convertedJson));
-		var convertedJson = new Array();
-		var convertedData = null;
+	function bindComGrpCdList(data) {
+		var html = "";
 		
-		data.forEach(function(item) {
-			convertedData = {
-					"key" : item[key],
-					"title" : item[title]
-			}
-			convertedJson.push(convertedData);
+		if(data == null) {
+			data = [{ grpCdId : "", grpCd : "", grpCdNm : "", grpCdExplnatn : ""}];
+		} 
+		$.each(data, function(index, item){ 
+			if(item.grpCdId == null) 		{ item.grpCdId = ""; 		}
+			if(item.grpCd == null)  		{ item.grpCd = ""; 			}
+			if(item.grpCdNm == null) 		{ item.grpCdNm = ""; 		}
+			if(item.grpCdExplnatn == null) 	{ item.grpCdExplnatn = ""; 	}
+			
+			html += "<tr>"
+				 +		"<td>"
+				 +			"<input type='checkbox' name='chkGrpCd' id='" + item.grpCdId + "' value='" + item.grpCdId + "' />"
+				 +		"</td>"
+				 +		"<td>"
+				 +			"<input id='grpCd' value='" + item.grpCd + "'/>"
+				 +		"</td>"
+				 +		"<td>"
+				 +			"<input id='grpCdNm' value='" + item.grpCdNm + "'/>"
+				 +		"</td>"
+				 +		"<td>"
+				 +			"<input id='grpCdExplnatn' value='" + item.grpCdExplnatn + "'/>"
+				 +		"</td>"
+				 +	"</tr>";
 		});
 		
-		return JSON.stringify(convertedJson);
-	}
-	
-	function bindTable(data) {
-		$('#commonCodeTable input').each(function (index, value) { 
-			$(this).val(data[$(this).attr('id')]);
-		});
-
-		if(data.hasOwnProperty("grpCdObject")) {
-			$("#grpCd").val(data.grpCdObject.grpCd);
-			$("#grpCdNm").val(data.grpCdObject.grpCdNm);
-			$("#grpCdExplnatn").val(data.grpCdObject.grpCdExplnatn);
-		}
+		$('#listCommonGroupCode').prepend(html);
 	}
 	
 </script>
 </head>
 <body>
-	<div>Common Code</div>
-	<div id="commonCodeTree" style="float: left;"></div>
-	<div id="commonCodeContent" style="float: left;">
-		<form id="commonCodeForm" >
-		<table id="commonCodeTable" style="border: 1px solid black;">
-			<thead id="inputCommonGroupCode">
-				<tr>
-					<th></th>
-					<td><input type="hidden" id="grpCdId"/></td>
-				</tr>
-				<tr>
-					<th>그룹코드값</th>
-					<td><input id="grpCd"/></td>
-				</tr>
-				<tr>
-					<th>그룹코드이름</th>
-					<td><input id="grpCdNm"/></td>
-				</tr>
-				<tr>
-					<th>그룹코드설명</th>
-					<td><input id="grpCdExplnatn"/></td>
-				</tr>
-			</thead>
-			<thead id="inputCommonCode">
-				<tr>
-					<th></th>
-					<td><input type="hidden" id="cdId"/></td>
-				</tr>
-				<tr>
-					<th>코드값</th>
-					<td><input id="cd"/></td>
-				</tr>
-				<tr>
-					<th>코드이름</th>
-					<td><input id="cdNm"/></td>
-				</tr>
-				<tr>
-					<th>코드설명</th>
-					<td><input id="cdExplnatn"/></td>
-				</tr>
-				<tr>
-					<th>코드정렬번호</th>
-					<td><input id="cdOrdNum"/></td>
-				</tr>
-				<tr>
-					<th>코드사용여부</th>
-					<td><input id="cdUseYn"/></td>
-				</tr>
-			</thead>
-			<thead id="inputUserInfo">
-			<tr>
-				<th>생성자</th>
-				<td><input id="corId"/></td>
-			</tr>
-			<tr>
-				<th>생성 일시</th>
-				<td><input id="crtDt"/></td>
-			</tr>
-			<tr>
-				<th>수정자</th>
-				<td><input id="morId"/></td>
-			</tr>
-			<tr>
-				<th>수정 일시</th>
-				<td><input id="mdfDt"/></td>
-			</tr>
-			</thead>
-		</table>
-		<input type="button" id="btnAddCommonCode" value="추가"/>
-		<input type="submit" id="btnRegisterCommonCode" style="display:none;" value="등록"/>
-		<input type="button" id="btnModifyCommonCode" value="수정"/>
-		<input type="button" id="btnRemoveCommonCode" value="삭제"/>
-		</form>
+	<div id="areaHeaderText" style="text-align: center; width: 100%; height:10vh; margin:auto; border:1px solid black;">
+		<h1>공통 코드 관리</h1>
+	</div>
+	<div id="areaSearchCode" style="text-align: center; width: 100%; height:5vh; border:1px solid black;">
+		<select style="width:200px;">
+			<option>공통 그룹 코드</option>
+			<option>공통  코드</option>
+		</select>
+		<select style="width:200px;">
+			<option></option>
+		</select>
+		<input />
+		<button>검색</button>
+	</div>
+	<div id="areaCommonGroupCode" style="float: left; width: 49.5%; height:80vh; border:1px solid black;">
+		<div id="headerCommonGroupCode" style="width:100%; height:5%";>
+			<h3 style="float:left; margin:3px;">공통 그룹 코드</h3>
+			<div class="btnGroup" style="float:right; margin:6px;">
+				<button id="btnAddComGrpCd">추가</button>
+				<button>저장</button>
+				<button id="btnDeleteComGrpCd">삭제</button>
+			</div>
+		</div>
+		<div id="tableCommonGroupCode" style="display:inline-block; width:100%; height:90%;">
+			<table>
+				<colgroup>
+				    <col width="5%" />
+				    <col width="15%" />
+				    <col width="40%" />
+				    <col width="40%" />
+			  	</colgroup>
+				<thead>
+					<tr>
+						<th>선택</th>
+						<th>그룹 코드값</th>
+						<th>그룹 코드명</th>
+						<th>설명</th>
+					</tr>
+				</thead>
+				<tbody id="listCommonGroupCode">
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id="areaCommonCode" style="float: right; width: 49.5%; height:80vh; border:1px solid black;">
+		<div id="headerCommonCode">
+			<h3 style="float:left; margin:3px;">공통 코드</h3>
+			<div class="btnGroup" style="float:right; margin:6px;">
+				<button>추가</button>
+				<button>저장</button>
+				<button>삭제</button>
+			</div>
+		</div>
+		<div id="tableCommonGroupCode">
+			<table>
+				<thead>
+					<tr>
+						<th>선택</th>
+						<th>코드값</th>
+						<th>코드명</th>
+						<th>설명</th>
+						<th>정렬 번호</th>
+						<th>사용 여부</th>
+						<th>참조 코드</th>
+					</tr>
+				</thead>
+				<tbody id="listCommonCode">
+				</tbody>
+			</table>
+		</div>
 	</div>
 </body>
 </html>

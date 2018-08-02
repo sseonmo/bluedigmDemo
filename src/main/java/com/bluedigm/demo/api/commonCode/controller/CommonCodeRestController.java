@@ -36,58 +36,8 @@ public class CommonCodeRestController {
 	private CommonCodeService commonCodeService;
 	
 	@GetMapping("/searchCommonGroupCodeList")
-	public DynaTreeModel searchCommonGroupCodeList() throws Exception{
-		List<CommonGroupCodeModel> grpCdList = commonCodeService.searchCommonGroupCodeList();
-		List<DynaTreeModel> treeList = new ArrayList<>();
-		DynaTreeModel treeModel = null;
-		
-		for(CommonGroupCodeModel grpCdModel : grpCdList) {
-			treeModel = new DynaTreeModel();
-			treeModel.setKey(grpCdModel.getGrpCdId());
-			treeModel.setTitle(grpCdModel.getGrpCdNm());
-			treeModel.setFolder(true);
-			treeModel.setLazy(true);
-			treeModel.setOriginObject(grpCdModel);
-			treeList.add(treeModel);
-		}
-
-		treeModel = new DynaTreeModel();
-		treeModel.setKey("root");
-		treeModel.setTitle("root");
-		treeModel.setFolder(true);
-		treeModel.setLazy(true);
-		treeModel.setChildren(treeList);
-		
-//		Iterator<CommonGroupCodeModel> itr = grpCdList.iterator();
-//		List<Map<String, Object>> tmpGrpCdList = new ArrayList<>();
-//		
-//		while(itr.hasNext()) {
-//			CommonGroupCodeModel next = itr.next();
-//			Map<String, Object> map = new HashMap<String, Object>();
-//			map.put("key", next.getGrpCd());
-//			map.put("title", next.getGrpCdNm());
-//			map.put("isFolder", true);
-//			
-//			List<CommonCodeModel> cdList = commonCodeService.searchCommonCodeListByGrpCd(next.getGrpCdId());
-//			if(cdList.size() > 0) {
-//				map.put("isLazy", true);
-//				
-//				Iterator<CommonCodeModel> itr2 = cdList.iterator();
-//				List<Map<String, Object>> tmpCdList = new ArrayList<>();
-//				
-//				while(itr2.hasNext()) {
-//					CommonCodeModel next2 = itr2.next();
-//					Map<String, Object> map2 = new HashMap<String, Object>();
-//					map2.put("key", next2.getCd());
-//					map2.put("title", next2.getCdNm());
-//					tmpCdList.add(map2);
-//				}
-//				map.put("children", tmpCdList);
-//			}
-//			tmpGrpCdList.add(map);
-//		}
-		
-		return treeModel;
+	public List<CommonGroupCodeModel> searchCommonGroupCodeList() throws Exception{
+		return commonCodeService.searchCommonGroupCodeList();
 	}
 	
 	@GetMapping("/searchCommonCodeListByGrpCd")
@@ -141,9 +91,9 @@ public class CommonCodeRestController {
         return commonCodeService.modifyCommonCode(commonCodeModel);
     }
 	
-	@PostMapping("/removeCommonGroupCode")
-    public int removeCommonGroupCode(@ModelAttribute CommonGroupCodeModel commonGroupCodeModel) {
-        return commonCodeService.removeCommonGroupCode(commonGroupCodeModel);
+	@PostMapping("/deleteCommonGroupCode")
+    public int deleteCommonGroupCode(@RequestParam("grpCdIdList") List<String> grpCdIdList) {
+        return commonCodeService.deleteCommonGroupCode(grpCdIdList);
     }
 	
 	@PostMapping("/removeCommonCode")

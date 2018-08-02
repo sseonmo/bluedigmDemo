@@ -86,7 +86,7 @@ public interface CommonCodeMapper {
 	 * @param commonGroupCodeModel
 	 * @return int
 	 */
-	int deleteCommonGroupCode(CommonGroupCodeModel commonGroupCodeModel);
+	int deleteCommonGroupCode(List<String> grpCdIdList);
 	
 	/**
 	 * 공통 코드 삭제

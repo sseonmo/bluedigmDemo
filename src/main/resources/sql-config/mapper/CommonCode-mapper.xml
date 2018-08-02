@@ -434,17 +434,14 @@
 	</update>
 	
 	<!-- 공통 그룹 코드 삭제 -->
-	<delete id="deleteCommonGroupCode" parameterType="CommonGroupCodeModel">
-		DELETE
-		  FROM	CD_GRP
-		 WHERE	1=1
-		<if test="grpCdId != null and !grpCdId.equals('')">
-		   AND	GRP_CD_ID = #{grpCdId}
-		</if>
-		<if test="grpCd != null and !grpCd.equals('')">
-		   AND	GRP_CD = #{grpCd}
-		</if>
-	</delete>
+	<update id="deleteCommonGroupCode">
+		UPDATE	CD_GRP
+		   SET	DEL_YN = 'Y'
+		 WHERE	GRP_CD_ID IN 
+		 		<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+					#{item}
+				</foreach>
+	</update>
 	
 	<!-- 공통 코드 삭제 -->
 	<delete id="deleteCommonCode" parameterType="CommonCodeModel">

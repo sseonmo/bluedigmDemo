@@ -81,7 +81,7 @@ public interface CommonCodeService {
 	 * @param commonGroupCodeModel
 	 * @return int
 	 */
-	int removeCommonGroupCode(CommonGroupCodeModel commonGroupCodeModel);
+	int deleteCommonGroupCode(List<String> grpCdIdList);
 	
 	/**
 	 * 공통 코드 삭제

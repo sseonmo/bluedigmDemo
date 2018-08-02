@@ -118,8 +118,8 @@ public class CommonCodeServiceImpl implements CommonCodeService {
 	 * @see com.bluedigm.demo.api.commonCode.service.CommonCodeService#removeCommonGroupCode(com.bluedigm.demo.api.commonCode.model.CommonGroupCodeModel)
 	 */
 	@Override
-	public int removeCommonGroupCode(CommonGroupCodeModel commonGroupCodeModel) {
-		return commonCodeMapper.deleteCommonGroupCode(commonGroupCodeModel);
+	public int deleteCommonGroupCode(List<String> grpCdIdList) {
+		return commonCodeMapper.deleteCommonGroupCode(grpCdIdList);
 	}
 
 	/* 

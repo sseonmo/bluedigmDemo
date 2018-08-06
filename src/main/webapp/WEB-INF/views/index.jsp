@@ -43,11 +43,16 @@
 			<br>
 			<div> xssFilter</div>
 			<div>
-				<input type="text" id="xssFilterText" placeholder="xss filter"/><input type="button" id="xssFilterBtn" value="GO"/>
-				<div>xss filter result</div>
+				<input type="text" id="xssFilterText" placeholder="xss filter" /><input type="button" id="xssFilterBtn" value="GO"/>
+				<br>
+				<br>
 				<div>
-					<input type="text" id="xssResultInput" placeholder="xss filter" e/>
-					<p id="xssResultP"></p>
+					xss filter result
+					<ul>
+						<li><input type="text" id="xssResultInput" placeholder="xss filter" /></li>
+						<li id="xssResultP1"></li>
+						<li id="xssResultP2"></li>
+					</ul>
 				</div>
 			</div>
 
@@ -136,9 +141,10 @@
 					data : { testText : $("#xssFilterText").val() },
 					dataType:'json',
 					success:function(data){
-						$("#xssResultInput").val(data);
-						$("#xssResultP").text(data);
-						$("#resultArea").html(data);
+						$("#xssResultP1").html(data);
+						$("#xssResultP2").text(data);
+						$("#xssResultInput").val($("#xssResultP1").html());
+
 					}
 				})
 

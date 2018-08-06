@@ -53,7 +53,7 @@ public class CommonGroupCodeModel {
 	 * TYPE : 		VARCHAR(1)
 	 * COMMENTS : 	삭제 여부
 	 */
-	public String delYn;
+	public boolean delYn;
 	
 	/**
 	 * COLUMN : 	COR_ID
@@ -63,11 +63,11 @@ public class CommonGroupCodeModel {
 	public String corId;
 	
 	/**
-	 * COLUMN : 	CRT_DT
+	 * COLUMN : 	COR_DT
 	 * TYPE : 		DATETIME
 	 * COMMENTS : 	생성 일시
 	 */
-	public Date crtDt;
+	public Date corDt;
 	
 	/**
 	 * COLUMN : 	MOR_ID
@@ -123,11 +123,11 @@ public class CommonGroupCodeModel {
 		this.grpCdLngth = grpCdLngth;
 	}
 
-	public String getDelYn() {
+	public boolean getDelYn() {
 		return delYn;
 	}
 
-	public void setDelYn(String delYn) {
+	public void setDelYn(boolean delYn) {
 		this.delYn = delYn;
 	}
 
@@ -139,12 +139,12 @@ public class CommonGroupCodeModel {
 		this.corId = corId;
 	}
 
-	public Date getCrtDt() {
-		return crtDt;
+	public Date getCorDt() {
+		return corDt;
 	}
 
-	public void setCrtDt(Date crtDt) {
-		this.crtDt = crtDt;
+	public void setCorDt(Date corDt) {
+		this.corDt = corDt;
 	}
 
 	public String getMorId() {

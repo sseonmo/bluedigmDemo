@@ -20,14 +20,14 @@ public interface CommonCodeService {
 	 * @param commonGroupCodeModel
 	 * @return int
 	 */
-	int registerCommonGroupCode(CommonGroupCodeModel commonGroupCodeModel);
+	int registerCommonGroupCodeList(List<CommonGroupCodeModel> grpCdList);
 	
 	/**
 	 * 공통 코드 등록
 	 * @param commonCodeModel
 	 * @return int
 	 */
-	int registerCommonCode(CommonCodeModel commonCodeModel);
+	int registerCommonCodeList(List<CommonCodeModel> cdList);
 	
 	/**
 	 * 공통 코드 그룹 리스트 전체 조회
@@ -77,17 +77,31 @@ public interface CommonCodeService {
 	int modifyCommonCode(CommonCodeModel commonCodeModel);
 	
 	/**
+	 * 공통 그룹 코드 리스트 삭제
+	 * @param List<String> 그룹 코드 아이디 리스트
+	 * @return int
+	 */
+	int removeCommonGroupCodeList(List<String> grpCdIdList);
+	
+	/**
 	 * 공통 그룹 코드 삭제
 	 * @param commonGroupCodeModel
 	 * @return int
 	 */
-	int deleteCommonGroupCode(List<String> grpCdIdList);
+	int deleteCommonGroupCode(CommonGroupCodeModel commonGroupCodeModel);
+	
+	/**
+	 * 공통 코드 리스트 삭제
+	 * @param List<String> 코드 아이디 리스트
+	 * @return int
+	 */
+	int removeCommonCodeList(List<String> cdIdList);
 	
 	/**
 	 * 공통 코드 삭제
 	 * @param commonCodeModel
 	 * @return int
 	 */
-	int removeCommonCode(CommonCodeModel commonCodeModel);
+	int deleteCommonCode(CommonCodeModel commonCodeModel);
 
 }

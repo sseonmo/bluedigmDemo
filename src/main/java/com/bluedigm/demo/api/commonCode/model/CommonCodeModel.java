@@ -51,14 +51,14 @@ public class CommonCodeModel {
 	 * TYPE : 		VARCHAR(1)
 	 * COMMENTS : 	코드 사용 여부
 	 */
-	String cdUseYn;
+	boolean cdUseYn;
 	
 	/**
 	 * COLUMN : 	DEL_YN
 	 * TYPE : 		VARCHAR(1)
 	 * COMMENTS : 	삭제 여부
 	 */
-	String delYn;
+	boolean delYn;
 	
 	/**
 	 * COLUMN : 	FEFRNC_CD
@@ -75,11 +75,11 @@ public class CommonCodeModel {
 	String corId;
 	
 	/**
-	 * COLUMN : 	CRT_DT
+	 * COLUMN : 	COR_DT
 	 * TYPE : 		DATETIME
 	 * COMMENTS : 	생성 일시
 	 */
-	Date crtDt;
+	Date corDt;
 	
 	/**
 	 * COLUMN : 	MOR_ID
@@ -94,13 +94,6 @@ public class CommonCodeModel {
 	 * COMMENTS : 	변경 일시
 	 */
 	Date mdfDt;
-	
-	/**
-	 * COLUMN : 	X
-	 * TYPE : 		X
-	 * COMMENTS : 	그룹 코드 객체
-	 */
-	public CommonGroupCodeModel grpCdObject;
 
 	public String getCdId() {
 		return cdId;
@@ -150,19 +143,19 @@ public class CommonCodeModel {
 		this.cdOrdNum = cdOrdNum;
 	}
 
-	public String getCdUseYn() {
+	public boolean getCdUseYn() {
 		return cdUseYn;
 	}
 
-	public void setCdUseYn(String cdUseYn) {
+	public void setCdUseYn(boolean cdUseYn) {
 		this.cdUseYn = cdUseYn;
 	}
 
-	public String getDelYn() {
+	public boolean getDelYn() {
 		return delYn;
 	}
 
-	public void setDelYn(String delYn) {
+	public void setDelYn(boolean delYn) {
 		this.delYn = delYn;
 	}
 
@@ -182,12 +175,12 @@ public class CommonCodeModel {
 		this.corId = corId;
 	}
 
-	public Date getCrtDt() {
-		return crtDt;
+	public Date getCorDt() {
+		return corDt;
 	}
 
-	public void setCrtDt(Date crtDt) {
-		this.crtDt = crtDt;
+	public void setCorDt(Date corDt) {
+		this.corDt = corDt;
 	}
 
 	public String getMorId() {
@@ -204,14 +197,6 @@ public class CommonCodeModel {
 
 	public void setMdfDt(Date mdfDt) {
 		this.mdfDt = mdfDt;
-	}
-
-	public CommonGroupCodeModel getGrpCdObject() {
-		return grpCdObject;
-	}
-
-	public void setGrpCdObject(CommonGroupCodeModel grpCdObject) {
-		this.grpCdObject = grpCdObject;
 	}
 	
 }

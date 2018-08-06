@@ -30,8 +30,8 @@ public class CommonCodeServiceImpl implements CommonCodeService {
 	 * @see com.bluedigm.demo.api.commonCode.service.CommonCodeService#registerCommonGroupCode(com.bluedigm.demo.api.commonCode.model.CommonGroupCodeModel)
 	 */
 	@Override
-	public int registerCommonGroupCode(CommonGroupCodeModel commonGroupCodeModel) {
-		return commonCodeMapper.insertCommonGroupCode(commonGroupCodeModel);
+	public int registerCommonGroupCodeList(List<CommonGroupCodeModel> grpCdList) {
+		return commonCodeMapper.insertCommonGroupCodeList(grpCdList);
 	}
 
 	/* 
@@ -40,8 +40,8 @@ public class CommonCodeServiceImpl implements CommonCodeService {
 	 * @see com.bluedigm.demo.api.commonCode.service.CommonCodeService#registerCommonCode(com.bluedigm.demo.api.commonCode.model.CommonCodeModel)
 	 */
 	@Override
-	public int registerCommonCode(CommonCodeModel commonCodeModel) {
-		return commonCodeMapper.insertCommonCode(commonCodeModel);
+	public int registerCommonCodeList(List<CommonCodeModel> cdList) {
+		return commonCodeMapper.insertCommonCodeList(cdList);
 	}
 
 	/* 
@@ -113,23 +113,44 @@ public class CommonCodeServiceImpl implements CommonCodeService {
 	}
 
 	/* 
-	 * @param commonGroupCodeModel
+	 * @param grpCdIdList
 	 * @return
-	 * @see com.bluedigm.demo.api.commonCode.service.CommonCodeService#removeCommonGroupCode(com.bluedigm.demo.api.commonCode.model.CommonGroupCodeModel)
+	 * @see com.bluedigm.demo.api.commonCode.service.CommonCodeService#deleteCommonGroupCodeList(java.util.List)
 	 */
 	@Override
-	public int deleteCommonGroupCode(List<String> grpCdIdList) {
-		return commonCodeMapper.deleteCommonGroupCode(grpCdIdList);
+	public int removeCommonGroupCodeList(List<String> grpCdIdList) {
+		return commonCodeMapper.updateDelYnYCommonGroupCodeList(grpCdIdList);
+	}
+
+	/* 
+	 * @param commonGroupCodeModel
+	 * @return
+	 * @see com.bluedigm.demo.api.commonCode.service.CommonCodeService#deleteCommonGroupCode(com.bluedigm.demo.api.commonCode.model.CommonGroupCodeModel)
+	 */
+	@Override
+	public int deleteCommonGroupCode(CommonGroupCodeModel commonGroupCodeModel) {
+		return commonCodeMapper.updateDelYnYCommonGroupCode(commonGroupCodeModel);
+	}
+
+	/* 
+	 * @param cdIdList
+	 * @return
+	 * @see com.bluedigm.demo.api.commonCode.service.CommonCodeService#deleteCommonCodeList(java.util.List)
+	 */
+	@Override
+	public int removeCommonCodeList(List<String> cdIdList) {
+		return commonCodeMapper.updateDelYnYCommonCodeList(cdIdList);
 	}
 
 	/* 
 	 * @param commonCodeModel
 	 * @return
-	 * @see com.bluedigm.demo.api.commonCode.service.CommonCodeService#removeCommonCode(com.bluedigm.demo.api.commonCode.model.CommonCodeModel)
+	 * @see com.bluedigm.demo.api.commonCode.service.CommonCodeService#deleteCommonCode(com.bluedigm.demo.api.commonCode.model.CommonCodeModel)
 	 */
 	@Override
-	public int removeCommonCode(CommonCodeModel commonCodeModel) {
-		return commonCodeMapper.deleteCommonCode(commonCodeModel);
+	public int deleteCommonCode(CommonCodeModel commonCodeModel) {
+		return commonCodeMapper.updateDelYnYCommonCode(commonCodeModel);
 	}
+
 
 }

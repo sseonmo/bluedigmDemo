@@ -7,4 +7,7 @@
 	<typeAliases>
 		<package name="com.bluedigm.demo.api" />
 	</typeAliases>
+	<typeHandlers>
+		<package name="com.bluedigm.demo.common.handler" />
+	</typeHandlers>
 </configuration>

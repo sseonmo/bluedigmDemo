@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluedigm.demo.api.user.dao.UserMapper">
+	
+    <resultMap id="UserMap" type="User">
+        <result property="userId" column="ADMN_ID" />
+        <result property="userName" column="ADMN_NM" />
+        <result property="userPassword" column="ADMN_PW" />
+        <result property="userEmail" column="ADMN_EMAL" />
+        <result property="userPhone" column="ADMN_PHNNUM" />
+        <result property="deleteYn" column="DEL_YN" />
+        
+        <result property="ruleId" column="RULE_ID" />
+        <result property="ruleName" column="RULE_NM" />
+        
+        <result property="corId" column="COR_ID" />
+        <result property="corDt" column="COR_DT" />
+        <result property="morId" column="MOR_ID" />
+        <result property="morDt" column="MOR_DT" />
+    </resultMap>	
+	
+	<select id="selectUserId" parameterType="String" resultType="int">
+        SELECT COUNT(*) AS CNT
+        	FROM ADMN AM
+         	WHERE  ADMN_ID = #{userId} 
+    </select> 
+   
+    <select id="selectUserOne" parameterType="String" resultMap="UserMap">
+        SELECT R.RULE_ID RULE_ID, R.RULE_NM RULE_NM, A.ADMN_ID, A.ADMN_NM, A.ADMN_EMAL, A.ADMN_PHNNUM
+			FROM ADMN A INNER JOIN ADMN_RULE AD
+		      ON A.ADMN_ID = AD.ADMN_ID
+		           INNER JOIN RULE R
+		      ON AD.RULE_ID = R.RULE_ID
+         WHERE A.DEL_YN='N' 
+           AND A.ADMN_ID = #{userId}
+    </select> 
+   
+    <select id="selectUserList" parameterType="String" resultMap="UserMap">
+        SELECT R.RULE_NM RULE_NM, A.ADMN_ID ADMN_ID, A.ADMN_NM ADMN_NM, A.ADMN_EMAL ADMN_EMAL, A.ADMN_PHNNUM ADMN_PHNNUM
+			FROM ADMN A INNER JOIN ADMN_RULE AD
+		      ON A.ADMN_ID = AD.ADMN_ID
+		           INNER JOIN RULE R
+		      ON AD.RULE_ID = R.RULE_ID
+		     WHERE A.DEL_YN ='N' 
+			ORDER BY A.ADMN_ID       
+    </select> 
+   
+    <insert id="insertUser" parameterType="User" >
+    	INSERT INTO ADMN(
+        	 ADMN_ID
+        	, ADMN_NM
+        	, ADMN_PW
+        	, ADMN_EMAL
+        	, ADMN_PHNNUM
+        	, DEL_YN
+        	, COR_ID
+        	, COR_DT
+        	, MOR_ID
+        	, MOR_DT
+        )
+        VALUES (
+        	#{userId}
+        	, #{userName}
+        	, #{userPassword}
+        	, #{userEmail}
+        	, #{userPhone}
+        	, 'N'
+        	, #{corId}
+        	, NOW()
+        	, #{morId}
+        	, NOW()
+        )
+    </insert> 
+
+    <insert id="insertUserRule" parameterType="User" >
+    	INSERT INTO ADMN_RULE(
+        	 RULE_ID
+        	, ADMN_ID
+        	, COR_ID
+        	, COR_DT
+        	, MOR_ID
+        	, MOR_DT
+        )
+        VALUES (
+        	#{ruleId}
+        	, #{userId}
+        	, #{corId}
+        	, NOW()
+        	, #{morId}
+        	, NOW()
+        )
+    </insert> 
+
+    <update id="updateUser" parameterType="User">
+        UPDATE ADMN
+           SET ADMN_NM = #{userName}
+             , ADMN_EMAL = #{userEmail}
+             , ADMN_PHNNUM = #{userPhone}
+             , MOR_DT = NOW()
+         WHERE DEL_YN = 'N'
+           AND ADMN_ID = #{userId} 
+    </update> 
+
+    <update id="updateUserRule" parameterType="User">
+        UPDATE ADMN_RULE
+           SET RULE_ID = #{ruleId}
+           , MOR_DT = NOW()
+         WHERE ADMN_ID = #{userId} 
+    </update> 
+
+    <delete id="deleteUser" parameterType="String">
+        UPDATE ADMN
+           SET DEL_YN='Y'
+           , MOR_DT = NOW()
+         WHERE ADMN_ID = #{ruleId}
+    </delete> 
+    
+</mapper>

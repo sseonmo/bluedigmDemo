@@ -97,6 +97,6 @@ public interface MenuMapper {
 	 *   @param param
 	 */
 	
-	void deleteMenu(String param);
+	Menu deleteMenu(String param);
 	
 }

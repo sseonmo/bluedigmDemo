@@ -1,83 +1,114 @@
-package com.bluedigm.demo.api.manager.model;
+package com.bluedigm.demo.api.user.model;
 
-public class Manager {
+import java.util.Arrays;
 
-	private String adminId;
+public class User {
+
+	private String userId;	//관리자 아이디
 	
-	private String adminName;	//관리자 아이디
-	private String adminPassword;	//관리자 이름
-	private String adminEmail;	//관리자 이메
-	private String adminPhone;	//관리자 전화번호
+	private String userName;	//관리자 이름	
+	private String userPassword;	//관리자 패스워드
+	private String userEmail;	//관리자 이메일
+	private String userPhone;	//관리자 전화번호
 	private String deleteYn;	//삭제여부
 	private String corId;	//생성자
 	private String corDt;	//생성일자
 	private String morId;	//수정자
 	private String morDt;	//수정일자
+
+	private String ruleId;	//권한 그룹명
+	private String ruleName;	//권한 그룹명
 	
     private String searchKeyword = "";         // 검색 키워드
     private String searchType = "";            // 검색 필드: 제목, 내용  
     private String[] searchTypeArr;            // 검색 필드를 배열로 변환
     private String searchExt1 = "";            // 검색 확장 필드  
 	
+    public static final Integer ONE = 1;
+    
     /**
-	 * @return the adminId
+	 * @return the ruleId
 	 */
-	public String getAdminId() {
-		return adminId;
+	public String getRuleId() {
+		return ruleId;
 	}
 	/**
-	 * @param adminId the adminId to set
+	 * @param ruleId the ruleId to set
 	 */
-	public void setAdminId(String adminId) {
-		this.adminId = adminId;
+	public void setRuleId(String ruleId) {
+		this.ruleId = ruleId;
 	}
 	/**
-	 * @return the adminName
+	 * @return the ruleName
 	 */
-	public String getAdminName() {
-		return adminName;
+	public String getRuleName() {
+		return ruleName;
 	}
 	/**
-	 * @param adminName the adminName to set
+	 * @param ruleName the ruleName to set
 	 */
-	public void setAdminName(String adminName) {
-		this.adminName = adminName;
+	public void setRuleName(String ruleName) {
+		this.ruleName = ruleName;
 	}
 	/**
-	 * @return the adminPassword
+	 * @return the userId
 	 */
-	public String getAdminPassword() {
-		return adminPassword;
+	public String getUserId() {
+		return userId;
 	}
 	/**
-	 * @param adminPassword the adminPassword to set
+	 * @param userId the userId to set
 	 */
-	public void setAdminPassword(String adminPassword) {
-		this.adminPassword = adminPassword;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	/**
-	 * @return the adminEmail
+	 * @return the userName
 	 */
-	public String getAdminEmail() {
-		return adminEmail;
+	public String getUserName() {
+		return userName;
 	}
 	/**
-	 * @param adminEmail the adminEmail to set
+	 * @param userName the userName to set
 	 */
-	public void setAdminEmail(String adminEmail) {
-		this.adminEmail = adminEmail;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	/**
-	 * @return the adminPhone
+	 * @return the userPassword
 	 */
-	public String getAdminPhone() {
-		return adminPhone;
+	public String getUserPassword() {
+		return userPassword;
 	}
 	/**
-	 * @param adminPhone the adminPhone to set
+	 * @param userPassword the userPassword to set
 	 */
-	public void setAdminPhone(String adminPhone) {
-		this.adminPhone = adminPhone;
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
+	}
+	/**
+	 * @return the userEmail
+	 */
+	public String getUserEmail() {
+		return userEmail;
+	}
+	/**
+	 * @param userEmail the userEmail to set
+	 */
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+	/**
+	 * @return the userPhone
+	 */
+	public String getUserPhone() {
+		return userPhone;
+	}
+	/**
+	 * @param userPhone the userPhone to set
+	 */
+	public void setUserPhone(String userPhone) {
+		this.userPhone = userPhone;
 	}
 	/**
 	 * @return the deleteYn
@@ -188,6 +219,16 @@ public class Manager {
 		this.searchExt1 = searchExt1;
 	}
 
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", userName=" + userName + ", userPassword=" + userPassword + ", userEmail="
+				+ userEmail + ", userPhone=" + userPhone + ", deleteYn=" + deleteYn + ", corId=" + corId + ", corDt="
+				+ corDt + ", morId=" + morId + ", morDt=" + morDt + ", ruleId=" + ruleId + ", ruleName=" + ruleName
+				+ ", searchKeyword=" + searchKeyword + ", searchType=" + searchType + ", searchTypeArr="
+				+ Arrays.toString(searchTypeArr) + ", searchExt1=" + searchExt1 + "]";
+	}
+	
+   
 	
 	
 }

@@ -40,7 +40,7 @@
 
     <insert id="insertMenu" parameterType="Menu" >
         <selectKey resultType="String" keyProperty="menuId" order="BEFORE">
-            SELECT IFNULL(MAX(MENU_ID),0)+1 FROM MENU
+            select FN_PK_ID_GEN()
         </selectKey>    
         INSERT INTO MENU(
         	 MENU_ID
@@ -96,6 +96,8 @@
     <delete id="deleteMenu" parameterType="String">
         UPDATE MENU
            SET DEL_YN='Y'
+            , MOR_ID = #{morId}
+        	, MOR_DT = NOW()
          WHERE MENU_ID=#{menuId}
     </delete> 
 

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluedigm.demo.api.manage.dao.ManageMapper">
+	
+    <resultMap id="ManageMap" type="Manage">
+        <result property="ruleId" column="RULE_ID" />
+        <result property="ruleName" column="RULE_NM" />
+        <result property="ruleExpl" column="RULE_EXPL" />
+        <result property="deleteYn" column="DEL_YN" />
+        <result property="corId" column="COR_ID" />
+        <result property="corDt" column="COR_DT" />
+        <result property="morId" column="MOR_ID" />
+        <result property="morDt" column="MOR_DT" />
+        <result property="ruleCount" column="RULE_COUNT" />
+    </resultMap>	
+	
+    <select id="selectManageList" parameterType="String" resultMap="ManageMap">
+       SELECT A.RULE_ID, A.RULE_NM,  IFNULL(COUNT(B.RULE_ID),0) AS RULE_COUNT, A.RULE_EXPL, A.COR_DT
+      FROM RULE A LEFT OUTER JOIN ADMN_RULE  B
+           ON(A.RULE_ID = B.RULE_ID)
+           LEFT JOIN ADMN C
+           ON (B.ADMN_ID = C.ADMN_ID)
+           WHERE C.DEL_YN = 'N'
+       GROUP BY A.RULE_ID  
+    </select> 
+	
+    <select id="selectManageOne" parameterType="String" resultMap="ManageMap">
+        SELECT * 
+  			FROM RULE 
+		WHERE RULE_ID =#{ruleId};
+    </select> 	
+	
+	
+    <insert id="insertManage" parameterType="Manage" >
+    	<selectKey resultType="String" keyProperty="ruleId" order="BEFORE">
+            select FN_PK_ID_GEN()
+        </selectKey>   
+    	INSERT INTO RULE(
+        	 RULE_ID
+        	, RULE_NM
+        	, RULE_EXPL
+        	, DEL_YN
+        	, COR_ID
+        	, COR_DT
+        	, MOR_ID
+        	, MOR_DT
+        )
+        VALUES (
+        	#{ruleId}
+        	, #{ruleName}
+        	, #{ruleExpl}
+        	, 'N'
+        	, #{corId}
+        	, NOW()
+        	, #{morId}
+        	, NOW()
+        )
+    </insert> 
+
+    <update id="updateManage" parameterType="Manage">
+        UPDATE RULE
+           SET RULE_NM = #{ruleName}
+             , RULE_EXPL = #{ruleExpl}
+             , MOR_DT = NOW()
+         WHERE DEL_YN = 'N'
+           AND RULE_ID = #{ruleId} 
+    </update> 
+
+
+    <delete id="deleteManage" parameterType="String">
+        UPDATE RULE
+           SET DEL_YN='Y'
+         WHERE RULE_ID=#{ruleId}
+    </delete> 
+</mapper>

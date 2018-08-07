@@ -56,7 +56,12 @@ public class MenuServiceImpl implements MenuService{
 	 * 삭제
 	 */
 	@Override
-    public void deleteMenu(String param) {
-    	menuMapper.deleteMenu(param);
+    public Menu deleteMenu(String param) {
+		
+		Menu menu = new Menu();
+		
+		menu.setMorId("admin");
+		
+		return menuMapper.deleteMenu(param);
     }
 }

@@ -45,7 +45,7 @@ public class MenuPageController {
 	    String treeView = tm.makeTree(listview);
 	    
 	    modelMap.addAttribute("treeView", treeView);
-	    
+		
 	    return "/menu/menu";
 	}
 

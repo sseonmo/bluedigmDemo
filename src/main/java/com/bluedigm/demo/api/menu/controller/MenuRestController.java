@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bluedigm.demo.api.menu.model.Menu;
 import com.bluedigm.demo.api.menu.service.MenuService;
+import com.bluedigm.demo.common.message.Messages;
 
 @RestController
 @RequestMapping(value = "/api/menu")
@@ -30,11 +31,12 @@ public class MenuRestController {
      * 읽기.
      */
 	@GetMapping(value = "/menuRead")
-    public void menuRead(HttpServletRequest request, HttpServletResponse response) {
+    public Menu menuRead(HttpServletRequest request, HttpServletResponse response) {
      
 		String menuId = request.getParameter("menuId");
      	Menu menuInfo = menuService.selectMenuOne(menuId);
 	
+     	return menuInfo;
 	}
 	
     /**
@@ -50,13 +52,13 @@ public class MenuRestController {
     /**
      * 삭제.
      */
-	@DeleteMapping(value = "/menuDelete")
-       public void menuDelete(HttpServletRequest request, HttpServletResponse response) {
+	@PostMapping(value = "/menuDelete")
+       public Menu menuDelete(HttpServletRequest request, HttpServletResponse response) {
         
         String menuId = request.getParameter("menuId");
         
-        menuService.deleteMenu(menuId);
+        Menu menuInfo = menuService.deleteMenu(menuId);
         
-        
+        return menuInfo;
     }
 }

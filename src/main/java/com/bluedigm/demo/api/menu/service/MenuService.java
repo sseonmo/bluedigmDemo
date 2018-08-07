@@ -55,6 +55,6 @@ public interface MenuService {
 	 *   @param menuId
 	 */
 	
-	public void deleteMenu(String param);
+	public Menu deleteMenu(String param);
 	
 }

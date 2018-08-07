@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TreeMake {
 	
-	public String makeTree(List<?> listview) {
+	public String makeTree(List<SelectedMenu> listview) {
         List<SelectedMenu> rootlist = new ArrayList<SelectedMenu>();
         
 		for (int i = 0; i < listview.size(); i++) {            
@@ -16,22 +16,20 @@ public class TreeMake {
 		    
 			if ("0".equals(mtDO.getParent())) {
 			    rootlist.add(mtDO);
-			    continue;
 			}
 			
-		for (int j = 0; j < listview.size(); j++) {
-			 SelectedMenu ptDO = (SelectedMenu) listview.get(j);
-			 
-		     if (mtDO.getParent().equals(ptDO.getKey())) {
-		         if (ptDO.getChildren() == null) {
-		             ptDO.setChildren(new ArrayList<Object>() );
-		         }
-		         List<SelectedMenu> list = ptDO.getChildren();
-		         list.add(mtDO);
-		         ptDO.setIsFolder(true);
-		         break;
-		     }
-		 }     
+			for (int j = 0; j < listview.size(); j++) {
+				 SelectedMenu ptDO = (SelectedMenu) listview.get(j);
+				 
+			     if (mtDO.getParent().equals(ptDO.getKey())) {
+			         if (ptDO.getChildren() == null) {
+			             ptDO.setChildren(new ArrayList<Object>() );
+			         }
+			         List<SelectedMenu> list = ptDO.getChildren();
+			         list.add(mtDO);
+			         ptDO.setIsFolder(true);
+			     }
+			 }     
 		 }
 
 		ObjectMapper mapper = new ObjectMapper();

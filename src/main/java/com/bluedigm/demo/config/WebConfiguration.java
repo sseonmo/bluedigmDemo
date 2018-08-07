@@ -9,6 +9,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -25,6 +26,12 @@ public class WebConfiguration implements WebMvcConfigurer {
 	private static final String[] RESOURCE_LOCATIONS = {
 			"classpath:/static/"
 	};
+
+	//의미없는 페이지 이동일때 쓰면 괜찮을것 같음
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/login").setViewName("/login");
+	}
 
 	//정적리소스
 	@Override

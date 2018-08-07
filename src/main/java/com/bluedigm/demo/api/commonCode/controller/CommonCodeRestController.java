@@ -42,34 +42,12 @@ public class CommonCodeRestController {
 	
 	@GetMapping("/searchCommonCodeListByGrpCd")
 	public List<CommonCodeModel> searchCommonCodeListByGrpCd(@RequestParam String grpCdId) throws Exception {
-//		List<CommonCodeModel> cdList = commonCodeService.searchCommonCodeListByGrpCd(grpCdId);
-//		List<DynaTreeModel> treeList = new ArrayList<>();
-//		DynaTreeModel treeModel = null;
-//		
-//		for(CommonCodeModel cdModel : cdList) {
-//			treeModel = new DynaTreeModel();
-//			treeModel.setKey(cdModel.getCdId());
-//			treeModel.setTitle(cdModel.getCdNm());
-//			treeModel.setOriginObject(cdModel);
-//			treeList.add(treeModel);
-//		}
-//		
-//		return treeList;
 		return commonCodeService.searchCommonCodeListByGrpCd(grpCdId);
 	}
 	
 	@GetMapping("/searchCommonGroupCodeDetail")
-	public DynaTreeModel searchCommonGroupCodeDetail(@RequestParam String grpCdId) throws Exception {
-		CommonGroupCodeModel searchModel = new CommonGroupCodeModel();
-		searchModel.setGrpCdId(grpCdId);
-		CommonGroupCodeModel grpCd = commonCodeService.searchCommonGroupCodeDetail(searchModel);
-
-		DynaTreeModel treeModel = new DynaTreeModel();
-		treeModel.setKey(grpCd.getGrpCdId());
-		treeModel.setTitle(grpCd.getGrpCdNm());
-		treeModel.setOriginObject(grpCd);
-		
-		return treeModel;
+	public CommonGroupCodeModel searchCommonGroupCodeDetail(@RequestParam CommonGroupCodeModel commonGroupCodeModel) throws Exception {
+		return commonCodeService.searchCommonGroupCodeDetail(commonGroupCodeModel);
 	}
 	
 	@PostMapping(value="/registerCommonGroupCodeList")

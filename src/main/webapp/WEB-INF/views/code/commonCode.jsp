@@ -14,13 +14,13 @@
 <style>  
 table { display:block; table-layout:fixed; border-collapse:collapse; word-break:break-all; width:100%; height:100%; } 
 th, td { border:1px solid grey; padding: 0 6px 0 2px; align:center; }
-tbody tr:hover { background:grey; }
+tbody tr:hover { background:#E0E0E0; }
 thead { width:100%; }
 tbody { overflow:auto; width:100%; max-height:95%; }
 input { width:100%; }
-.modify { background:yellow; }
-.register { background:green; }
-.check { background:blue; }
+.modify { background:#FF8800; }
+.register { background:#00CC00; }
+.check { background:#808080; }
 .click { background:black; }
 </style>
 
@@ -41,6 +41,29 @@ input { width:100%; }
 		// 공통 그룹 코드 리스트 바인딩
 		commonGroupCode.searchList();
 		
+		// 첫번째 검색 selectbox 선택 시 
+		$("#selectSearchCode").change(function() {
+			var value = $("#selectSearchCode option:selected").val();
+			var html = "";
+			$("#selectSearchAtrbt").html(html);
+			
+			if(value == "comGrpCd") {
+				html += "<option>그룹 코드값</option>"
+					 +	"<option>그룹 코드명</option>"
+					 +	"<option>그룹 코드 설명</option>";
+				$("#selectSearchAtrbt").append(html);
+			}
+			if(value == "comCd") {
+				html += "<option>코드값</option>"
+					 +	"<option>코드명</option>"
+					 +	"<option>코드 설명</option>"
+					 +	"<option>코드 정렬 번호</option>"
+					 +	"<option>코드 사용 여부</option>"
+					 +	"<option>참조 코드</option>";
+				$("#selectSearchAtrbt").append(html);
+			}
+		});
+		
 		// 추가 버튼 클릭 시
 		$(".btnAddCode").click(function() {
 			if($(this).attr("id") == "btnAddComGrpCd") {
@@ -56,7 +79,9 @@ input { width:100%; }
 		// 삭제 버튼 클릭 시
 		$(".btnRemoveCode").click(function(){
 			if($(this).attr("id") == "btnRemoveComGrpCd") {
-				$("#listCommonGroupCode input[name=checkCode]:checked").each(function (index) {  
+				$("#listCommonGroupCode input[name=checkCode]:checked").each(function (index) {
+					$(this).closest("tr").removeClass("register");
+					$(this).closest("tr").removeClass("modify");
 					$(this).closest("tr").addClass("remove");
 					$(this).closest("tr").hide();
 			    });  
@@ -64,6 +89,8 @@ input { width:100%; }
 			if($(this).attr("id") == "btnRemoveComCd") {
 				if(validRelativeGrpCd()) {
 					$("#listCommonCode input[name=checkCode]:checked").each(function (index) {  
+						$(this).closest("tr").removeClass("register");
+						$(this).closest("tr").removeClass("modify");
 						$(this).closest("tr").addClass("remove");
 						$(this).closest("tr").hide();
 				    });  
@@ -77,44 +104,45 @@ input { width:100%; }
 			insertedCnt = 0;
 			updatedCnt = 0;
 			deletedCnt = 0;
-			
-			if($(this).attr("id") == "btnStoreComGrpCd") {
-				////////////////////////////// 등록
-				$('#listCommonGroupCode .register').each(function (index, value) { 
-					var register = new Object();
-					$(this).find("input").each(function (index, value2) { 
-						register[value2.id] = value2.value;
+
+			if(validComGrpCd()) {
+				if($(this).attr("id") == "btnStoreComGrpCd") {
+					////////////////////////////// 등록
+					$('#listCommonGroupCode .register').each(function (index, value) { 
+						var register = new Object();
+						$(this).find("input").each(function (index, value2) { 
+							register[value2.id] = value2.value;
+						});
+						params.push(register);
 					});
-					params.push(register);
-				});
-				if(params.length > 0) {
-					commonGroupCode.registerList(params);
-				}
-				
-				////////////////////////////// 수정
-				$('#listCommonGroupCode .modify').each(function (index, value) { 
-					var modify = new Object();
-					$(this).find("input").each(function (index, value2) { 
-						modify[value2.id] = value2.value;
+					if(params.length > 0) {
+						commonGroupCode.registerList(params);
+					}
+					
+					////////////////////////////// 수정
+					$('#listCommonGroupCode .modify').each(function (index, value) { 
+						var modify = new Object();
+						$(this).find("input").each(function (index, value2) { 
+							modify[value2.id] = value2.value;
+						});
+						commonGroupCode.modify(modify);
 					});
-					commonGroupCode.modify(modify);
-				});
-				
-				////////////////////////////// 삭제
-				params = [];
-				$("#listCommonGroupCode .remove").each(function (index, value) {
-					params.push($(this).find("#grpCdId").val());
-				});
-				if(params.length > 0) {
-					commonGroupCode.remove(params);
+					
+					////////////////////////////// 삭제
+					params = [];
+					$("#listCommonGroupCode .remove").each(function (index, value) {
+						params.push($(this).find("#grpCdId").val());
+					});
+					if(params.length > 0) {
+						commonGroupCode.remove(params);
+					}
+					
+					alert("등록: " + insertedCnt + " 수정: " + updatedCnt + " 삭제: " + deletedCnt);
+					location.reload();
 				}
-				
-				alert("등록: " + insertedCnt + " 수정: " + updatedCnt + " 삭제: " + deletedCnt);
-				location.reload();
 			}
-			
-			if($(this).attr("id") == "btnStoreComCd") {
-				if(validRelativeGrpCd()) {
+			if(validComCd()) {
+				if($(this).attr("id") == "btnStoreComCd") {
 					////////////////////////////// 등록
 					$('#listCommonCode .register').each(function (index, value) { 
 						var register = new Object();
@@ -146,7 +174,7 @@ input { width:100%; }
 					}
 
 					alert("등록: " + insertedCnt + " 수정: " + updatedCnt + " 삭제: " + deletedCnt);
-					location.reload();
+					$("#grpCdId").val("'"+$("#relativeGrpCdId").text()+"'").trigger("click");
 				} 
 			}
 		});
@@ -219,7 +247,6 @@ input { width:100%; }
 				dataType: "json",
 				success: function(data) {
 					commonGroupCodeList = data;
-					console.log(commonGroupCodeList);
 				}
 			}).done(bindComGrpCdList);
 		}
@@ -249,7 +276,7 @@ input { width:100%; }
 				contentType:'application/json; charset=utf-8',
 			    async: false,
 				success: function(data) {
-					insertedCnt = data;
+					insertedCnt = JSON.parse(data);
 				}
 			});
 		}
@@ -265,6 +292,8 @@ input { width:100%; }
 				success: function(data) {
 					if(data == 1) {
 						updatedCnt++;	
+					} else {
+						updatedCnt = JSON.parse(data);
 					}
 				}
 			});
@@ -282,7 +311,7 @@ input { width:100%; }
 				dataType: "json",
 			    async: false,
 				success: function(data) {
-					deletedCnt = data;
+					deletedCnt = JSON.parse(data);
 				}
 			});
 		}
@@ -313,8 +342,7 @@ input { width:100%; }
 					contentType:'application/json; charset=utf-8',
 				    async: false,
 					success: function(data) {
-						console.log(data);
-						insertedCnt = data;
+						insertedCnt = JSON.parse(data);
 					}
 				});
 			}
@@ -330,6 +358,8 @@ input { width:100%; }
 					success: function(data) {
 						if(data == 1) {
 							updatedCnt++;	
+						} else {
+							updatedCnt = JSON.parse(data);
 						}
 					}
 				});
@@ -345,20 +375,109 @@ input { width:100%; }
 					type: "POST",
 					dataType: "json",
 					success: function(data) {
-						deletedCnt = data;
+						deletedCnt = JSON.parse(data);
 					}
 				});
 			}
 			
 		}
 	
-	// 공통 코드 버튼 그룹 클릭 시
-	function validRelativeGrpCd() {
-		if($("#relativeGrpCd").text() == "") {
-			alert("그룹 코드를 선택해 주세요.");
-			return false;
+	// 공통 그룹 코드 저장 시 validation check
+	function validComGrpCd() {
+		var returnValue = true;
+		
+		if($("#listCommonGroupCode .register").length > 0 || $("#listCommonGroupCode .modify").length > 0) {
+			$("#listCommonGroupCode .register input, #listCommonGroupCode .modify input").each(function (index) {
+				if($(this).attr("id") == "grpCd") {
+					var thisVal = $(this).val();
+					if(thisVal == null || thisVal == "") {
+						returnValue = false;
+						alert("그룹 코드값을 입력해 주세요.");
+						$(this).focus();
+						return false;
+					}
+					if(thisVal.length > 6) {
+						returnValue = false;
+						alert("그룹 코드값을 영문+숫자 6자로 제한해 주세요.");
+						$(this).focus();
+						return false;
+					}
+				}
+				if($(this).attr("id") == "grpCdNm") {
+					var thisVal = $(this).val();
+					if(thisVal == null || thisVal == "") {
+						returnValue = false;
+						alert("그룹 코드명을 입력해 주세요.");
+						$(this).focus();
+						return false;
+					}
+				}
+				if($(this).attr("id") == "grpCdExplnatn") {
+					var thisVal = $(this).val();
+					if(thisVal == null || thisVal == "") {
+						returnValue = false;
+						alert("그룹 코드 설명을 입력해 주세요.");
+						$(this).focus();
+						return false;
+					}
+				}
+		    });
 		}
-		return true;
+		
+		return returnValue;
+	}
+	
+	// 공통 코드 저장 시 validation check
+	function validComCd() {
+		var returnValue = true;
+		
+		if($("#listCommonCode .register").length > 0 || $("#listCommonCode .modify").length > 0) {
+			$("#listCommonCode .register input, #listCommonCode .modify input").each(function (index) {
+				if($(this).attr("id") == "cd") {
+					var thisVal = $(this).val();
+					if(thisVal == null || thisVal == "") {
+						returnValue = false;
+						alert("코드값을 입력해 주세요.");
+						$(this).focus();
+						return false;
+					}
+				}
+				if($(this).attr("id") == "cdNm") {
+					var thisVal = $(this).val();
+					if(thisVal == null || thisVal == "") {
+						returnValue = false;
+						alert("코드명을 입력해 주세요.");
+						$(this).focus();
+						return false;
+					}
+				}
+				if($(this).attr("id") == "cdExplnatn") {
+					var thisVal = $(this).val();
+					if(thisVal == null || thisVal == "") {
+						returnValue = false;
+						alert("코드 설명을 입력해 주세요.");
+						$(this).focus();
+						return false;
+					}
+				}
+				if($(this).attr("id") == "cdOrdNum") {
+					var thisVal = $(this).val();
+					if(thisVal == null || thisVal == "") {
+						returnValue = false;
+						alert("정렬 번호를 입력해 주세요.");
+						$(this).focus();
+						return false;
+					}
+					if(thisVal.length > 5) {
+						returnValue = false;
+						alert("정렬 번호를 숫자 5자로 제한해 주세요.");
+						$(this).focus();
+						return false;
+					}
+				}
+		    });
+		}
+		return returnValue;
 	}
 	
 	function bindComGrpCdList(data) {
@@ -393,6 +512,14 @@ input { width:100%; }
 		$('#listCommonGroupCode').prepend(html);
 	}
 	
+	function validRelativeGrpCd() {
+		if($("#relativeGrpCd").text() == "") {
+			alert("그룹 코드를 선택해 주세요.");
+			return false;
+		}
+		return true;
+	}
+	
 	function bindComCdList(data) {
 		var html = "";
 		
@@ -412,8 +539,8 @@ input { width:100%; }
 			
 			html += "<tr class='" + item.classValue + "'>"
 				 +		"<td>"
-				 +			"<input type='hidden' id='grpCdId' name='grpCdId' value='" + item.grpCdId + "' />"
-				 +			"<input type='checkbox' name='checkCode' id='cdId' value='" + item.cdId + "' />"
+				 +			"<input type='hidden' id='grpCdId' name='grpCdId' value='" + item.grpCdId + "' initial='" + item.grpCdId + "' />"
+				 +			"<input type='checkbox' name='checkCode' id='cdId' value='" + item.cdId + "' initial='" + item.cdId + "' />"
 				 +		"</td>"
 				 +		"<td>"
 				 +			"<input id='cd' name='cd' value='" + item.cd + "' initial='" + item.cd + "' />"
@@ -425,7 +552,7 @@ input { width:100%; }
 				 +			"<input id='cdExplnatn' name='cdExplnatn' value='" + item.cdExplnatn + "' initial='" + item.cdExplnatn + "' />"
 				 +		"</td>"
 				 +		"<td>"
-				 +			"<input id='cdOrdNum' name='cdOrdNum' value='" + item.cdOrdNum + "' initial='" + item.cdOrdNum + "' />"
+				 +			"<input type='number' maxlength='5' id='cdOrdNum' name='cdOrdNum' value='" + item.cdOrdNum + "' initial='" + item.cdOrdNum + "' />"
 				 +		"</td>"
 				 +		"<td>"
 				 +			"<input type='checkbox' id='cdUseYn' name='cdUseYn' ";
@@ -446,27 +573,27 @@ input { width:100%; }
 </script>
 </head>
 <body>
-	<div class="areaBody" id="areaHeaderText" style="text-align: center; width: 100%; height:10vh; margin:auto; border:1px solid black;">
+	<div class="areaBody" id="areaHeaderText" style="text-align: center; width: 100%; height:10vh; margin:auto; ">
 		<h1>공통 코드 관리</h1>
 	</div>
-	<div class="areaBody" id="areaSearchCode" style="text-align: center; width: 100%; height:5vh; border:1px solid black;">
-		<select style="width:200px;">
-			<option>공통 그룹 코드</option>
-			<option>공통  코드</option>
+	<div class="areaBody" id="areaSearchCode" style="text-align: center; width: 100%; height:5vh; ">
+		<select id="selectSearchCode" style="width:200px;">
+			<option value="total">전체</option>
+			<option value="comGrpCd">공통 그룹 코드</option>
+			<option value="comCd">공통  코드</option>
 		</select>
-		<select style="width:200px;">
-			<option></option>
+		<select id="selectSearchAtrbt" style="width:200px;">
 		</select>
-		<input style="width:200px;" />
+		<input id="searchText" style="width:200px;" />
 		<button>검색</button>
 	</div>
-	<div class="areaBody" id="areaCommonGroupCode" style="float: left; width: 49.5%; height:80vh; border:1px solid black;">
+	<div class="areaBody" id="areaCommonGroupCode" style="float: left; width: 49%; height:80vh; border:1px solid black; padding:5px;">
 		<div id="headerCommonGroupCode" style="width:100%; height:5%;">
 			<h3 style="float:left; margin:3px;">공통 그룹 코드</h3>
 			<div class="btnGroup" id="btnGroupComGrpCd" style="float:right; margin:6px;">
 				<button class="btnAddCode" id="btnAddComGrpCd">추가</button>
-				<button class="btnStoreCode" id="btnStoreComGrpCd">저장</button>
 				<button class="btnRemoveCode" id="btnRemoveComGrpCd">삭제</button>
+				<button class="btnStoreCode" id="btnStoreComGrpCd">저장</button>
 			</div>
 		</div>
 		<div id="contentCommonGroupCode" style="display:inline-block; width:100%; height:90%;">
@@ -492,16 +619,17 @@ input { width:100%; }
 			</form>
 		</div>
 	</div>
-	<div class="areaBody" id="areaCommonCode" style="float: right; width: 49.5%; height:80vh; border:1px solid black;">
+	<div class="areaBody" id="areaCommonCode" style="float: right; width: 49%; height:80vh; border:1px solid black; padding:5px;">
 		<div id="headerCommonCode" style="width:100%; height:5%;">
-			<h3 style="float:left; margin:3px;">공통 코드[ <span id="relativeGrpCdId" style="visibility:hidden;"></span><span id="relativeGrpCd"></span> - <span id="relativeGrpCdNm"></span> ]</h3>
+			<h3 style="float:left; margin:3px;">공통 코드</h3>
 			<div class="btnGroup" id="btnGroupComCd" style="float:right; margin:6px;">
 				<button class="btnAddCode" id="btnAddComCd">추가</button>
-				<button class="btnStoreCode" id="btnStoreComCd">저장</button>
 				<button class="btnRemoveCode" id="btnRemoveComCd">삭제</button>
+				<button class="btnStoreCode" id="btnStoreComCd">저장</button>
 			</div>
 		</div>
 		<div id="contentCommonCode" style="display:inline-block; width:100%; height:90%;">
+			<h3>[ <span id="relativeGrpCd"></span> - <span id="relativeGrpCdNm"></span> ]<span id="relativeGrpCdId" style="visibility:hidden;"></span></h3>
 			<form id="formCommonCode">
 				<table id="tableCommonCode">
 					<colgroup>

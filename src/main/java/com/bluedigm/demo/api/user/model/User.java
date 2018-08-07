@@ -228,7 +228,5 @@ public class User {
 				+ Arrays.toString(searchTypeArr) + ", searchExt1=" + searchExt1 + "]";
 	}
 	
-   
-	
 	
 }

@@ -293,9 +293,6 @@
 				</if>
 		</trim>
 		 WHERE	GRP_CD_ID = #{grpCdId}
-			<if test="grpCd != null and !grpCd.equals('')">
-		 	AND	GRP_CD = #{grpCd}
-		 	</if>
 	</update>
 		
 	<!-- 공통 코드 수정 -->
@@ -339,10 +336,7 @@
 				,	MDF_DT = #{mdfDt}
 				</if>
 		</trim>
-		 WHERE	1=1
-		<if test="cdId != null and !cdId.equals('')">
-		   AND	CD_ID = #{cdId}
-		</if>
+		 WHERE	CD_ID = #{cdId}
 	</update>
 	
 	<!-- 공통 그룹 코드 리스트 삭제 여부 수정 -->

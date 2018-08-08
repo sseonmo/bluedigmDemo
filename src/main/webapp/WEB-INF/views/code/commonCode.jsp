@@ -35,6 +35,9 @@ input { width:100%; }
 	var insertedCnt = 0;
 	var updatedCnt = 0;
 	var deletedCnt = 0;
+	var insertedReturn = false;
+	var updatedReturn = false;
+	var deletedReturn = false;
 
 	$(document).ready(function() {
 		
@@ -80,19 +83,13 @@ input { width:100%; }
 		$(".btnRemoveCode").click(function(){
 			if($(this).attr("id") == "btnRemoveComGrpCd") {
 				$("#listCommonGroupCode input[name=checkCode]:checked").each(function (index) {
-					$(this).closest("tr").removeClass("register");
-					$(this).closest("tr").removeClass("modify");
-					$(this).closest("tr").addClass("remove");
-					$(this).closest("tr").hide();
+					$("#tr" + $(this).val()).removeClass("register, modify").addClass("remove").hide();
 			    });  
 			}
 			if($(this).attr("id") == "btnRemoveComCd") {
 				if(validRelativeGrpCd()) {
-					$("#listCommonCode input[name=checkCode]:checked").each(function (index) {  
-						$(this).closest("tr").removeClass("register");
-						$(this).closest("tr").removeClass("modify");
-						$(this).closest("tr").addClass("remove");
-						$(this).closest("tr").hide();
+					$("#listCommonCode input[name=checkCode]:checked").each(function (index) {
+						$("#tr" + $(this).val()).removeClass("register, modify").addClass("remove").hide();
 				    });  
 				}
 			}
@@ -113,7 +110,7 @@ input { width:100%; }
 			if($(this).attr("id") == "btnStoreComCd") {
 				if(commonCode.store()) {
 					alert("등록: " + insertedCnt + " 수정: " + updatedCnt + " 삭제: " + deletedCnt);
-					$("#listCommonGroupCode input[name=grpCdId]").val("'"+$("#relativeGrpCdId").text()+"'").click();
+					$("#listCommonGroupCode input[id^=grpCdId]").val($("#relativeGrpCdId").text()).trigger("click");
 				}
 			}
 		});
@@ -126,12 +123,12 @@ input { width:100%; }
 		$(this).addClass("click");
 		$("#listCommonCode").html("");
 		
-		var grpCdId = $(this).find("#grpCdId").val();
+		var grpCdId = $(this).find("input[id^=grpCdId]").val();
 		if(grpCdId != null && grpCdId != "") {
 			commonCode.searchListByGrpCd(grpCdId);
-			$("#relativeGrpCdId").html($(this).find("#grpCdId").val());
-			$("#relativeGrpCd").html($(this).find("#grpCd").val());
-			$("#relativeGrpCdNm").html($(this).find("#grpCdNm").val());
+			$("#relativeGrpCdId").html(grpCdId);
+			$("#relativeGrpCd").html($(this).find("input[name=grpCd]").val());
+			$("#relativeGrpCdNm").html($(this).find("input[name=grpCdNm]").val());
 		}
 	});
 	
@@ -206,7 +203,6 @@ input { width:100%; }
 		
 		registerList: function(params) {
 			jQuery.ajaxSettings.traditional = true;
-			console.log(params);
 			$.ajax({
 				url: "/api/commonCode/registerCommonGroupCodeList",
 				data: JSON.stringify(params),
@@ -215,9 +211,10 @@ input { width:100%; }
 				contentType:'application/json; charset=utf-8',
 			    async: false,
 				success: function(data) {
-					insertedCnt = JSON.parse(data);
+					insertedCnt = data;
+					insertedReturn = true;
 				}
-			}).done();
+			});
 		}
 		,
 		
@@ -232,10 +229,11 @@ input { width:100%; }
 					if(data == 1) {
 						updatedCnt++;	
 					} else {
-						updatedCnt = JSON.parse(data);
+						updatedCnt = data;
 					}
+					updatedReturn = true;
 				}
-			}).done();
+			});
 		}
 		,
 		
@@ -250,9 +248,10 @@ input { width:100%; }
 				dataType: "json",
 			    async: false,
 				success: function(data) {
-					deletedCnt = JSON.parse(data);
+					deletedCnt = data;
+					deletedReturn = true;
 				}
-			}).done();
+			});
 		}
 		,
 		
@@ -261,7 +260,7 @@ input { width:100%; }
 			
 			if($("#listCommonGroupCode .register").length > 0 || $("#listCommonGroupCode .modify").length > 0) {
 				$("#listCommonGroupCode .register input, #listCommonGroupCode .modify input").each(function (index) {
-					if($(this).attr("id") == "grpCd") {
+					if($(this).attr("name") == "grpCd") {
 						var thisVal = $(this).val();
 						if(thisVal == null || thisVal == "") {
 							returnValue = false;
@@ -276,7 +275,7 @@ input { width:100%; }
 							return false;
 						}
 					}
-					if($(this).attr("id") == "grpCdNm") {
+					if($(this).attr("name") == "grpCdNm") {
 						var thisVal = $(this).val();
 						if(thisVal == null || thisVal == "") {
 							returnValue = false;
@@ -285,7 +284,7 @@ input { width:100%; }
 							return false;
 						}
 					}
-					if($(this).attr("id") == "grpCdExplnatn") {
+					if($(this).attr("name") == "grpCdExplnatn") {
 						var thisVal = $(this).val();
 						if(thisVal == null || thisVal == "") {
 							returnValue = false;
@@ -303,48 +302,56 @@ input { width:100%; }
 
 		store: function() {
 			var params = [];
-			insertedCnt = 0;
-			updatedCnt = 0;
-			deletedCnt = 0;
-
+			insertedReturn = false;
+			updatedReturn = false;
+			deletedReturn = false;
 			
 			if(this.validation()) {
-				////////////////////////////// 등록
-				$('#listCommonGroupCode .register').each(function (index, value) { 
-					var register = new Object();
-					$(this).find("input").each(function (index, value2) { 
-						register[value2.id] = value2.value;
+				//////////////////////////////등록
+				if($('#listCommonGroupCode .register').length > 0) {
+					$('#listCommonGroupCode .register').each(function (index, value) { 
+						var register = {};
+						$(this).find("input").each(function (index, value2) { 
+							register[value2.name] = value2.value;
+						});
+						params.push(register);
 					});
-					params.push(register);
-				});
-				if(params.length > 0) {
-					var returnRegister = commonGroupCode.registerList(params);
+					commonGroupCode.registerList(params);
+				} else {
+					insertedReturn = true;
 				}
 				
 				////////////////////////////// 수정
-				$('#listCommonGroupCode .modify').each(function (index, value) { 
-					var modify = new Object();
-					$(this).find("input").each(function (index, value2) { 
-						modify[value2.id] = value2.value;
+				if($('#listCommonGroupCode .modify').length > 0) {
+					$('#listCommonGroupCode .modify').each(function (index, value) { 
+						var modify = {};
+						$(this).find("input").each(function (index, value2) { 
+							modify[value2.name] = value2.value;
+						});
+						commonGroupCode.modify(modify);
 					});
-					var returnModify = commonGroupCode.modify(modify);
-				});
+				} else {
+					updatedReturn = true;
+				}
 				
 				////////////////////////////// 삭제
 				params = [];
-				$("#listCommonGroupCode .remove").each(function (index, value) {
-					params.push($(this).find("#grpCdId").val());
-				});
-				if(params.length > 0) {
-					var returnRemove = commonGroupCode.remove(params);
+				if($('#listCommonGroupCode .remove').length > 0) {
+					$("#listCommonGroupCode .remove").each(function (index, value) {
+						params.push($(this).find("input[id^=grpCdId]").val());
+					});
+					commonGroupCode.remove(params);
+				} else {
+					deletedReturn = true;
 				}
 				
-				
-				alert("등록: " + insertedCnt + " 수정: " + updatedCnt + " 삭제: " + deletedCnt);
-				commonGroupCode.searchList();
+				if(insertedReturn && updatedReturn && deletedReturn) {
+					return true;
 				}
+				return false;
 			}
 		}
+	}
 	
 	var commonCode = {
 			
@@ -370,9 +377,10 @@ input { width:100%; }
 					contentType:'application/json; charset=utf-8',
 				    async: false,
 					success: function(data) {
-						insertedCnt = JSON.parse(data);
+						insertedCnt = data;
+						insertedReturn = true;
 					}
-				}).done();
+				});
 			}
 			,
 			
@@ -387,10 +395,11 @@ input { width:100%; }
 						if(data == 1) {
 							updatedCnt++;	
 						} else {
-							updatedCnt = JSON.parse(data);
+							updatedCnt = data;
 						}
+						updatedReturn = true;
 					}
-				}).done();
+				});
 			}
 			,
 			
@@ -403,9 +412,10 @@ input { width:100%; }
 					type: "POST",
 					dataType: "json",
 					success: function(data) {
-						deletedCnt = JSON.parse(data);
+						deletedCnt = data;
+						deletedReturn = true;
 					}
-				}).done();
+				});
 			}
 			,
 			
@@ -414,7 +424,7 @@ input { width:100%; }
 				
 				if($("#listCommonCode .register").length > 0 || $("#listCommonCode .modify").length > 0) {
 					$("#listCommonCode .register input, #listCommonCode .modify input").each(function (index) {
-						if($(this).attr("id") == "cd") {
+						if($(this).attr("name") == "cd") {
 							var thisVal = $(this).val();
 							if(thisVal == null || thisVal == "") {
 								returnValue = false;
@@ -423,7 +433,7 @@ input { width:100%; }
 								return false;
 							}
 						}
-						if($(this).attr("id") == "cdNm") {
+						if($(this).attr("name") == "cdNm") {
 							var thisVal = $(this).val();
 							if(thisVal == null || thisVal == "") {
 								returnValue = false;
@@ -432,7 +442,7 @@ input { width:100%; }
 								return false;
 							}
 						}
-						if($(this).attr("id") == "cdExplnatn") {
+						if($(this).attr("name") == "cdExplnatn") {
 							var thisVal = $(this).val();
 							if(thisVal == null || thisVal == "") {
 								returnValue = false;
@@ -441,7 +451,7 @@ input { width:100%; }
 								return false;
 							}
 						}
-						if($(this).attr("id") == "cdOrdNum") {
+						if($(this).attr("name") == "cdOrdNum") {
 							var thisVal = $(this).val();
 							if(thisVal == null || thisVal == "") {
 								returnValue = false;
@@ -464,51 +474,50 @@ input { width:100%; }
 			
 			store: function() {
 				var params = [];
-				var insertedReturn = null;
-				var updatedReturn = null;
-				var deletedReturn = null;
+				insertedReturn = false;
+				updatedReturn = false;
+				deletedReturn = false;
 				
 				if(this.validation()) {
 					////////////////////////////// 등록
-					$('#listCommonCode .register').each(function (index, value) { 
-						var register = new Object();
-						$(this).find("input").each(function (index, value2) { 
-							register[value2.id] = value2.value;
+					if($('#listCommonCode .register').length > 0) {
+						$('#listCommonCode .register').each(function (index, value) { 
+							var register = {};
+							$(this).find("input").each(function (index, value2) { 
+								register[value2.name] = value2.value;
+							});
+							params.push(register);
 						});
-						params.push(register);
-					});
-					if(params.length > 0) {
-						insertedReturn = commonCode.registerList(params);
+						commonCode.registerList(params);
 					} else {
-						insertedReturn = "undefined";
+						insertedReturn = true;
 					}
 					
 					////////////////////////////// 수정
-					$('#listCommonCode .modify').each(function (index, value) { 
-						var modify = new Object();
-						$(this).find("input").each(function (index, value2) { 
-							modify[value2.id] = value2.value;
-						});
-						if(index == $('#listCommonCode .modify').length) {
-							updatedReturn = commonCode.modify(modify);
-						} else {
+					if($('#listCommonCode .modify').length > 0) {
+						$('#listCommonCode .modify').each(function (index, value) { 
+							var modify = {};
+							$(this).find("input").each(function (index, value2) { 
+								modify[value2.name] = value2.value;
+							});
 							commonCode.modify(modify);
-						}
-						
-					});
+						});
+					} else {
+						updatedReturn = true;
+					}
 					
 					////////////////////////////// 삭제
 					params = [];
-					$("#listCommonCode .remove").each(function (index, value) {
-						params.push($(this).find("#cdId").val());
-					});
-					if(params.length > 0) {
-						deletedReturn = commonCode.remove(params);
+					if($('#listCommonCode .remove').length > 0) {
+						$("#listCommonCode .remove").each(function (index, value) {
+							params.push($(this).find("input[id^=cdId]").val());
+						});
+						commonCode.remove(params);
 					} else {
-						deletedReturn = "undefined";
+						deletedReturn = true;
 					}
 					
-					if(insertedReturn != null && updatedReturn != null && deletedReturn != null) {
+					if(insertedReturn && updatedReturn && deletedReturn) {
 						return true;
 					}
 					return false;
@@ -516,44 +525,6 @@ input { width:100%; }
 			}
 			
 		}
-	
-	// 등록, 수정, 삭제 동시 실행
-	function crud(data) {
-		if(validComCd()) {
-				////////////////////////////// 등록
-				$('#listCommonCode .register').each(function (index, value) { 
-					var register = new Object();
-					$(this).find("input").each(function (index, value2) { 
-						register[value2.id] = value2.value;
-					});
-					params.push(register);
-				});
-				if(params.length > 0) {
-					commonCode.registerList(params);
-				}
-				
-				////////////////////////////// 수정
-				$('#listCommonCode .modify').each(function (index, value) { 
-					var modify = new Object();
-					$(this).find("input").each(function (index, value2) { 
-						modify[value2.id] = value2.value;
-					});
-					commonCode.modify(modify);
-				});
-				
-				////////////////////////////// 삭제
-				params = [];
-				$("#listCommonCode .remove").each(function (index, value) {
-					params.push($(this).find("#cdId").val());
-				});
-				if(params.length > 0) {
-					commonCode.remove(params);
-				}
-
-				alert("등록: " + insertedCnt + " 수정: " + updatedCnt + " 삭제: " + deletedCnt);
-				$("#listCommonGroupCode input[name=grpCdId]").val("'"+$("#relativeGrpCdId").text()+"'").click();
-			} 
-	}
 	
 	function bindComGrpCdList(data) {
 		var html = "";
@@ -568,7 +539,7 @@ input { width:100%; }
 			if(item.grpCdExplnatn == null) 	{ item.grpCdExplnatn = ""; 	}
 			if(item.classValue == null) 	{ item.classValue = ""; 	}
 			
-			html += "<tr class='" + item.classValue + "'>"
+			html += "<tr class='" + item.classValue + "' id='tr" + item.grpCdId + "'>"
 				 +		"<td>"
 				 +			"<input type='checkbox' name='checkCode' id='grpCdId" +index + "' value='" + item.grpCdId + "' initial='" + item.grpCdId + "' />"
 				 +		"</td>"
@@ -612,7 +583,7 @@ input { width:100%; }
 			if(item.fefrncCd == null) 	{ item.fefrncCd = ""; 	}
 			if(item.classValue == null) { item.classValue = ""; }
 			
-			html += "<tr class='" + item.classValue + "'>"
+			html += "<tr class='" + item.classValue + "' id='tr" + item.cdId + "'>"
 				 +		"<td>"
 				 +			"<input type='hidden' id='grpCdId" +index + "' name='grpCdId' value='" + item.grpCdId + "' initial='" + item.grpCdId + "' />"
 				 +			"<input type='checkbox' name='checkCode' id='cdId" +index + "' value='" + item.cdId + "' initial='" + item.cdId + "' />"

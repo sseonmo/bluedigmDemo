@@ -14,6 +14,9 @@ import com.bluedigm.demo.api.menu.model.SelectedMenu;
 import com.bluedigm.demo.api.menu.model.TreeMake;
 import com.bluedigm.demo.api.menu.service.MenuService;
 
+/**
+ * The type Menu page controller.
+ */
 @Controller
 @RequestMapping(value = "/system/menu")
 public class MenuPageController {
@@ -23,20 +26,14 @@ public class MenuPageController {
 
 	@Autowired
 	private MenuService menuService;
-	
+
 	/**
 	 * 메뉴관리 메인화면.
 	 *
-	 * @param model Model
-	 * @return String
+	 * @param modelMap the model map
+	 * @return String string
 	 */
-/*	@GetMapping
-	//@RequestMapping(value = "menu", method = RequestMethod.POST)
-	public String menu() {
-		return "/authorization/menu";
-	}*/
-	
-	@GetMapping(value = "/menu")
+	@GetMapping()
 	public String menu(ModelMap modelMap){
 	   
 		List<SelectedMenu> listview   = menuService.selectMenuList();

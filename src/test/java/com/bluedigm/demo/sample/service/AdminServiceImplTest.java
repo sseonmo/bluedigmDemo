@@ -1,7 +1,7 @@
 package com.bluedigm.demo.sample.service;
 
-import com.bluedigm.demo.api.sample.model.SampleModel;
-import com.bluedigm.demo.api.sample.service.SampleService;
+import com.bluedigm.demo.api.admin.model.Admin;
+import com.bluedigm.demo.api.admin.service.AdminService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,24 +9,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class SampleServiceImplTest {
+public class AdminServiceImplTest {
 
 	@Autowired
-	private SampleService service;
+	private AdminService service;
 
 	@Test
 	public void select() {
-		List<SampleModel> select = service.selectSample();
+		String adminId = "mo0562";
+		Admin admin = service.selectAdminOne(adminId);
 
-		assertThat(select.size(), is(2));
+		assertThat(admin.getAdminId(), is("mo0562"));
 
 	}
 }

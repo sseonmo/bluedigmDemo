@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bluedigm.demo.api.admin.dao.AdminMapper">
+
+
+	<resultMap id="AdminMap" type="Admin">
+		<result property="adminId" 			column="ADMN_ID"/>
+		<result property="adminName" 		column="ADMN_NM"/>
+		<result property="adminPassword" 	column="ADMN_PW"/>
+		<result property="adminEmail" 		column="ADMN_EMAL"/>
+		<result property="adminPhone" 		column="ADMN_PHNNUM"/>
+		<result property="deleteYn" 		column="DEL_YN"/>
+
+		<result property="corId" 			column="COR_ID"/>
+		<result property="corDt" 			column="COR_DT"/>
+		<result property="morId" 			column="MOR_ID"/>
+		<result property="morDt" 			column="MOR_DT"/>
+
+		<!--<collection property="adminRule" column="ADMN_ID" javaType="java.util.ArrayList" resultMap="AdminRuleMap" select="selectAdminRuleByAdminId"/>-->
+		<collection property="adminRule" column="ADMN_ID" javaType="java.util.ArrayList"  select="selectAdminRuleByAdminId"/>
+
+	</resultMap>
+
+	<resultMap id="AdminRuleMap" type="AdminRule">
+		<result property="adminId" 			column="ADMN_ID"/>
+		<result property="ruleId" 			column="RULE_ID"/>
+		<result property="corId" 			column="COR_ID"/>
+		<result property="corDt" 			column="COR_DT"/>
+		<result property="morId" 			column="MOR_ID"/>
+		<result property="morDt" 			column="MOR_DT"/>
+	</resultMap>
+
+
+	<select id="selectAdminId" parameterType="String" resultType="int">
+        SELECT COUNT(*) AS CNT
+        	FROM ADMN AM
+         	WHERE  ADMN_ID = #{adminId}
+    </select>
+
+	<select id="selectAdminOne" parameterType="String" resultMap="AdminMap">
+        SELECT *
+			FROM ADMN
+         WHERE DEL_YN='N'
+           AND ADMN_ID = #{adminId}
+    </select>
+
+	<select id="selectAdminRuleByAdminId" parameterType="String" resultMap="AdminRuleMap">
+		SELECT A.*
+		  FROM ADMN_RULE A
+		 INNER JOIN RULE B
+			ON A.RULE_ID = B.RULE_ID
+		   AND B.DEL_YN ='N'
+		 WHERE A.ADMN_ID = #{adminId}
+    </select>
+
+
+	<select id="selectAdminList" parameterType="String" resultMap="AdminMap">
+        SELECT R.RULE_NM RULE_NM, A.ADMN_ID ADMN_ID, A.ADMN_NM ADMN_NM, A.ADMN_EMAL ADMN_EMAL, A.ADMN_PHNNUM ADMN_PHNNUM
+			FROM ADMN A INNER JOIN ADMN_RULE AD
+		      ON A.ADMN_ID = AD.ADMN_ID
+		           INNER JOIN RULE R
+		      ON AD.RULE_ID = R.RULE_ID
+		     WHERE A.DEL_YN ='N' 
+			ORDER BY A.ADMN_ID       
+    </select>
+
+	<insert id="insertAdmin" parameterType="Admin">
+    	INSERT INTO ADMN(
+        	 ADMN_ID
+        	, ADMN_NM
+        	, ADMN_PW
+        	, ADMN_EMAL
+        	, ADMN_PHNNUM
+        	, DEL_YN
+        	, COR_ID
+        	, COR_DT
+        	, MOR_ID
+        	, MOR_DT
+        )
+        VALUES (
+        	#{adminId}
+        	, #{adminName}
+        	, #{adminPassword}
+        	, #{adminEmail}
+        	, #{adminPhone}
+        	, 'N'
+        	, #{corId}
+        	, NOW()
+        	, #{morId}
+        	, NOW()
+        )
+    </insert>
+
+	<insert id="insertAdminRule" parameterType="Admin">
+    	INSERT INTO ADMN_RULE(
+        	 RULE_ID
+        	, ADMN_ID
+        	, COR_ID
+        	, COR_DT
+        	, MOR_ID
+        	, MOR_DT
+        )
+        VALUES (
+        	#{ruleId}
+        	, #{userId}
+        	, #{corId}
+        	, NOW()
+        	, #{morId}
+        	, NOW()
+        )
+    </insert>
+
+	<update id="updateAdmin" parameterType="Admin">
+        UPDATE ADMN
+           SET ADMN_NM = #{adminName}
+             , ADMN_EMAL = #{adminEmail}
+             , ADMN_PHNNUM = #{adminPhone}
+             , MOR_DT = NOW()
+         WHERE DEL_YN = 'N'
+           AND ADMN_ID = #{adminId}
+    </update>
+
+	<update id="updateAdminRule" parameterType="Admin">
+        UPDATE ADMN_RULE
+           SET RULE_ID = #{ruleId}
+           , MOR_DT = NOW()
+         WHERE ADMN_ID = #{adminId}
+    </update>
+
+	<delete id="deleteAdmin" parameterType="String">
+        UPDATE ADMN
+           SET DEL_YN='Y'
+           , MOR_DT = NOW()
+         WHERE ADMN_ID = #{adminId}
+    </delete>
+
+</mapper>

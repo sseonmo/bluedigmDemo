@@ -6,6 +6,7 @@ package com.bluedigm.demo.api.sample.service.impl;
 		import org.slf4j.Logger;
 		import org.slf4j.LoggerFactory;
 		import org.springframework.beans.factory.annotation.Autowired;
+		import org.springframework.security.crypto.password.PasswordEncoder;
 		import org.springframework.stereotype.Service;
 
 		import java.text.SimpleDateFormat;
@@ -23,6 +24,9 @@ public class SampleServiceImpl implements SampleService {
 	@Autowired
 	private SampleMapper sampleMapper;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	@Override
 	public List<SampleModel> selectSample() {
 		return sampleMapper.selectSample();
@@ -32,7 +36,9 @@ public class SampleServiceImpl implements SampleService {
 	public  List<SampleModel> insertSample() {
 
 		SimpleDateFormat transFormat = new SimpleDateFormat("yyMMddHHmmss");
-		SampleModel model = new SampleModel(String.format("admin_%s", transFormat.format(new Date())), "seonmo", "1111", "alert('123')", "111", true);
+
+
+		SampleModel model = new SampleModel(String.format("admin_%s", transFormat.format(new Date())), "seonmo", passwordEncoder.encode("password"), "alert('123')", "111", true);
 		sampleMapper.insertSample(model);
 		return selectSample();
 	}

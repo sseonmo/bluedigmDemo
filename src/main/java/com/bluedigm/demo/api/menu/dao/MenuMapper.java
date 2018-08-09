@@ -12,6 +12,9 @@ import com.bluedigm.demo.api.menu.model.SelectedMenu;
 @Repository
 public interface MenuMapper {
 
+
+	List<Menu> selectMenuListByRuleId(List<Integer> ruleIds);
+
 	/**
 	 * 
 	 * <PRE>

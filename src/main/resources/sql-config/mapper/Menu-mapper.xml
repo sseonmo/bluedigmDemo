@@ -6,23 +6,41 @@
 <mapper namespace="com.bluedigm.demo.api.menu.dao.MenuMapper">
 	
     <resultMap id="MenuMap" type="Menu">
-        <result property="menuId" column="MENU_ID" />
-        <result property="prntMenuId" column="PRNT_MENU_ID" />
-        <result property="menuName" column="MENU_NM" />
-        <result property="menuUrl" column="MENU_URL" />
-        <result property="menuDepth" column="MENU_DEPTH" />
-        <result property="menuTypCd" column="MENU_TYPE_CD" />
-        <result property="menuLvlNum" column="MENU_LVL_NUM" />
-        <result property="menuExpl" column="MENU_EXPL" />
-        <result property="menuOrder" column="ORD_SEQ" />
-        <result property="displayYn" column="DSPLY_YN" />
-        <result property="deleteYn" column="DEL_YN" />
-        <result property="corId" column="COR_ID" />
-        <result property="corDt" column="COR_DT" />
-        <result property="morId" column="MOR_ID" />
-        <result property="morDt" column="MOR_DT" />
-    </resultMap>	
-	
+        <result property="menuId" 		column="MENU_ID" />
+        <result property="prntMenuId" 	column="PRNT_MENU_ID" />
+        <result property="menuName" 	column="MENU_NM" />
+        <result property="menuUrl" 		column="MENU_URL" />
+        <result property="menuDepth" 	column="MENU_DEPTH" />
+        <result property="menuTypCd" 	column="MENU_TYPE_CD" />
+        <result property="menuLvlNum" 	column="MENU_LVL_NUM" />
+        <result property="menuExpl" 	column="MENU_EXPL" />
+        <result property="menuOrder" 	column="ORD_SEQ" />
+        <result property="displayYn" 	column="DSPLY_YN" />
+        <result property="deleteYn" 	column="DEL_YN" />
+        <result property="corId" 		column="COR_ID" />
+        <result property="corDt" 		column="COR_DT" />
+        <result property="morId" 		column="MOR_ID" />
+        <result property="morDt" 		column="MOR_DT" />
+    </resultMap>
+
+
+	<select id="selectMenuListByRuleId" resultMap="MenuMap" >
+
+		SELECT M.*
+		  FROM (SELECT MENU_ID
+				  FROM RULE_MENU
+				 WHERE RULE_ID IN
+					<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+				 GROUP BY MENU_ID) RM
+		 INNER JOIN MENU M
+			ON RM.MENU_ID = M.MENU_ID
+		 ORDER BY RPAD(M.MENU_LVL_NUM, 20, '0')
+
+	</select>
+
+
 	 <select id="selectMenuList" resultType="com.bluedigm.demo.api.menu.model.SelectedMenu" >
 	     SELECT MENU_ID 'KEY', MENU_NM TITLE, PRNT_MENU_ID PARENT
 	       FROM MENU

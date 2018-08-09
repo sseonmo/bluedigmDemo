@@ -43,7 +43,7 @@
 			<br>
 			<div> xssFilter</div>
 			<div>
-				<input type="text" id="xssFilterText" placeholder="xss filter" /><input type="button" id="xssFilterBtn" value="GO"/>
+				<input type="text" id="xssFilterText" placeholder="xss filter" value="<script>alert('@@@')</script>"/><input type="button" id="xssFilterBtn" value="GO"/>
 				<br>
 				<br>
 				<div>
@@ -56,7 +56,11 @@
 				</div>
 			</div>
 
-
+			<br>
+			<div> 로그인 사용자 정보 </div>
+			<div>
+				<input type="button" id="loginUserInfo" value="loginUserInfo"/>
+			</div>
 		</div>
 		<br>
 		<div>Result Area</div>
@@ -116,7 +120,7 @@
 			$("#booleanHeadler").on('click', function() {
 
 				$.ajax({
-					url:'/api/sample/booleanHeadlerTest',
+					url:'/api/sample/booleanHandlerTest',
 					type:'POST',
 					dataType:'json',
 					success:function(data){
@@ -137,7 +141,7 @@
 
 				$.ajax({
 					url:'/api/sample/xssFilter',
-					type:'POST',
+					type:'GET',
 					data : { testText : $("#xssFilterText").val() },
 					dataType:'json',
 					success:function(data){
@@ -149,6 +153,18 @@
 				})
 
 			});
+
+			$("#loginUserInfo").on('click', function() {
+				$.ajax({
+					url:'/api/sample/loginUserInfo',
+					type:'GET',
+					dataType:'json',
+					success:function(data){
+						$('#resultArea').html(JSON.stringify(data));
+					}
+				})
+			});
+
 
 		});
 	</script>

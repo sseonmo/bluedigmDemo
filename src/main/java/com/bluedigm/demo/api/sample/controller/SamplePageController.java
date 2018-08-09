@@ -3,10 +3,12 @@ package com.bluedigm.demo.api.sample.controller;
 import com.bluedigm.demo.common.exception.ResourceNotFoundException;
 import com.bluedigm.demo.common.message.MessageCode;
 import com.bluedigm.demo.common.message.Messages;
+import com.bluedigm.demo.common.security.CustomUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,4 +43,6 @@ public class SamplePageController {
 //		throw new Exception("Exception TEST");
 		throw new SQLException("SQLException TEST");
 	}
+
+
 }

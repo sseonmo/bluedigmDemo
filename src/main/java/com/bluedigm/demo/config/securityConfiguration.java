@@ -1,41 +1,58 @@
 package com.bluedigm.demo.config;
 
+import com.bluedigm.demo.common.security.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class securityConfiguration extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+	CustomUserDetailsService customUserDetailsService;
+
+	@Override
+	public void configure(WebSecurity web) throws Exception
+	{
+		web.ignoring().antMatchers("/resources/**");
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/resources/**").permitAll()
+//				.antMatchers("/resources/**").permitAll()
 //				.antMatchers("/system/**", "/api/**").hasRole("ADMIN")
-				.antMatchers("/system/**", "/api/**").permitAll()
+//				.antMatchers("/system/**", "/api/**").permitAll()
 				.anyRequest().authenticated()
+//				.anyRequest().permitAll()
 				.and()
 			.formLogin()
-				.loginPage("/login")
-				.permitAll()
+				.loginPage("/login").permitAll()
+				.defaultSuccessUrl("/system/sample")
 				.and()
 			.logout()
-				.permitAll();
+				.permitAll()
+				.and()
+			.csrf().disable();
 	}
 
-	//UserDetailsService 상속받아서 로그인 구현해야함
-//	@Bean
-//	public SpringDataUserDetailsService springDataUserDetailsService() {
-//		return new SpringDataUserDetailsService();
-//	}
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+	}
 
 	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+
+
 }

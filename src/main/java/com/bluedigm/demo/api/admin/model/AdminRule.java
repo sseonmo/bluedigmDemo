@@ -2,18 +2,18 @@ package com.bluedigm.demo.api.admin.model;
 
 public class AdminRule {
 
-	private String ruleId;			//ruleId
+	private int ruleId;			//ruleId
 	private String adminId;			//adminId
 	private String corId;			//생성자
 	private String corDt;			//생성일자
 	private String morId;			//수정자
 	private String morDt;			//수정일자
 
-	public String getRuleId() {
+	public int getRuleId() {
 		return ruleId;
 	}
 
-	public void setRuleId(String ruleId) {
+	public void setRuleId(int ruleId) {
 		this.ruleId = ruleId;
 	}
 

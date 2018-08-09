@@ -5,12 +5,15 @@ import com.bluedigm.demo.api.sample.service.SampleService;
 import com.bluedigm.demo.common.exception.ResourceNotFoundException;
 import com.bluedigm.demo.common.message.MessageCode;
 import com.bluedigm.demo.common.message.Messages;
+import com.bluedigm.demo.common.security.CustomUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -74,9 +77,9 @@ public class SampleRestController {
 	 *
 	 * @return the hash map
 	 */
-	@PostMapping(value = "/booleanHeadlerTest")
-	public List<SampleModel> headlerTest(){
-		logger.debug("debug  - SampleRestController - booleanHeadlerTest");
+	@PostMapping(value = "/booleanHandlerTest")
+	public List<SampleModel> booleanHandlerTest(){
+		logger.debug("debug  - SampleRestController - booleanHandlerTest");
 		return sampleService.insertSample();
 	}
 
@@ -85,10 +88,17 @@ public class SampleRestController {
 	 *
 	 * @return the hash map
 	 */
-	@PostMapping(value = "/xssFilter")
+	@GetMapping(value = "/xssFilter")
 	public String xssFilter(@RequestParam String testText){
 		logger.debug("debug  - SampleRestController - xssFilter - {}", testText);
 		return testText;
+	}
+
+
+	@GetMapping(value = "/loginUserInfo")
+	public CustomUser loginUserInfo(Principal principal){
+		logger.debug("debug  - SamplePageController - loginUserInfo[{}]", principal.getName());
+		return (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 
 }

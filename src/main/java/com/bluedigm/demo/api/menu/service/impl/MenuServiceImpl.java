@@ -15,14 +15,20 @@ public class MenuServiceImpl implements MenuService{
 
 	/** the mapper. */
 	@Autowired
-	private MenuMapper menuMapper;
+	private MenuMapper mapper;
+
+
+	@Override
+	public List<Menu> selectMenuListByRuleId(List<Integer> ruleIds){
+		return mapper.selectMenuListByRuleId(ruleIds);
+	}
 
 	/**
 	 * 전체리스트
 	 */
 	@Override
 	public List<SelectedMenu> selectMenuList(){
-	    return menuMapper.selectMenuList();
+	    return mapper.selectMenuList();
 	}
 
 	/**
@@ -30,7 +36,7 @@ public class MenuServiceImpl implements MenuService{
 	 */
 	@Override
 	public Menu selectMenuOne(String param){
-        return menuMapper.selectMenuOne(param);
+        return mapper.selectMenuOne(param);
 	} 
 
     /**
@@ -45,10 +51,10 @@ public class MenuServiceImpl implements MenuService{
         if (param.getMenuId() == null || "".equals(param.getMenuId())) {
         	param.setCorId("admin");
         	param.setMorId("admin");
-        	menuMapper.insertMenu(param);
+        	mapper.insertMenu(param);
         } else {
         	param.setMorId("admin");
-        	menuMapper.updateMenu(param);
+        	mapper.updateMenu(param);
         }
     }
     
@@ -62,6 +68,6 @@ public class MenuServiceImpl implements MenuService{
 		
 		menu.setMorId("admin");
 		
-		return menuMapper.deleteMenu(param);
+		return mapper.deleteMenu(param);
     }
 }

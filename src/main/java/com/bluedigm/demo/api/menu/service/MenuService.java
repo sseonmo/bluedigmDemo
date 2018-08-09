@@ -7,6 +7,12 @@ import com.bluedigm.demo.api.menu.model.SelectedMenu;
 
 public interface MenuService {
 
+
+
+
+
+	List<Menu> selectMenuListByRuleId(List<Integer> ruleIds);
+
 	/**
 	 * <PRE>
 	 * 1. MethodName: selectMenuList

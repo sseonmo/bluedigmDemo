@@ -15,7 +15,7 @@ public class CustomUser extends User {
 
 	private List<Menu> menus;
 
-//	private static final String ROLE_PREFIX = "ROLE_";
+	private static final String ROLE_PREFIX = "ROLE_";
 
 	public CustomUser(Admin admin, List<Menu> menus) {
 		super(admin.getAdminId(), admin.getAdminPassword(), makeGrantedAuthority());
@@ -24,11 +24,19 @@ public class CustomUser extends User {
 
 	private static List<GrantedAuthority> makeGrantedAuthority() {
 		List<GrantedAuthority> list = new ArrayList<>();
-		list.add(new SimpleGrantedAuthority("ADMIN"));
+		list.add(new SimpleGrantedAuthority(ROLE_PREFIX+"ADMIN"));
 		return list;
 	}
 
-//		private static List<GrantedAuthority> makeGrantedAuthority(List<MemberRole> roles){
+	public List<Menu> getMenus() {
+		return menus;
+	}
+
+	public void setMenus(List<Menu> menus) {
+		this.menus = menus;
+	}
+
+	//		private static List<GrantedAuthority> makeGrantedAuthority(List<MemberRole> roles){
 //		List<GrantedAuthority> list = new ArrayList<>();
 //		roles.forEach(role -> list.add(new SimpleGrantedAuthority(ROLE_PREFIX + role.getRoleName())));
 //		return list;

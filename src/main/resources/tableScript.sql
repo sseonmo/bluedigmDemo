@@ -1,151 +1,512 @@
-CREATE TABLE ADMN
-(
-	ADMN_ID              VARCHAR(20) NOT NULL COMMENT '관리자 아이디',
-	ADMN_NM              VARCHAR(50) NULL COMMENT '관리자 이름',
-	ADMN_PW              VARCHAR(50) NULL COMMENT '관리자 비밀번호',
-	ADMN_EMAL            VARCHAR(100) NULL COMMENT '관리자 이메일',
-	ADMN_PHNNUM          VARCHAR(20) NULL COMMENT '관리자 전화번호',
-	DEL_YN               CHAR(1) NOT NULL COMMENT '삭제 여부',
-	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
-	COR_DT                DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
-	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
-	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
-	PRIMARY KEY (ADMN_ID)
 
-) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='ADMN';
+CREATE TABLE `ADMN` (
+  `ADMN_ID` varchar(20) NOT NULL COMMENT '관리자 아이디',
+  `ADMN_NM` varchar(50) DEFAULT NULL COMMENT '관리자 이름',
+  `ADMN_PW` varchar(100) DEFAULT NULL COMMENT '관리자 비밀번호',
+  `ADMN_EMAL` varchar(100) DEFAULT NULL COMMENT '관리자 이메일',
+  `ADMN_PHNNUM` varchar(20) DEFAULT NULL COMMENT '관리자 전화번호',
+  `DEL_YN` varchar(1) NOT NULL COMMENT '삭제 여부',
+  `COR_ID` varchar(20) NOT NULL COMMENT '생성자',
+  `COR_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
+  `MOR_ID` varchar(20) NOT NULL COMMENT '수정자',
+  `MOR_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일',
+  PRIMARY KEY (`ADMN_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='ADMN';
 
-CREATE UNIQUE INDEX ADMN_PK ON ADMN
-(
-	ADMN_ID
-);
+CREATE TABLE `RULE` (
+  `RULE_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT '권한 아이디',
+  `RULE_NM` varchar(50) DEFAULT NULL COMMENT '권한_이름',
+  `RULE_EXPL` varchar(500) DEFAULT NULL COMMENT '권한_설명',
+  `DEL_YN` char(1) NOT NULL COMMENT '삭제 여부',
+  `COR_ID` varchar(20) NOT NULL COMMENT '생성자',
+  `COR_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
+  `MOR_ID` varchar(20) NOT NULL COMMENT '수정자',
+  `MOR_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일',
+  PRIMARY KEY (`RULE_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='RULE';
 
---
+CREATE TABLE `MENU` (
+  `MENU_ID` varchar(20) NOT NULL COMMENT '메뉴 아이디',
+  `MENU_NM` varchar(50) DEFAULT NULL COMMENT '메뉴 이름',
+  `MENU_URL` varchar(100) DEFAULT NULL COMMENT '메뉴 Url',
+  `MENU_DEPTH` varchar(2) DEFAULT NULL COMMENT '메뉴 깊이',
+  `MENU_TYPE_CD` varchar(20) DEFAULT NULL COMMENT '메뉴 타입 코드',
+  `MENU_LVL_NUM` varchar(20) DEFAULT NULL COMMENT '메뉴 레벨 번호',
+  `PRNT_MENU_ID` varchar(20) DEFAULT NULL COMMENT '부모 메뉴 아이디',
+  `MENU_EXPL` varchar(500) DEFAULT NULL COMMENT '메뉴 설명',
+  `ORD_SEQ` int(3) DEFAULT NULL COMMENT '정렬 순서',
+  `DSPLY_YN` char(1) NOT NULL COMMENT '표시 여부',
+  `DEL_YN` char(1) NOT NULL COMMENT '삭제 여부',
+  `COR_ID` varchar(20) NOT NULL COMMENT '생성자',
+  `COR_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
+  `MOR_ID` varchar(20) NOT NULL COMMENT '수정자',
+  `MOR_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일',
+  PRIMARY KEY (`MENU_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='MENU';
 
-CREATE TABLE RULE
-(
-	RULE_ID              INT(11) NOT NULL AUTO_INCREMENT COMMENT '권한 아이디',
-	RULE_NM              VARCHAR(50) NULL COMMENT '권한_이름',
-	RULE_EXPL            VARCHAR(500) NULL COMMENT '권한_설명',
-	DEL_YN               CHAR(1) NOT NULL COMMENT '삭제 여부',
-	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
-	COR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
-	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
-	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
-	PRIMARY KEY (RULE_ID)
+CREATE TABLE `ADMN_RULE` (
+  `RULE_ID` int(11) NOT NULL COMMENT '권한 아이디',
+  `ADMN_ID` varchar(20) NOT NULL COMMENT '관리자 아이디',
+  `COR_ID` varchar(20) NOT NULL COMMENT '생성자',
+  `COR_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
+  `MOR_ID` varchar(20) NOT NULL COMMENT '수정자',
+  `MOR_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일',
+  PRIMARY KEY (`RULE_ID`,`ADMN_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='ADMN_ROLL';
 
-) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='RULE';
+CREATE TABLE `RULE_MENU` (
+  `RULE_ID` int(11) NOT NULL COMMENT '권한 아이디',
+  `MENU_ID` varchar(20) NOT NULL COMMENT '메뉴 아이디',
+  `COR_ID` varchar(20) NOT NULL COMMENT '생성자',
+  `COR_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
+  `MOR_ID` varchar(20) NOT NULL COMMENT '수정자',
+  `MOR_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '수정일',
+  PRIMARY KEY (`RULE_ID`,`MENU_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='RULE_MENU';
 
-CREATE UNIQUE INDEX RULE_PK ON RULE
-(
-	RULE_ID
-);
+CREATE TABLE `CD_GRP` (
+  `GRP_CD_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '그풉 코드 아이디',
+  `GRP_CD` varchar(6) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '그룹 코드',
+  `GRP_CD_NM` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '그룹 코드 이름',
+  `GRP_CD_EXPLNATN` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '그룹 코드 설명',
+  `GRP_CD_LNGTH` int(5) DEFAULT NULL COMMENT '그룹 코드 길이',
+  `DEL_YN` varchar(1) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT 'N' COMMENT '삭제 여부',
+  `COR_ID` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '생성자 아이디',
+  `COR_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일시',
+  `MOR_ID` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '변경자 아이디',
+  `MDF_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '변경 일시'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
-
-
-CREATE TABLE ADMN_RULE
-(
-	RULE_ID              INT(11) NOT NULL COMMENT '권한 아이디',
-	ADMN_ID              VARCHAR(20) NOT NULL COMMENT '관리자 아이디',
-	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
-	COR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
-	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
-	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
-	PRIMARY KEY (RULE_ID,ADMN_ID)
-
-) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='ADMN_ROLL';
-
-CREATE UNIQUE INDEX ADMN_RULE_PK ON ADMN_RULE
-(
-	RULE_ID,
-	ADMN_ID
-);
-
---
-
-CREATE TABLE MENU
-(
-	MENU_ID              VARCHAR(15) NOT NULL COMMENT '메뉴 아이디',
-	MENU_NM              VARCHAR(50) NULL COMMENT '메뉴 이름',
-	MENU_URL             VARCHAR(100) NULL COMMENT '메뉴 Url',
-	MENU_DEPTH           VARCHAR(2) NULL COMMENT '메뉴 깊이',
-	MENU_TYPE_CD         VARCHAR(20) NULL COMMENT '메뉴 타입 코드',
-	MENU_LVL_NUM         VARCHAR(20) NULL COMMENT '메뉴 레벨 번호',
-	PRNT_MENU_ID         VARCHAR(15) NULL COMMENT '부모 메뉴 아이디',
-	MENU_EXPL            VARCHAR(500) NULL COMMENT '메뉴 설명',
-	ORD_SEQ              INT(3) NULL COMMENT '정렬 순서',
-	DSPLY_YN             CHAR(1) NOT NULL COMMENT '표시 여부',
-	DEL_YN               CHAR(1) NOT NULL COMMENT '삭제 여부',
-	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
-	COR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
-	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
-	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
-	PRIMARY KEY (MENU_ID)
-
-) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='MENU';
-
-CREATE UNIQUE INDEX MENU_PK ON MENU
-(
-	MENU_ID
-);
-
-
---
-
-
-CREATE TABLE RULE_MENU
-(
-	RULE_ID              int(11) NOT NULL COMMENT '권한 아이디',
-	MENU_ID              VARCHAR(15) NOT NULL COMMENT '메뉴 아이디',
-	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
-	COR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
-	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
-	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
-	PRIMARY KEY (RULE_ID,MENU_ID)
-
-) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='RULE_MENU';
-
-CREATE UNIQUE INDEX RULE_MENU_PK ON RULE_MENU
-(
-	RULE_ID,
-	MENU_ID
-);
-
---
+CREATE TABLE `CD` (
+  `CD_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '코드 아이디',
+  `GRP_CD_ID` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '그풉 코드 아이디',
+  `CD` varchar(6) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '코드',
+  `CD_NM` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `CD_EXPLNATN` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '코드 설명',
+  `CD_ORD_NUM` int(5) DEFAULT NULL COMMENT '코드 정렬 번호',
+  `CD_USE_YN` varchar(1) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT 'Y' COMMENT '코드 사용 여부',
+  `DEL_YN` varchar(1) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT 'N' COMMENT '삭제 여부',
+  `FEFRNC_CD` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '참조 코드',
+  `COR_ID` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '생성자 아이디',
+  `COR_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일시',
+  `MOR_ID` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '변경자 아이디',
+  `MDF_DT` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '변경 일시'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE CD_GRP
-(
-	GRP_CD_ID            VARCHAR(20) NOT NULL COMMENT '그룹 코드 아이디',
-	GRP_CD               VARCHAR(6) NULL COMMENT '그룹 코드',
-	GRP_CD_NM            VARCHAR(50) NULL COMMENT '그룹 코드 이름',
-	GRP_CD_EXPL          VARCHAR(500) NULL COMMENT '그룹 코드 설명',
-	DEL_YN               CHAR(1) NOT NULL DEFAULT 'N' COMMENT '삭제 여부',
-	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
-	COR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
-	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
-	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
-	PRIMARY KEY (GRP_CD_ID)
+----------------------------------------------------------------------------------------------------------------------------------
 
-) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='코드 그룹';
+USE demo;
 
---
+insert into `demo`.`ADMN`(`ADMN_ID`,`ADMN_NM`,`ADMN_PW`,`ADMN_EMAL`,`ADMN_PHNNUM`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values ('admin_180809181827','seonmo','$2a$10$FO4PlBhV4kPv1sbzdyw6AuiJ.5ThuuTRemUXfAUNI7B8pUiFdhueW','alert(''123'')','111','Y','admin','2018-08-09 18:18:26','amdin','2018-08-09 18:18:26');
+insert into `demo`.`ADMN`(`ADMN_ID`,`ADMN_NM`,`ADMN_PW`,`ADMN_EMAL`,`ADMN_PHNNUM`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values ('admin_180810134441','seonmo','$2a$10$sYYZx2MFRfrXYuBwS6VCOu/5bBwCJ36GlJbcrrZaaWB7XcS1pH1ma','alert(''123'')','111','Y','admin','2018-08-10 13:44:40','amdin','2018-08-10 13:44:40');
+insert into `demo`.`ADMN`(`ADMN_ID`,`ADMN_NM`,`ADMN_PW`,`ADMN_EMAL`,`ADMN_PHNNUM`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values ('admin_180810134505','seonmo','$2a$10$bxbt2jqS/PkqR4UeqKQwpeZhuS7mCINHsoRN1dpBcuKvvofuWrSaO','alert(''123'')','111','Y','admin','2018-08-10 13:45:04','amdin','2018-08-10 13:45:04');
+insert into `demo`.`ADMN`(`ADMN_ID`,`ADMN_NM`,`ADMN_PW`,`ADMN_EMAL`,`ADMN_PHNNUM`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values ('admin_180810134548','seonmo','$2a$10$hHBJubEwt6xILvLAe6B9K.4jEzwahZYUCec5J8P6.H.Bs3JVestUy','alert(''123'')','111','Y','admin','2018-08-10 13:45:48','amdin','2018-08-10 13:45:48');
+insert into `demo`.`ADMN`(`ADMN_ID`,`ADMN_NM`,`ADMN_PW`,`ADMN_EMAL`,`ADMN_PHNNUM`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values ('mo0562','구선모','$2a$10$7hXHRJQF4HaX/RUFHu0B6exZx23UpEuyBQOtxLmXUEVLbKX6dWqdK','alert("@@@")','01097303509','N','admin','2018-07-24 18:14:42','admin','2018-07-24 18:14:42');
 
-CREATE TABLE CD
-(
-	CD_ID                VARCHAR(20) NOT NULL COMMENT '코드 아이디',
-	GRP_CD_ID            VARCHAR(20) NOT NULL COMMENT '그룹 코드 아이디',
-	CD                   VARCHAR(6) NULL COMMENT '코드',
-	CD_NM                VARCHAR(50) NULL COMMENT '코드 이름',
-	CD_EXPL              VARCHAR(500) NULL COMMENT '코드 설명',
-	CD_ORD_NUM           INTEGER(5) NULL COMMENT '코드 정렬 번호',
-	CD_USE_YN            CHAR(1) NULL DEFAULT 'Y' COMMENT '코드 사용 여부',
-	DEL_YN               CHAR(1) NOT NULL DEFAULT 'N' COMMENT '삭제 여부',
-	COR_ID               VARCHAR(20) NOT NULL COMMENT '생성자',
-	COR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '생성일',
-	MOR_ID               VARCHAR(20) NOT NULL COMMENT '수정자',
-	MOR_DT               DATETIME NOT NULL DEFAULT NOW() COMMENT '수정일',
-	PRIMARY KEY (CD_ID)
-) ENGINE='InnoDB' DEFAULT CHARSET='utf8' COLLATE utf8_general_ci COMMENT='공통 코드';
+
+
+USE demo;
+
+insert into `demo`.`RULE`(`RULE_ID`,`RULE_NM`,`RULE_EXPL`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values (1,'관리자','전체관리자','N','admin','2018-08-02 17:16:58','admin','2018-08-02 17:16:58');
+insert into `demo`.`RULE`(`RULE_ID`,`RULE_NM`,`RULE_EXPL`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values (2,'사용자','사용자','N','admin','2018-08-09 00:00:00','admin','2018-08-09 00:00:00');
+
+
+
+USE demo;
+
+insert into `demo`.`MENU`(`MENU_ID`,`MENU_NM`,`MENU_URL`,`MENU_DEPTH`,`MENU_TYPE_CD`,`MENU_LVL_NUM`,`PRNT_MENU_ID`,`MENU_EXPL`,`ORD_SEQ`,`DSPLY_YN`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values ('00F3FWVADU6Z3D859D99','Root',null,'0',null,null,'0','Root',null,'Y','N','admin','2018-07-28 20:51:09','admin','2018-07-28 20:51:09');
+insert into `demo`.`MENU`(`MENU_ID`,`MENU_NM`,`MENU_URL`,`MENU_DEPTH`,`MENU_TYPE_CD`,`MENU_LVL_NUM`,`PRNT_MENU_ID`,`MENU_EXPL`,`ORD_SEQ`,`DSPLY_YN`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values ('00F3MIRW3CA4FEC7816E','시스템','','1','D','001','00F3FWVADU6Z3D859D99','시스템',1,'Y','N','admin','2018-08-07 16:39:19','admin','2018-08-07 16:39:35');
+insert into `demo`.`MENU`(`MENU_ID`,`MENU_NM`,`MENU_URL`,`MENU_DEPTH`,`MENU_TYPE_CD`,`MENU_LVL_NUM`,`PRNT_MENU_ID`,`MENU_EXPL`,`ORD_SEQ`,`DSPLY_YN`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values ('00F3NMKKBGUOB13E0CD1','공통코드관리','/system/commonCode','2','P','001001','00F3MIRW3CA4FEC7816E','공통코드관리',1,'Y','N','ADMIN','2018-08-08 16:43:08','ADMIN','2018-08-08 16:43:08');
+insert into `demo`.`MENU`(`MENU_ID`,`MENU_NM`,`MENU_URL`,`MENU_DEPTH`,`MENU_TYPE_CD`,`MENU_LVL_NUM`,`PRNT_MENU_ID`,`MENU_EXPL`,`ORD_SEQ`,`DSPLY_YN`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values ('00F3NMKKBW9MB1411927','메뉴관리','/system/menu','2','P','001002','00F3MIRW3CA4FEC7816E','공통코드관리',2,'Y','N','ADMIN','2018-08-08 16:43:08','ADMIN','2018-08-08 16:43:08');
+
+
+USE demo;
+
+insert into `demo`.`RULE_MENU`(`RULE_ID`,`MENU_ID`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values (1,'00F3MIRW3CA4FEC7816E','admin','2018-08-03 09:15:38','admin','2018-08-03 09:15:38');
+insert into `demo`.`RULE_MENU`(`RULE_ID`,`MENU_ID`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values (1,'00F3NMKKBGUOB13E0CD1','admin','2018-08-08 00:00:00','admin','2018-08-08 00:00:00');
+insert into `demo`.`RULE_MENU`(`RULE_ID`,`MENU_ID`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values (1,'00F3NMKKBW9MB1411927','admin','2018-08-08 00:00:00','admin','2018-08-08 00:00:00');
+insert into `demo`.`RULE_MENU`(`RULE_ID`,`MENU_ID`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values (2,'00F3MIRW3CA4FEC7816E','admin','2018-08-03 09:15:38','admin','2018-08-03 09:15:38');
+insert into `demo`.`RULE_MENU`(`RULE_ID`,`MENU_ID`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values (2,'00F3NMKKBGUOB13E0CD1','admin','2018-08-08 00:00:00','admin','2018-08-08 00:00:00');
+insert into `demo`.`RULE_MENU`(`RULE_ID`,`MENU_ID`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values (2,'00F3NMKKBW9MB1411927','admin','2018-08-08 00:00:00','admin','2018-08-08 00:00:00');
+
+USE demo;
+
+insert into `demo`.`ADMN_RULE`(`RULE_ID`,`ADMN_ID`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values (1,'mo0562','admin','2018-08-03 09:31:48','admin','2018-08-07 16:35:46');
+insert into `demo`.`ADMN_RULE`(`RULE_ID`,`ADMN_ID`,`COR_ID`,`COR_DT`,`MOR_ID`,`MOR_DT`) values (2,'mo0562','admin','2018-08-09 00:00:00','admin','2018-08-10 00:00:00');
+
+
+
+USE demo;
+
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ0TI48D206C1','GPS001','제안분야','제안분야',null,'Y','admin','2016-06-15 17:18:17','admin','2016-06-15 17:18:23');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ0W848D20A6D','GPS002','제안유형','제안유형',null,'Y','admin','2016-06-15 08:18:34','admin','2016-06-15 08:18:34');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ0XB48D20BEB','GEM001','사업영역','사업영역',null,'Y','admin','2016-06-16 07:06:42','admin','2016-06-16 07:06:42');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ0Y548D20D18','GPS003','제안상태','제안상태',null,'Y','admin','2016-06-21 08:34:35','admin','2016-06-21 08:34:35');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ0Z348D20E6A','000001','일반게시판','게시판분류',null,'Y','admin','2016-06-21 05:09:00','admin','2016-06-21 05:09:00');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ0ZX48D20F9D','000002','포럼게시판','게시판뷴류',null,'Y','admin','2016-06-21 05:11:16','admin','2016-06-21 05:11:16');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ10T48D210D6','CTG001','포럼게시판 카테고리','포럼게시판 카테고리',null,'Y','admin','2016-06-21 05:12:49','admin','2016-06-21 05:12:49');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ11N48D21207','CTG002','리뷰게시판 카테고리','리뷰게시판 카테고리',null,'Y','admin','2016-06-21 05:13:38','admin','2016-06-21 05:13:38');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ12G48D21325','000004','Library게시판','게시판분류',-2,'Y','admin','2016-06-21 05:37:04','admin','2016-06-21 05:37:04');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ13848D2143E','BBS001','게시판 타입','게시판 타입',null,'Y','admin','2016-06-21 06:07:35','admin','2016-06-21 06:07:35');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ13Z48D2154F','BSG001','게시물상태','게시물상태',null,'Y','admin','2016-06-21 06:30:45','admin','2016-06-21 06:30:45');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ14S48D21671','FLT001','파일업로드타입','파일업로드타입',null,'Y','','2016-06-22 11:05:59','','2016-06-22 11:05:59');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ15L48D21792','SPT001','약관종류','약관종류',null,'Y','admin','2016-06-16 06:15:13','admin','2016-06-16 06:15:13');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ16D48D218A9','MST001','회원상태','회원상태',null,'Y','admin','2016-06-15 01:54:05','admin','2016-06-15 01:54:05');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ17A48D219F2','EMT001','EMAIL템플릿종류','EMAIL템플릿종류',null,'Y','admin','2016-06-22 12:41:34','admin','2016-06-22 12:41:34');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ18248D21B0D','EMT002','템플릿타입','템플릿타입',null,'Y','admin','2016-06-22 13:06:25','admin','2016-06-22 13:06:25');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ18Y48D21C47','BIZ001','개인법인사업자구분','개인법인사업자구분',null,'Y','admin','2016-06-23 19:30:06','admin','2016-06-23 19:30:06');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ19R48D21D70','CTG003','일반게시판 카테고리ggg','일반게시판카테고리',0,'0','admin','2016-06-27 13:57:13','admin','2016-06-27 13:57:13');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ1AK48D21E8B','CTG004','Library게시판카테고리','Library게시판 카테고리',null,'N','','2016-06-27 13:58:28','','2016-06-27 13:58:28');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OREQ1BC48D21FA4','000003','리뷰게시판','게시판분류',null,'Y','admin','2016-06-27 14:01:09','admin','2016-06-27 14:01:09');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGOQD1REIBF8842846','CTG005','교육게시판 카테고리','교육게시판 카테고리',null,'Y','admin','2016-07-19 17:01:55','admin','2016-07-19 17:01:55');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGQYUE8JP2DEC4955C','CTG006','FAQ 카테고리','FAQ 카테고리',null,'Y','admin','2016-07-21 17:41:18','admin','2016-07-21 17:41:18');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGQZ7H6Q4MB63FC3F7','CTG007','1:1문의 카테고리','1:1문의 카테고리',null,'Y','admin','2016-07-21 17:54:25','admin','2016-07-21 17:54:25');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGWKDA328V3D85B96F','ESG001','경조사정보','경조사정보',null,'Y','admin','2016-07-26 19:33:00','admin','2016-07-26 19:33:00');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EH2TVWESIS35DD871C','MDF001','MDF신청상태','MDF신청상태',null,'Y','admin','2016-08-01 11:53:49','admin','2016-08-01 11:53:51');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHCUPC01KWEA1086DE','GEM002','모듈제공상태','모듈제공상태',null,'N','admin','2016-08-10 14:04:37','admin','2016-08-10 14:04:37');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHCXYBO68L61E4F600','CST001','컨설팅상태','컨설팅상태',null,'N','admin','2016-08-10 16:01:41','admin','2016-08-10 16:01:41');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHCY84ULYGC378D2C5','EG002','경조사상태','경조사상태fff',0,'0','admin','2016-08-10 16:10:51','admin','2016-08-10 16:10:51');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDWFXR0NQ2E71BB1F','BNR001','배너 타입11111111','배너 타입11111111',0,'0','admin','2016-08-11 12:53:36','admin','2016-08-11 12:53:36');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDXP00W7W868CE74D','CTG008','1:1문의 상태','1:1문의 상태',null,'N','admin','2016-08-11 13:38:47','admin','2016-08-11 13:38:48');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDY41F87AA48F52F6','ADM001','관리자 타입11','관리자 타입',0,'0','admin','2016-08-11 13:54:05','admin','2016-08-11 13:54:06');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDZRT19TO0E9A0A1E','SMR001','세미나 시설종류','세미나 시설종류',null,'N','admin','2016-08-11 14:53:59','admin','2016-08-11 14:53:59');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHE3CX8T213C0F3D37','BNR002','배너 구분11','배너 구분',0,'0','admin','2016-08-11 17:04:27','admin','2016-08-11 17:04:29');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHJKZ8A26TD049681A','GEM003','모듈제공종류sdfsdf','모듈제공종류',0,'0','admin','2016-08-16 16:34:26','iotV2','2017-12-18 14:18:25');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHJS8UJ9HLA52D500E','SMR002','세미나지원상태','세미나지원상태',null,'N','admin','2016-08-16 20:56:07','admin','2016-08-16 20:56:07');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHSFT5N8DEB8393F87','DVC001','디바이스구분','디바이스구분',null,'N','admin','2016-08-24 17:21:02','admin','2016-08-24 17:21:03');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EIV1VXDVZXEE2C78C8','GPS004','제안행사 코드','제안행사 코드',null,'N','admin','2016-09-28 17:52:13','admin','2016-09-28 17:52:13');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXCJKMJ157C8722C2','OPH001','서비스구분','서비스구분',null,'N','admin','2017-02-08 10:28:22','admin','2017-02-08 10:28:22');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXCJUX3AF86D53947','OPH002','모듈공급사','모듈공급사',null,'N','admin','2017-02-08 11:15:27','admin','2017-02-08 11:15:27');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXCK25G4S8E12BD7A','OPH003','단말class','단말class',null,'N','admin','2017-02-08 11:16:11','admin','2017-02-08 11:16:11');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXCK5H2O791665FFF','OPH004','기술지원분야','기술지원분야',null,'N','admin','2017-02-08 11:18:59','admin','2017-02-08 11:18:59');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXHI3I0S89EA8DAF3','OPH005','이용신청상태','이용신청상태',null,'N','admin','2017-02-08 13:25:46','admin','2017-02-08 13:25:46');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJTD9DPY412AF34F','CTG009','오픈하우스포럼 카테고리','오픈하우스포sdfsdf럼 카테고리',0,'0','admin','2017-02-10 10:23:34','admin','2017-02-10 10:23:34');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJW166XYA13000B5','CTG010','오픈하우스공지 카테고리','오픈하우스공지 카테고리',null,'N','admin','2017-02-10 10:25:22','admin','2017-02-10 10:25:22');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJXAUXOGCEED283D','CTG011','오픈하우스Library 카테고리','오픈하우스Library 카테고리',null,'N','admin','2017-02-10 10:26:35','admin','2017-02-10 10:26:35');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00ENXX5I0FM1589CB2A1','CPR001','참가구분33','참가구분',0,'Y','admin','2017-03-13 14:33:51','admin','2017-03-13 14:33:53');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00ENXX5NN7XC5E405D06','CPR002','학생구분44','학생구분',0,'Y','admin','2017-03-13 14:34:41','admin','2017-03-13 14:34:46');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00ENXYDVMDD6980681E3','CPR003','지원분야sfsdfdsf55','지원분야',0,'Y','admin','2017-03-13 15:17:17','admin','2017-03-13 15:17:17');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EO0AQYZEON2AD7F722','CPR004','공모전상태','공모전상태',null,'Y','admin','2017-03-15 18:17:24','admin','2017-03-15 18:17:24');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EOEIMD2X6T7200FF6E','CTG012','공모전 FAQ 카테고리','공모전 FAQ 카테고리',null,'N','admin','2017-03-28 15:48:29','admin','2017-03-28 15:48:29');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EP0G3WG7S9BCB12A5B','CTG013','Project101 카테고리','Project101 카테고리',null,'N','admin','2017-04-17 13:12:34','admin','2017-04-17 13:12:34');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EQ6951YWKE90A4AFEC','CTG014','오픈하우스 교육 카테고리','오픈하우스 교육 카테고리',null,'N','admin','2017-05-25 11:14:54','admin','2017-05-25 11:14:54');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00ESXKEFK4QYC23198A2','POP001','팝업 구분','팝업구분',null,'N','admin','2017-08-23 13:01:55','admin','2017-08-23 13:01:55');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EWILC07D1C4822A8D0','NWD001','Network구분','network 구분값',null,'N','iotV2','2017-12-18 14:17:39','iotV2','2017-12-18 14:17:39');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EWIMJ281HJ57E78AF0','SVC001','사업영역','사업영력',null,'N','iotV2','2017-12-18 14:24:19','iotV2','2017-12-18 14:24:19');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EWIMKM9C1Q9000F00F','SVC002','예상고객사','예상고객사',null,'N','iotV2','2017-12-18 14:24:21','iotV2','2017-12-18 14:24:21');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EWIQ2J35PT49F34A65','GES001','startKit 제공종류','startKit 제공종류',null,'N','iotV2','2017-12-18 17:31:54','iotV2','2017-12-18 17:31:54');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EWRGJNK90O1E9F4845','GEM100','요청수량','요청수량',null,'N','iotV2','2017-12-26 14:47:03','iotV2','2017-12-26 14:47:03');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EWRGM3M4FG76C60CE0','GEM101','사업기간','사업기간',null,'N','iotV2','2017-12-26 14:47:11','iotV2','2017-12-26 14:47:11');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EWRGNER5FTA5F76E7D','GEM102','개발경험','개발경험',null,'N','iotV2','2017-12-26 14:47:17','iotV2','2017-12-26 14:47:17');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EWRGOW83VFDB7F77B0','GEM103','보유인력수','보유인력수',null,'N','iotV2','2017-12-26 14:47:30','iotV2','2017-12-26 14:47:30');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EWRGPVNYQQFEFA79FB','GEM104','연간매출액','연간매출액',null,'N','iotV2','2017-12-26 14:47:38','iotV2','2017-12-26 14:47:38');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('TESTGRPCD01','TEST01','테스트그룹코드01','테스트그룹코드01',null,'Y','test','2018-07-26 14:49:49','test','2018-07-26 14:49:49');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('TEST','CTG003','리뷰게시판 카테고리3','리뷰게시판 카테고리3sdf',0,'0','AYEON','2018-07-31 14:18:35','AYEON','2018-07-31 14:18:35');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('TEST','CTG003','리뷰게시판 카테고리3','리뷰게시판 카테고리3sdf',0,'0','AYEON','2018-07-31 14:21:51','AYEON','2018-07-31 14:21:51');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3LE2DQLNIACDA7368','A','Aㄹㄹㄹㄹㄹ','ff',0,'Y','test','2018-08-06 16:02:26','test','2018-08-06 16:02:26');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3LE2DQNT2ACDAE06D','B','B','gg',0,'Y','test','2018-08-06 16:02:26','test','2018-08-06 16:02:26');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3LGYW8KMZ6399D90E','CC','CC','CC',0,'Y','test','2018-08-06 17:47:45','test','2018-08-06 17:47:45');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3LGYW8KQD6399DDB3','DD','DD','DD',0,'N','test','2018-08-06 17:47:45','test','2018-08-06 17:47:45');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3LH14BIF0B3C5E411','33','3377711','33',0,'Y','test','2018-08-06 17:50:00','test','2018-08-06 17:50:00');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3LH14BIHDB3C5E746','44','447777','44',0,'Y','test','2018-08-06 17:50:00','test','2018-08-06 17:50:00');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3LH5WNRL8604EDA73','gg','gg','gg',0,'Y','test','2018-08-06 17:54:49','test','2018-08-06 17:54:49');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3LHSS6GQL98C1DE96','test','test','test',0,'Y','test','2018-08-06 18:17:52','test','2018-08-06 18:17:52');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3LJHILWRN25A7B7A2','ddd','ddd','ddd',0,'Y','test','2018-08-06 19:19:05','test','2018-08-06 19:19:05');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3LJHNN2532AB1582D','fff','fff','fff',0,'Y','test','2018-08-06 19:19:13','test','2018-08-06 19:19:13');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MD8TA5CEF7E041D4','','','',0,'Y','test','2018-08-07 13:18:42','test','2018-08-07 13:18:42');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MD8TA5F8F7E045A1','','','',0,'Y','test','2018-08-07 13:18:42','test','2018-08-07 13:18:42');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MDG1N40ZFC87B3AB','','','',0,'Y','test','2018-08-07 13:25:59','test','2018-08-07 13:25:59');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MDG1N43SFC87B768','','','',0,'Y','test','2018-08-07 13:25:59','test','2018-08-07 13:25:59');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MDIQQ7JZ5DB9CC35','','','',0,'Y','test','2018-08-07 13:28:42','test','2018-08-07 13:28:42');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MDIQQ7NQ5DB9D0D8','','','',0,'Y','test','2018-08-07 13:28:42','test','2018-08-07 13:28:42');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MG907RS333353C1B','','','',0,'Y','test','2018-08-07 15:07:44','test','2018-08-07 15:07:44');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MGM0AWGV07D2CCF4','aa','aa','aa',0,'Y','test','2018-08-07 15:20:50','test','2018-08-07 15:20:50');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MGM0AWK607D2D175','bb','bb','bb',0,'Y','test','2018-08-07 15:20:50','test','2018-08-07 15:20:50');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MGTQRII01E996C54','jk2 jk','xzc ',' zcx z',0,'Y','test','2018-08-07 15:28:38','test','2018-08-07 15:28:38');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MGTQRIKU1E997025','qewqe','qeqwe','qweqwe',0,'Y','test','2018-08-07 15:28:38','test','2018-08-07 15:28:38');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MGTQRILL1E99712E','323','2323','3232',0,'Y','test','2018-08-07 15:28:38','test','2018-08-07 15:28:38');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MGTQRIM51E9971F1','1212','1212','12121',0,'Y','test','2018-08-07 15:28:38','test','2018-08-07 15:28:38');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MGTQRIMM1E99729E','q1q1q1','q1q1q1','q1q1q1',0,'Y','test','2018-08-07 15:28:38','test','2018-08-07 15:28:38');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3NIYSIVBI6C2C3ED2','123','123','123',0,'Y','test','2018-08-08 14:32:21','test','2018-08-08 14:32:21');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3NIYSIVED6C2C42B1','456','456','456',0,'Y','test','2018-08-08 14:32:21','test','2018-08-08 14:32:21');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3NNVBK7HS4662C396','11','11','11',0,'N','test','2018-08-08 17:30:15','test','2018-08-08 17:30:15');
+insert into `demo`.`CD_GRP`(`GRP_CD_ID`,`GRP_CD`,`GRP_CD_NM`,`GRP_CD_EXPLNATN`,`GRP_CD_LNGTH`,`DEL_YN`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3NNVBK7KQ4662C7A3','22','22','22',0,'N','test','2018-08-08 17:30:15','test','2018-08-08 17:30:15');
+
+
+USE demo;
+
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRARTFFC6032B','00EG3OREQ0TI48D206C1','01','Metering','Metering',1,'Y','N',null,'admin','2016-06-15 08:19:29','admin','2016-06-15 08:19:29');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROCPFFC8B283','00EG3OREQ0W848D20A6D','01','공동 사업모델','공동 사업모델',1,'Y','N',null,'admin','2016-06-15 08:20:56','admin','2016-06-15 08:20:56');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROECFFC8B4C4','00EG3OREQ0W848D20A6D','02','공동 기술개발','공동 기술개발',2,'Y','N',null,'admin','2016-06-15 08:24:24','admin','2016-06-15 08:24:24');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROFCFFC8B623','00EG3OREQ0W848D20A6D','03','마케팅 제휴','마케팅 제휴',3,'Y','N',null,'admin','2016-06-15 08:24:59','admin','2016-06-15 08:24:59');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROG7FFC8B75A','00EG3OREQ0W848D20A6D','04','영업 제휴','영업 제휴',4,'Y','N',null,'admin','2016-06-15 08:19:29','admin','2016-06-15 08:19:29');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROH4FFC8B8AF','00EG3OREQ0W848D20A6D','05','투자 유치','투자 유치',5,'Y','N',null,'admin','2016-06-15 08:20:56','admin','2016-06-15 08:20:56');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROHZFFC8B9E0','00EG3OREQ0W848D20A6D','06','기타','기타',6,'Y','N',null,'admin','2016-06-15 08:24:24','admin','2016-06-15 08:24:24');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROISFFC8BB01','00EG3OREQ0XB48D20BEB','01','AMI','AMI',1,'Y','N',null,'admin','2016-06-17 01:51:38','admin','2016-06-17 01:51:38');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROJLFFC8BC24','00EG3OREQ0XB48D20BEB','02','공공조명 시설','공공조명 시설',2,'Y','N',null,'admin','2016-06-17 01:57:52','admin','2016-06-17 01:57:52');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROKGFFC8BD5B','00EG3OREQ0XB48D20BEB','03','제조 환경 안전','제조 환경 안전',3,'Y','N',null,'admin','2016-06-17 01:57:52','admin','2016-06-17 01:57:52');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROLAFFC8BE83','00EG3OREQ0XB48D20BEB','04','위치기반 안전','위치기반 안전',4,'Y','N',null,'admin','2016-06-17 01:57:52','admin','2016-06-17 01:57:52');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROM3FFC8BFA3','00EG3OREQ0XB48D20BEB','99','기타','기타',99,'Y','N',null,'admin','2016-06-17 01:57:52','admin','2016-06-17 01:57:52');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROMUFFC8C0B7','00EG3OREQ0Y548D20D18','01','검토중','검토중',1,'Y','N',null,'admin','2016-06-15 08:20:56','admin','2016-06-15 08:20:56');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRONMFFC8C1CE','00EG3OREQ0Y548D20D18','02','1차통과','1차통과',2,'Y','N',null,'admin','2016-06-15 08:24:24','admin','2016-06-15 08:24:24');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROOJFFC8C318','00EG3OREQ0Y548D20D18','03','본심사','본심사',3,'Y','N',null,'admin','2016-06-15 08:24:59','admin','2016-06-15 08:24:59');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROPCFFC8C43A','00EG3OREQ0TI48D206C1','02','Tracking','Tracking',2,'Y','N',null,'admin','2016-06-27 19:29:08','admin','2016-06-27 19:29:08');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROQ5FFC8C556','00EG3OREQ0TI48D206C1','03','Monitoring & Control','Monitoring & Control',3,'Y','N',null,'admin','2016-06-27 19:29:08','admin','2016-06-27 19:29:08');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROQXFFC8C675','00EG3OREQ0TI48D206C1','04','Safety & Security','Safety & Security',4,'Y','N',null,'admin','2016-06-27 19:29:08','admin','2016-06-27 19:29:08');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRORQFFC8C78F','00EG3OREQ0TI48D206C1','05','Factory & Building','Factory & Building',5,'Y','N',null,'admin','2016-06-27 19:29:08','admin','2016-06-27 19:29:08');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROSIFFC8C8AC','00EG3OREQ19R48D21D70','B001','Notice','일반게시판ㅇㅇㅇㅇ',1,'1','0',null,'admin','2016-06-21 05:16:46','admin','2016-06-21 05:16:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROTBFFC8C9CF','00EG3OREQ19R48D21D70','B002','Press','일반게시판',2,'1','0',null,'admin','2016-06-21 05:17:47','admin','2016-06-21 05:17:47');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROU3FFC8CAE4','00EG3OREQ19R48D21D70','B003','Event','일반게시판',33,'1','Y',null,'admin','2016-06-21 05:18:10','admin','2016-06-21 05:18:10');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROUUFFC8CBF7','00EG3OREQ19R48D21D70','B004','File','일반게시판ㄹㄹㄹㄹ',4,'1','Y',null,'admin','2016-06-21 05:39:08','admin','2016-06-21 05:39:08');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROVLFFC8CD05','00EG3OREQ1AK48D21E8B','L001','SDK','Library게시판',1,'Y','N','GNL002','admin','2016-06-21 05:41:47','admin','2016-06-21 05:41:47');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROWDFFC8CE19','00EG3OREQ1AK48D21E8B','L002','API','Library게시판',2,'Y','N','GNL002','admin','2016-06-21 05:42:17','admin','2016-06-21 05:42:17');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROX4FFC8CF27','00EG3OREQ1AK48D21E8B','L003','Reference','Library게시판',3,'Y','N','GNL002','admin','2016-06-21 05:43:08','admin','2016-06-21 05:43:08');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROXWFFC8D03C','00EG3OREQ10T48D210D6','F001','API','포럼카테고리',1,'Y','N',null,'admin','2016-06-21 05:44:43','admin','2016-06-21 05:44:43');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROYOFFC8D153','00EG3OREQ10T48D210D6','F002','Module','포럼카테고리',2,'Y','N',null,'admin','2016-06-21 05:45:20','admin','2016-06-21 05:45:20');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDROZJFFC8D295','00EG3OREQ10T48D210D6','F003','System','포럼카테고리',3,'Y','N',null,'admin','2016-06-21 05:46:25','admin','2016-06-21 05:46:25');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRP0EFFC8D3C6','00EG3OREQ10T48D210D6','F004','Test Bed','포럼카테고리',4,'Y','N',null,'admin','2016-06-21 05:50:15','admin','2016-06-21 05:50:15');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRP16FFC8D4DD','00EG3OREQ10T48D210D6','F005','Etc.','포럼카테고리',5,'Y','N',null,'admin','2016-06-21 05:50:56','admin','2016-06-21 05:50:56');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRP1YFFC8D5F6','00EG3OREQ11N48D21207','R001','API','리뷰카테고리',1,'Y','N',null,'admin','2016-06-21 05:44:43','admin','2016-06-21 05:44:43');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRP2UFFC8D73C','00EG3OREQ11N48D21207','R002','Module','리뷰카테고리',2,'Y','N',null,'admin','2016-06-21 05:45:20','admin','2016-06-21 05:45:20');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRP3OFFC8D85E','00EG3OREQ11N48D21207','R003','System','리뷰카테고리',3,'Y','N',null,'admin','2016-06-21 05:46:25','admin','2016-06-21 05:46:25');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRP4GFFC8D977','00EG3OREQ11N48D21207','R004','Test Bed','리뷰카테고리',4,'Y','N',null,'admin','2016-06-21 05:50:15','admin','2016-06-21 05:50:15');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRP57FFC8DA89','00EG3OREQ11N48D21207','R005','Etc.','리뷰카테고리',5,'Y','N',null,'admin','2016-06-21 05:50:56','admin','2016-06-21 05:50:56');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRP66FFC8DBE8','00EG3OREQ13848D2143E','000001','일반게시판','게시판 타입',1,'Y','N',null,'admin','2016-06-21 06:10:39','admin','2016-06-21 06:10:39');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRP7FFFC8DDAA','00EG3OREQ13848D2143E','000002','포럼게시판','게시판 타입',2,'Y','N',null,'admin','2016-06-21 06:11:11','admin','2016-06-21 06:11:11');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRP89FFC8DED6','00EG3OREQ13848D2143E','000004','Library게시판','게시판 타입',4,'Y','N',null,'admin','2016-06-21 06:12:23','admin','2016-06-21 06:12:23');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRP93FFC8E003','00EG3OREQ1AK48D21E8B','L004','Document','Library게시판',4,'Y','N','GNL002','admin','2016-06-21 06:17:25','admin','2016-06-21 06:17:25');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRP9ZFFC8E140','00EG3OREQ13Z48D2154F','01','대기','게시물상태',1,'Y','N',null,'admin','2016-06-21 06:32:24','admin','2016-06-21 06:32:24');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPATFFC8E26E','00EG3OREQ13Z48D2154F','02','승인','게시물상태',2,'Y','N',null,'admin','2016-06-21 06:33:07','admin','2016-06-21 06:33:07');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPBNFFC8E392','00EG3OREQ13Z48D2154F','03','차단','게시물상태',3,'Y','N',null,'admin','2016-06-21 06:37:06','admin','2016-06-21 06:37:06');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPCFFFC8E4AF','00EG3OREQ13Z48D2154F','04','삭제','게시물상태',4,'Y','N',null,'admin','2016-06-21 06:38:02','admin','2016-06-21 06:38:02');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPD7FFC8E5C7','00EG3OREQ16D48D218A9','01','정상','회원상태',1,'Y','N',null,'admin','2016-06-15 02:01:54','admin','2016-06-15 02:01:54');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPE1FFC8E6F8','00EG3OREQ16D48D218A9','02','기업소속회원승인대기','회원상태',2,'Y','N',null,'admin','2016-06-15 02:02:55','admin','2016-06-15 02:02:55');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPEVFFC8E824','00EG3OREQ16D48D218A9','03','휴면','회원상태',3,'Y','N',null,'admin','2016-06-15 02:03:12','admin','2016-06-15 02:03:12');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPGFFFC8EA4F','00EG3OREQ16D48D218A9','04','탈퇴','회원상태',4,'Y','N',null,'admin','2016-06-15 02:03:35','admin','2016-06-15 02:03:35');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPHLFFC8EBF4','00EG3OREQ16D48D218A9','05','기업승인대기','회원상태',5,'Y','N',null,'admin','2016-06-20 07:21:45','admin','2016-06-20 07:21:45');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPIDFFC8ED0F','00EG3OREQ16D48D218A9','06','승인불가','회원상태',6,'Y','N',null,'admin','2016-06-20 07:58:55','admin','2016-06-20 07:58:55');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPJMFFC8EED1','00EG3OREQ16D48D218A9','07','계정잠김','회원상태',7,'Y','N',null,'admin','2016-06-20 08:32:02','admin','2016-06-20 08:32:02');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPKFFFC8EFEA','00EG3OREQ15L48D21792','01','서비스 이용약관','서비스 이용약관',1,'Y','N',null,'admin','2016-06-16 06:15:33','admin','2016-06-16 06:15:33');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPL7FFC8F101','00EG3OREQ15L48D21792','02','개인정보 처리방침','개인정보 처리방침',2,'Y','Y',null,'admin','2016-06-16 06:16:16','admin','2016-06-16 06:16:16');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPLZFFC8F220','00EG3OREQ15L48D21792','03','개인정보 수집 및 이용에 관한 동의','개인정보 수집 및 이용에 관한 동의',3,'Y','Y',null,'admin','2016-06-16 06:16:42','admin','2016-06-16 06:16:42');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPN7FFC8F3D2','00EG3OREQ17A48D219F2','01','아이디안내','아이디안내',1,'Y','N',null,'admin','2016-06-22 12:45:22','admin','2016-06-22 12:45:22');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPO0FFC8F4F5','00EG3OREQ17A48D219F2','02','임시비밀번호안내','임시비밀번호안내',2,'Y','N',null,'admin','2016-06-22 12:46:47','admin','2016-06-22 12:46:47');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPOTFFC8F6A5','00EG3OREQ17A48D219F2','03','기업파트너가입안내','기업파트너가입안내',3,'Y','N',null,'admin','2016-06-22 12:47:31','admin','2016-06-22 12:47:31');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPPZFFC8F7C0','00EG3OREQ18248D21B0D','01','템플릿EMAIL','템플릿EMAIL',1,'Y','Y',null,'admin','2016-06-22 13:09:30','admin','2016-06-22 13:09:30');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPS5FFC8FACB','00EG3OREQ18248D21B0D','02','템플릿SMS','템플릿SMS',2,'Y','N',null,'','2016-06-22 13:10:41','','2016-06-22 13:10:41');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPT2FFC8FC17','00EG3OREQ17A48D219F2','04','개인파트너가입안내','개인파트너가입안내',null,'Y','N',null,'','2016-06-23 14:42:02','','2016-06-23 14:42:02');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPTWFFC8FD42','00EG3OREQ17A48D219F2','05','기업파트너승인','기업파트너승인',null,'Y','N',null,'','2016-06-23 14:43:13','','2016-06-23 14:43:13');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPV3FFC8FEF0','00EG3OREQ17A48D219F2','06','프로젝트제안안내','프로젝트제안안내',null,'Y','N',null,'','2016-06-23 14:44:29','','2016-06-23 14:44:29');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPVVFFC9000B','00EG3OREQ17A48D219F2','07','전용모듈제공안내','전용모듈제공안내',null,'Y','N',null,'','2016-06-23 14:44:42','','2016-06-23 14:44:42');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPWNFFC90122','00EG3OREQ18Y48D21C47','01','개인사업자','개인사업자',1,'Y','N',null,'','2016-06-23 19:31:07','','2016-06-23 19:31:07');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPXGFFC9023B','00EG3OREQ18Y48D21C47','02','법인사업자','법인사업자',null,'Y','N',null,'','2016-06-23 19:31:31','','2016-06-23 19:31:31');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPYEFFC90392','00EG3OREQ13848D2143E','000003','리뷰게시판','게시판타입',3,'Y','N',null,'admin','2016-06-27 13:54:19','admin','2016-06-27 13:54:19');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EG3OPDRPZ7FFC904B1','00EG3OREQ15L48D21792','11','개인정보 수집∙이용 및 광고성 정보 ','개인정보 수집∙이용 및 광고성 정보 수신 동의',4,'Y','Y',null,'admin','2016-06-30 14:38:15','admin','2016-06-30 14:38:15');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGOQHR02ISA1F2B5E7','00EGOQD1REIBF8842846','E001','기술동향','교육게시판',1,'Y','N',null,'admin','2016-06-21 05:16:46','admin','2016-06-21 05:16:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGOQHUL1UOA588F27C','00EGOQD1REIBF8842846','E002','해외동향','교육게시판',2,'Y','N',null,'admin','2016-06-21 05:17:47','admin','2016-06-21 05:17:47');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGOQHXNR06A89D06E2','00EGOQD1REIBF8842846','E003','발표회 자료','교육게시판',3,'Y','N',null,'admin','2016-06-21 05:18:10','admin','2016-06-21 05:18:10');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGQYZIBI43970ED0C3','00EGQYUE8JP2DEC4955C','F001','회원가입','회원가입',1,'Y','N',null,'admin','2016-06-15 08:20:56','admin','2016-06-15 08:20:56');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGQYZN0ZB79BC559DD','00EGQYUE8JP2DEC4955C','F002','요금제','요금제',2,'N','N',null,'admin','2016-06-15 08:24:24','admin','2016-06-15 08:24:24');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGQYZQ7DH79EF3BC0D','00EGQYUE8JP2DEC4955C','F003','전용모듈','전용모듈',3,'Y','N',null,'admin','2016-06-15 08:24:59','admin','2016-06-15 08:24:59');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGQZ8YDNB8EB805CE8','00EGQZ7H6Q4MB63FC3F7','S001','회원가입','회원가입',1,'Y','N',null,'admin','2016-06-15 08:20:56','admin','2016-06-15 08:20:56');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGQZ91T19CEEEEC680','00EGQZ7H6Q4MB63FC3F7','S002','사업제안','사업제안',2,'Y','N',null,'admin','2016-06-15 08:24:24','admin','2016-06-15 08:24:24');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGQZ9CS594F9EBA02F','00EGQZ7H6Q4MB63FC3F7','S003','마이페이지','마이페이지',3,'Y','N',null,'admin','2016-06-15 08:24:59','admin','2016-06-15 08:24:59');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGWKDDLY76410D0E2C','00EGWKDA328V3D85B96F','F001','경사','경사',1,'Y','N',null,'admin','2016-07-26 19:33:46','admin','2016-07-26 19:33:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGWKDH24RA4481203D','00EGWKDA328V3D85B96F','F002','조사','조사',2,'Y','N',null,'admin','2016-07-26 19:34:45','admin','2016-07-26 19:34:45');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGWKDKIUPC47F9079B','00EGWKDA328V3D85B96F','F003','사업장이전','사업장이전',3,'Y','N',null,'admin','2016-07-26 19:35:24','admin','2016-07-26 19:35:24');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGWKJ5LY7V11492F0B','00EG3OREQ13848D2143E','000005','교육게시판','게시판 타입',5,'Y','N',null,'admin','2016-07-26 19:38:38','admin','2016-07-26 19:38:38');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGYI087KGS2D8DB1D4','00EG3OREQ13848D2143E','000006','기타게시판','게시판 타입',6,'Y','N',null,'admin','2016-07-26 19:38:38','admin','2016-07-26 19:38:38');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGYICH7CB6E70B8EDE','00EG3OREQ0Y548D20D18','05','미채택','미채택',5,'Y','N',null,'admin','2016-06-15 08:24:59','admin','2016-06-15 08:24:59');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGYICOH1EQEE529E16','00EG3OREQ0Y548D20D18','04','채택','채택',4,'Y','N',null,'admin','2016-06-15 08:24:59','admin','2016-06-15 08:24:59');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGYKVW3F4BC5A6F133','00EG3OREQ16D48D218A9','08','차단','회원상태',8,'Y','N',null,'admin','2016-06-20 08:32:02','admin','2016-06-20 08:32:02');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EGYRZTSB4TCDBF43D9','00EGQYUE8JP2DEC4955C','F004','기타','기타',4,'Y','N',null,'admin','2016-07-28 19:39:43','admin','2016-07-28 19:39:43');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EH2TWRZ6X45577B81B','00EH2TVWESIS35DD871C','01','검토중','검토중',1,'Y','N',null,'admin','2016-08-01 11:54:24','admin','2016-08-01 11:54:24');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EH2TXHFEKI6EF25D59','00EH2TVWESIS35DD871C','02','지원','지원',2,'Y','N',null,'admin','2016-08-01 11:55:32','admin','2016-08-01 11:55:37');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EH2TXUI8OT7C0A5126','00EH2TVWESIS35DD871C','03','지원거절','지원거절',3,'Y','N',null,'admin','2016-08-01 11:56:17','admin','2016-08-01 11:56:19');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHBMK59OWX2E231209','00EG3OREQ17A48D219F2','08','테스트베드이용안내','테스트베드이용안내',8,'Y','N',null,'admin','2016-08-09 11:21:57','admin','2016-08-09 11:21:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHBML8Z4FB55E363C8','00EG3OREQ17A48D219F2','09','테스트베드이용취소','테스트베드이용취소',9,'Y','N',null,'admin','2016-08-09 11:23:28','admin','2016-08-09 11:23:28');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHBMM356IV741730FF','00EG3OREQ17A48D219F2','10','기업소속회원승인','기업소속회원승인',10,'Y','N',null,'admin','2016-08-09 11:24:16','admin','2016-08-09 11:24:16');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHBMNT2V32B2189CED','00EG3OREQ17A48D219F2','11','기업소속회원알림','기업소속회원알림',11,'Y','N',null,'admin','2016-08-09 11:26:03','admin','2016-08-09 11:26:03');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHCUSKPOKO5E4FFED1','00EHCUPC01KWEA1086DE','01','승인','승인',1,'Y','N',null,'admin','2016-08-10 14:04:37','admin','2016-08-10 14:04:37');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHCUSNT5916169848E','00EHCUPC01KWEA1086DE','02','거절','거절',2,'Y','N',null,'admin','2016-08-10 14:04:37','admin','2016-08-10 14:04:37');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHCUSRITJV65212B47','00EHCUPC01KWEA1086DE','99','미승인','미승인',3,'Y','N',null,'admin','2016-08-10 14:04:37','admin','2016-08-10 14:04:37');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHCXYX0G7S77426F2B','00EHCXYBO68L61E4F600','01','미답변','미답변',1,'Y','N',null,'admin','2016-08-10 16:02:52','admin','2016-08-10 16:02:54');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHCXZLMWW98FE94A9B','00EHCXYBO68L61E4F600','02','답변완료','답변완료',2,'Y','N',null,'admin','2016-08-10 16:03:34','admin','2016-08-10 16:03:35');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHCY9CSCGCEF756CB8','00EHCY84ULYGC378D2C5','01','미완료','미완료',1,'Y','N',null,'admin','2016-08-10 16:13:24','admin','2016-08-10 16:13:26');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHCY9U5ZAG00DB674B','00EHCY84ULYGC378D2C5','02','완료','완료',2,'Y','N',null,'admin','2016-08-10 16:13:54','admin','2016-08-10 16:13:56');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHCYAI8NVR18F57148','00EHCY84ULYGC378D2C5','03','거절','거절',3,'Y','N',null,'admin','2016-08-10 16:14:32','admin','2016-08-10 16:14:32');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDWINQVWI908D1E4C','00EHDWFXR0NQ2E71BB1F','BN01','Header Banner','Header Banner',1,'Y','N',null,'admin','2016-08-11 12:56:21','admin','2016-08-11 12:56:21');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDWINQVZI908D226A','00EHDWFXR0NQ2E71BB1F','BN02','Main Banner','Main Banner',2,'Y','N',null,'admin','2016-08-11 12:56:21','admin','2016-08-11 12:56:21');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDXPTBWL8A3E3AB95','00EHDXP00W7W868CE74D','01','미답변','미답변',1,'Y','N',null,'admin','2016-08-11 13:39:41','admin','2016-08-11 13:39:41');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDXQCED04B6FAA588','00EHDXP00W7W868CE74D','02','답변완료','답변완료',2,'Y','N',null,'admin','2016-08-11 13:40:18','admin','2016-08-11 13:40:20');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDY4TE9VQC090A182','00EHDY41F87AA48F52F6','A001','최고관리자','최고관리자',1,'0','Y',null,'admin','2016-08-11 13:54:54','admin','2016-08-11 13:54:55');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDY5D4G1XD45070EF','00EHDY41F87AA48F52F6','A002','시스템관리자','시스템관리자',2,'0','Y',null,'admin','2016-08-11 13:55:27','admin','2016-08-11 13:55:29');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDY5ZW3KMEB1BAB17','00EHDY41F87AA48F52F6','A003','신청관리자','신청관리자',3,'Y','N',null,'admin','2016-08-11 13:56:05','admin','2016-08-11 13:56:07');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDY6NRMAX0302B6DB','00EHDY41F87AA48F52F6','A004','게시판관리자','게시판관리자',4,'Y','N',null,'admin','2016-08-11 13:56:45','admin','2016-08-11 13:56:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDY7ATW3Q1A198A00','00EHDY41F87AA48F52F6','A005','파트너관리자','파트너관리자',5,'Y','N',null,'admin','2016-08-11 13:57:24','admin','2016-08-11 13:57:26');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDZSD3YTN22B300AE','00EHDZRT19TO0E9A0A1E','01','회의실','회의실',1,'Y','N',null,'admin','2016-08-11 14:54:54','admin','2016-08-11 14:54:56');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDZSXF3OA37080DC3','00EHDZRT19TO0E9A0A1E','02','체육시설','체육시설',2,'Y','N',null,'admin','2016-08-11 14:55:27','admin','2016-08-11 14:55:29');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHDZTK6U8T4DD3E25B','00EHDZRT19TO0E9A0A1E','03','숙박시설','숙박시설',3,'Y','N',null,'admin','2016-08-11 14:56:00','admin','2016-08-11 14:56:04');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHE3DJCSPS523201FA','00EHE3CX8T213C0F3D37','BN001','배너1','배너1',1,'Y','N',null,'admin','2016-08-11 17:04:47','admin','2016-08-11 17:04:47');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHE3E185N264162BC5','00EHE3CX8T213C0F3D37','BN002','배너2','배너2',2,'Y','N',null,'admin','2016-08-11 17:05:34','admin','2016-08-11 17:05:36');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHE3EFPT2A7297E00D','00EHE3CX8T213C0F3D37','BN003','배너3','배너3',3,'Y','N',null,'admin','2016-08-11 17:05:58','admin','2016-08-11 17:06:00');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHE3EVDT4P8247157E','00EHE3CX8T213C0F3D37','BN004','배너4','배너4',4,'Y','N',null,'admin','2016-08-11 17:06:26','admin','2016-08-11 17:06:27');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHJL1ZGLAN3394845B','00EHJKZ8A26TD049681A','01','와이솔/LOM102A','와이솔/LOM102A',1,'Y','N','N001','admin','2016-08-16 16:04:47','iotV2','2017-12-18 17:36:22');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHJL22XSAF370FCAE9','00EHJKZ8A26TD049681A','02','이도링크/IM-L400','이도링크/IM-L400',2,'Y','N','N001','admin','2016-08-16 16:05:34','iotV2','2017-12-18 17:36:22');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHJL25WXGB3A0A8FCC','00EHJKZ8A26TD049681A','03','솔루엠/TLT01CS1','솔루엠/TLT01CS1',3,'Y','N','N001','admin','2016-08-16 16:05:58','iotV2','2017-12-18 17:36:22');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHJSAD2JRODBC63811','00EHJS8UJ9HLA52D500E','01','검토중','검토중',1,'Y','N',null,'admin','2016-08-16 20:58:34','admin','2016-08-16 20:58:34');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHJSBD13QJFFC655F1','00EHJS8UJ9HLA52D500E','02','지원','지원',2,'Y','N',null,'admin','2016-08-16 21:00:01','admin','2016-08-16 21:00:01');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHJSCF60NW25F44EDD','00EHJS8UJ9HLA52D500E','03','지원거절','지원거절',3,'Y','N',null,'admin','2016-08-16 21:00:45','admin','2016-08-16 21:00:45');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHS59ZFOAX5699BE18','00EG3OREQ17A48D219F2','12','전용모듈제공신청 승인안내','전용모듈제공신청 승인안내',12,'Y','N',null,'admin','2016-08-24 10:04:47','admin','2016-08-24 10:04:47');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHSFU5ZJHIDC9B4842','00EHSFT5N8DEB8393F87','DV001','모뎀(내장형)','모뎀(내장형)',1,'Y','N',null,'admin','2016-08-24 17:22:03','admin','2016-08-24 17:22:03');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHSFUZ5HF8F9CDF8CD','00EHSFT5N8DEB8393F87','DV002','모뎀(외장형)','모뎀(외장형)',2,'Y','N',null,'admin','2016-08-24 17:22:37','admin','2016-08-24 17:22:37');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHSFVOUGUC13870FE1','00EHSFT5N8DEB8393F87','DV003','산업용PDA','산업용PDA',3,'Y','N',null,'admin','2016-08-24 17:23:38','admin','2016-08-24 17:23:43');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHSFW7I5S02634EFC4','00EHSFT5N8DEB8393F87','DV004','위치관제기','위치관제기',4,'Y','N',null,'admin','2016-08-24 17:24:14','admin','2016-08-24 17:24:15');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHSFWO7GAM36ED9EAB','00EHSFT5N8DEB8393F87','DV005','카드결제기','카드결제기',5,'Y','N',null,'admin','2016-08-24 17:24:41','admin','2016-08-24 17:24:44');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EHSFX5DR3P481F62D1','00EHSFT5N8DEB8393F87','DV006','환경감시기','환경감시기',6,'Y','N',null,'admin','2016-08-24 17:25:11','admin','2016-08-24 17:25:13');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EIV1WZZ3Q914CE6685','00EIV1VXDVZXEE2C78C8','EV001','페스티벌','페스티벌',1,'Y','N',null,'admin','2016-09-28 17:53:44','admin','2016-09-28 17:53:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXH07GA7419E25281','00EMXCJKMJ157C8722C2','01','Metering','Metering',1,'Y','N','N001','admin','2017-02-08 11:21:57','iotV2','2018-01-19 10:30:42');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXH0B2YHU1D849D99','00EMXCJKMJ157C8722C2','02','Tracking','Tracking',2,'Y','N','N001','admin','2017-02-08 11:21:57','iotV2','2018-01-19 10:30:42');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXH0EHGY720ECCCD2','00EMXCJKMJ157C8722C2','03','Monitoring','Monitoring',3,'Y','N','N001','admin','2017-02-08 11:21:57','iotV2','2018-01-19 10:30:42');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXH0I1I5S247C4A21','00EMXCJKMJ157C8722C2','04','기타','기타',4,'Y','N','N001','admin','2017-02-08 11:21:57','iotV2','2018-01-19 10:30:42');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXH4DDM5ZAFFAB0E6','00EMXCJUX3AF86D53947','01','와이솔','와이솔',1,'Y','N','N001','admin','2017-02-08 11:21:57','iotV2','2018-01-19 13:00:00');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXH4GJS8FB3277917','00EMXCJUX3AF86D53947','02','솔루엠','솔루엠',2,'Y','N','N001','admin','2017-02-08 11:21:57','iotV2','2018-01-19 13:00:00');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXH4JNAE6B64149EC','00EMXCJUX3AF86D53947','03','이도링크','이도링크',3,'Y','N','N001','admin','2017-02-08 11:21:57','iotV2','2018-01-19 13:00:00');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXH4MZZCIB99C8534','00EMXCJUX3AF86D53947','04','기타','기타',4,'Y','N','N001','admin','2017-02-08 11:21:57','iotV2','2018-01-19 13:00:00');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXHBZ6KNJC217C2D5','00EMXCK25G4S8E12BD7A','01','Class A','Class A',1,'Y','N',null,'admin','2017-02-08 11:21:57','admin','2017-02-08 11:21:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXHC2EOCVC552505D','00EMXCK25G4S8E12BD7A','02','Class B','Class B',2,'Y','N',null,'admin','2017-02-08 11:21:57','admin','2017-02-08 11:21:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXHC5OPWGC89AAD7B','00EMXCK25G4S8E12BD7A','03','Class C','Class C',3,'Y','N',null,'admin','2017-02-08 11:21:57','admin','2017-02-08 11:21:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXHFPRB7J48D22132','00EMXCK5H2O791665FFF','01','컨설팅','컨설팅',1,'Y','N',null,'admin','2017-02-08 11:21:57','admin','2017-02-08 11:21:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXHFTJW714C9E7BA7','00EMXCK5H2O791665FFF','02','단말개발','단말개발',2,'Y','N',null,'admin','2017-02-08 11:21:57','admin','2017-02-08 11:21:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXHFWYZW7500ADE64','00EMXCK5H2O791665FFF','03','플랫폼개발','플랫폼개발',3,'Y','N',null,'admin','2017-02-08 11:21:57','admin','2017-02-08 11:21:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXHG0D2FS536FE82A','00EMXCK5H2O791665FFF','04','검증','검증',4,'Y','N',null,'admin','2017-02-08 11:21:57','admin','2017-02-08 11:21:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXHG44JMJ573463CB','00EMXCK5H2O791665FFF','05','사업협력','사업협력',5,'Y','N',null,'admin','2017-02-08 11:21:57','admin','2017-02-08 11:21:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXHG7WT7L5AFE7D09','00EMXCK5H2O791665FFF','06','기타','기타',6,'Y','N',null,'admin','2017-02-08 11:21:57','admin','2017-02-08 11:21:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXHKBCBO8EE976B2E','00EMXHI3I0S89EA8DAF3','01','승인','승인',1,'Y','N',null,'admin','2017-02-08 11:21:57','admin','2017-02-08 11:21:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXHKIM5WTF5DF7E7D','00EMXHI3I0S89EA8DAF3','02','거절','거절',2,'Y','N',null,'admin','2017-02-08 11:21:57','admin','2017-02-08 11:21:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMXHKLPWWQF8FB0EC1','00EMXHI3I0S89EA8DAF3','03','미승인','미승인',3,'Y','N',null,'admin','2017-02-08 11:21:57','admin','2017-02-08 11:21:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJTNKPG24B7E786F','00EMZJTD9DPY412AF34F','F001','API__','오픈하우스포럼 카테고리',1,'Y','N',null,'admin','2017-02-10 10:23:34','admin','2017-02-10 10:23:34');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJTSPKKE50A28BEA','00EMZJTD9DPY412AF34F','F002','Module__','오픈하우스포럼 카테고리',2,'Y','N',null,'admin','2017-02-10 10:23:34','admin','2017-02-10 10:23:34');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJTY84WT562828DF','00EMZJTD9DPY412AF34F','F003','System__','오픈하우스포럼 카테고리',3,'Y','N',null,'admin','2017-02-10 10:23:34','admin','2017-02-10 10:23:34');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJU40KOO5BF40F73','00EMZJTD9DPY412AF34F','F004','Test Bed__','오픈하우스포럼 카테고리',4,'Y','N',null,'admin','2017-02-10 10:23:34','admin','2017-02-10 10:23:34');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJUA0BBE61F3F120','00EMZJTD9DPY412AF34F','F005','Etc.__','오픈하우스포럼 카테고리',5,'Y','N',null,'admin','2017-02-10 10:23:34','admin','2017-02-10 10:23:34');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJWC18V8AC0FF7AE','00EMZJW166XYA13000B5','B001','Notice__','오픈하우스공지 카테고리',1,'Y','N',null,'admin','2017-02-10 10:25:22','admin','2017-02-10 10:25:22');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJWLIU9HB58FD353','00EMZJW166XYA13000B5','B002','Press__','오픈하우스공지 카테고리',2,'Y','N',null,'admin','2017-02-10 10:25:22','admin','2017-02-10 10:25:22');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJWPSF7TB9D5329A','00EMZJW166XYA13000B5','B003','Event__','오픈하우스공지 카테고리',33,'0','0',null,'admin','2017-02-10 10:25:22','admin','2017-02-10 10:25:22');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJWU6JLABE3AE30D','00EMZJW166XYA13000B5','B004','File__','오픈하우스공지 카테고리',4,'Y','N',null,'admin','2017-02-10 10:25:22','admin','2017-02-10 10:25:22');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJXQWEA4DEFC2F33','00EMZJXAUXOGCEED283D','L001','SDK__','오픈하우스Library 카테고리',1,'Y','N',null,'admin','2017-02-10 10:26:35','admin','2017-02-10 10:26:35');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJXW5F2GE43DDB89','00EMZJXAUXOGCEED283D','L002','API__','오픈하우스Library 카테고리',2,'Y','N',null,'admin','2017-02-10 10:26:35','admin','2017-02-10 10:26:35');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJY0W1NOE8FC942B','00EMZJXAUXOGCEED283D','L003','Reference__','오픈하우스Library 카테고리',3,'Y','N',null,'admin','2017-02-10 10:26:35','admin','2017-02-10 10:26:35');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EMZJY4SIJSECE4994F','00EMZJXAUXOGCEED283D','L004','Document__','오픈하우스Library 카테고리',4,'Y','N',null,'admin','2017-02-10 10:26:35','admin','2017-02-10 10:26:35');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00ENXX5R0EZS619F2D4C','00ENXX5I0FM1589CB2A1','01','개인','개인',1,'Y','N',null,'admin','2017-03-13 14:35:26','admin','2017-03-13 14:35:28');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00ENXX5UI2OA651DC0A7','00ENXX5I0FM1589CB2A1','02','팀(단체)','팀(단체)',2,'Y','N',null,'admin','2017-03-13 14:36:14','admin','2017-03-13 14:36:17');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00ENXX5YCS8Q68F9400B','00ENXX5NN7XC5E405D06','01','고등학생','고등학생',1,'0','0',null,'admin','2017-03-13 14:36:49','admin','2017-03-13 14:36:50');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00ENXX629XWB6CE62AD0','00ENXX5NN7XC5E405D06','02','대학생','대학생',2,'Y','N',null,'admin','2017-03-13 14:37:13','admin','2017-03-13 14:37:15');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00ENXX65LB6W7037F94E','00ENXX5NN7XC5E405D06','03','대학원생','대학원생',3,'Y','N',null,'admin','2017-03-13 14:37:33','admin','2017-03-13 14:37:33');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00ENXYDYXZ7C9B5A00F7','00ENXYDVMDD6980681E3','01','개발','개발',1,'Y','N',null,'admin','2017-03-13 15:18:10','admin','2017-03-13 15:18:11');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00ENXYE229SL9E797116','00ENXYDVMDD6980681E3','02','기획','기획',2,'Y','N',null,'admin','2017-03-13 15:18:32','admin','2017-03-13 15:18:35');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00ENXYE53KAJA1838111','00ENXYDVMDD6980681E3','03','디자인','디자인',3,'Y','N',null,'admin','2017-03-13 15:18:56','admin','2017-03-13 15:18:58');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EO0AX3B7RL076B9EEB','00EO0AQYZEON2AD7F722','01','접수완료','접수완료',1,'Y','N',null,'admin','2017-03-15 18:24:22','admin','2017-03-15 18:24:22');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EO0AX6OXJL0ACE226E','00EO0AQYZEON2AD7F722','02','서류 합격','서류 합격',2,'0','0',null,'admin','2017-03-15 18:24:59','admin','2017-03-15 18:24:59');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EOEIMLQBZQ7AA9FA61','00EOEIMD2X6T7200FF6E','F001','신청','신청',1,'Y','N',null,'admin','2017-03-28 16:05:09','admin','2017-03-28 16:05:09');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EP0G40QTQTC0FDDB1C','00EP0G3WG7S9BCB12A5B','B001','Basic','일반게시판',1,'Y','N',null,'admin','2017-04-17 13:14:34','admin','2017-04-17 13:14:34');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EP0G44LSU0C4DB3C72','00EP0G3WG7S9BCB12A5B','B002','Advanced','일반게시판',2,'Y','N',null,'admin','2017-04-17 13:15:47','admin','2017-04-17 13:15:47');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EP1O69QZTM1279F8CA','00EO0AQYZEON2AD7F722','03','서류 불합격','서류 불합격',3,'Y','N',null,'admin','2017-04-18 15:49:01','admin','2017-04-18 15:49:01');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EQ6955BE4693FE7487','00EQ6951YWKE90A4AFEC','01','기획','기획',1,'Y','Y',null,'admin','2017-05-25 08:19:29','admin','2017-05-25 08:19:29');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EQ6958OE2I975BDC87','00EQ6951YWKE90A4AFEC','02','단말개발','단말개발',2,'Y','Y',null,'admin','2017-05-25 08:19:29','admin','2017-05-25 08:19:29');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EQ695OJG7YA73D50ED','00EQ6951YWKE90A4AFEC','03','망연동 및 인증','망연동 및 인증',3,'Y','Y',null,'admin','2017-05-25 08:19:29','admin','2017-05-25 08:19:29');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EQ695RJ69FAA3C36C4','00EQ6951YWKE90A4AFEC','04','서버개발','서버개발',4,'Y','N',null,'admin','2017-05-25 08:19:29','admin','2017-05-25 08:19:29');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EQ695UTWDEAD896F95','00EQ6951YWKE90A4AFEC','05','기타','기타',5,'Y','N',null,'admin','2017-05-25 08:19:29','admin','2017-05-25 08:19:29');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00ESXKRE6FOL95571530','00ESXKEFK4QYC23198A2','01','IoT','IoT',1,'Y','N',null,'admin','2017-08-23 13:15:15','admin','2017-08-23 13:15:15');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EU1E60OQYQ65772178','00EHJKZ8A26TD049681A','04','무라타/CMWX1ZZABZ','무라타/CMWX1ZZABZ',4,'Y','N','N001','admin','2017-09-28 15:58:26','iotV2','2017-12-18 17:36:22');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EWILCQ6NUP62253231','00EWILC07D1C4822A8D0','N001','LoRa','LoRa',1,'Y','N',null,'iotV2','2017-12-18 17:26:04','iotV2','2017-12-18 17:26:04');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EWILCVLSAF67924E44','00EWILC07D1C4822A8D0','N002','Cat.M1','Cat.M1',2,'Y','N',null,'iotV2','2017-12-18 17:26:04','iotV2','2017-12-18 17:26:04');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EWIML7IITBA5486B1A','00EWIMKM9C1Q9000F00F','01','일반기업','',1,'Y','N',null,'iotV2','2017-12-18 14:30:29','iotV2','2017-12-18 14:30:29');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EWIMLAV9XFA8A413BC','00EWIMKM9C1Q9000F00F','02','공공기관','',2,'Y','N',null,'iotV2','2017-12-18 14:30:29','iotV2','2017-12-18 14:30:29');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJ6Q9985F678119','00EWRGJNK90O1E9F4845','1','1','1_2',1,'Y','N',null,'iotV2','2018-01-12 17:12:46','iotV2','2018-01-12 17:12:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJ6R3TD5F6D8BF1','00EWRGJNK90O1E9F4845','2','2','2_3',2,'Y','N',null,'iotV2','2018-01-12 17:12:46','iotV2','2018-01-12 17:12:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJ6R4C95F6DA6F4','00EWRGJNK90O1E9F4845','3','3','3_4',3,'Y','N',null,'iotV2','2018-01-12 17:12:46','iotV2','2018-01-12 17:12:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJ6R4DJ5F6DA8EA','00EWRGJNK90O1E9F4845','4','4','4_5',4,'Y','N',null,'iotV2','2018-01-12 17:12:46','iotV2','2018-01-12 17:12:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJ6R4EC5F6DAA15','00EWRGJNK90O1E9F4845','5','5','5_6',5,'Y','N',null,'iotV2','2018-01-12 17:12:46','iotV2','2018-01-12 17:12:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJ6R4F25F6DAB15','00EWRGJNK90O1E9F4845','6','6','6_7',6,'Y','N',null,'iotV2','2018-01-12 17:12:46','iotV2','2018-01-12 17:12:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJ6R4FR5F6DAC0F','00EWRGJNK90O1E9F4845','7','7','7_8',7,'Y','N',null,'iotV2','2018-01-12 17:12:46','iotV2','2018-01-12 17:12:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJ6R4GF5F6DACFF','00EWRGJNK90O1E9F4845','8','8','8_9',8,'Y','N',null,'iotV2','2018-01-12 17:12:46','iotV2','2018-01-12 17:12:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJ6R4H25F6DADEB','00EWRGJNK90O1E9F4845','9','9','9_10',9,'Y','N',null,'iotV2','2018-01-12 17:12:46','iotV2','2018-01-12 17:12:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJ6R4HQ5F6DAEDA','00EWRGJNK90O1E9F4845','10','10','10_11',10,'Y','N',null,'iotV2','2018-01-12 17:12:46','iotV2','2018-01-12 17:12:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJ6R4IE5F6DAFC6','00EWRGJNK90O1E9F4845','11','10대 이상','11_999999999',11,'Y','N',null,'iotV2','2018-01-12 17:12:46','iotV2','2018-01-12 17:12:46');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJASEF36377EB6B','00EWRGM3M4FG76C60CE0','003','3개월 미만','0_0.25',1,'Y','N',null,'iotV2','2018-01-12 17:12:53','iotV2','2018-01-12 17:12:53');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJASEIW6377F11D','00EWRGM3M4FG76C60CE0','006','3개월 이상 ~ 6개월 미만','0.25_0.5',2,'Y','N',null,'iotV2','2018-01-12 17:12:53','iotV2','2018-01-12 17:12:53');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJASEJZ6377F2C0','00EWRGM3M4FG76C60CE0','012','6개월 이상 ~ 12개월 미만','0.5_1',3,'Y','N',null,'iotV2','2018-01-12 17:12:53','iotV2','2018-01-12 17:12:53');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJASEKW6377F408','00EWRGM3M4FG76C60CE0','036','1년 이상 ~ 3년 미만','1_3',4,'Y','N',null,'iotV2','2018-01-12 17:12:53','iotV2','2018-01-12 17:12:53');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJASELO6377F525','00EWRGM3M4FG76C60CE0','037','3년 이상','3_999999999',5,'Y','N',null,'iotV2','2018-01-12 17:12:53','iotV2','2018-01-12 17:12:53');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJG3EF868C7AD27','00EWRGOW83VFDB7F77B0','005','5명 미만','0_5',1,'Y','N',null,'iotV2','2018-01-12 17:13:02','iotV2','2018-01-12 17:13:02');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJG3EID68C7B1E6','00EWRGOW83VFDB7F77B0','010','5명 이상 ~ 10명 미만','5_10',2,'Y','N',null,'iotV2','2018-01-12 17:13:02','iotV2','2018-01-12 17:13:02');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJG3EJG68C7B378','00EWRGOW83VFDB7F77B0','030','10명 이상 ~ 30명 미만','10_30',3,'Y','N',null,'iotV2','2018-01-12 17:13:02','iotV2','2018-01-12 17:13:02');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJG3EKA68C7B4AC','00EWRGOW83VFDB7F77B0','050','30명 이상 ~ 50명 미만','30_50',4,'Y','N',null,'iotV2','2018-01-12 17:13:02','iotV2','2018-01-12 17:13:02');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXABJG3ELA68C7B612','00EWRGOW83VFDB7F77B0','051','50명 이상','50_999999999',5,'Y','N',null,'iotV2','2018-01-12 17:13:02','iotV2','2018-01-12 17:13:02');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHQHP4IHY607643FA','00EMXCJKMJ157C8722C2','C01','범용모뎀','범용모뎀',5,'Y','N','N002','iotV2','2018-01-19 10:37:57','iotV2','2018-01-19 10:37:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHQHP5RBY607F2164','00EMXCJKMJ157C8722C2','C02','Vehicle','Vehicle',6,'Y','N','N002','iotV2','2018-01-19 10:37:57','iotV2','2018-01-19 10:37:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHQHP5RYS607F420F','00EMXCJKMJ157C8722C2','C03','Tracking','Tracking',7,'Y','N','N002','iotV2','2018-01-19 10:37:57','iotV2','2018-01-19 10:37:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHQHP5S00607F43DF','00EMXCJKMJ157C8722C2','C04','Health','Health',8,'Y','N','N002','iotV2','2018-01-19 10:37:57','iotV2','2018-01-19 10:37:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHQHP5S0W607F4523','00EMXCJKMJ157C8722C2','C05','기타','기타',9,'Y','N','N002','iotV2','2018-01-19 10:37:57','iotV2','2018-01-19 10:37:57');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHUETCO0N3E6CBF35','00EMXCJUX3AF86D53947','C01','우리넷','우리넷',5,'Y','N','N002','iotV2','2018-01-19 13:00:10','iotV2','2018-01-19 13:00:10');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHUETE6DL3E777F1E','00EMXCJUX3AF86D53947','C02','AM텔레콤','AM텔레콤',6,'Y','N','N002','iotV2','2018-01-19 13:00:10','iotV2','2018-01-19 13:00:10');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHX31W9VMCB7A1C13','00EWIMJ281HJ57E78AF0','01','AMI','AMI',1,'Y','N',null,'iotV2','2018-01-19 14:37:09','iotV2','2018-01-19 14:37:09');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHX324FE8CBB4473E','00EWIMJ281HJ57E78AF0','02','공공조명 시설','공공조명 시설',2,'Y','N',null,'iotV2','2018-01-19 14:37:09','iotV2','2018-01-19 14:37:09');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHX324FS8CBB45B56','00EWIMJ281HJ57E78AF0','03','제조 환경 안전','제조 환경 안전',3,'Y','N',null,'iotV2','2018-01-19 14:37:09','iotV2','2018-01-19 14:37:09');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHX324FTBCBB45CF7','00EWIMJ281HJ57E78AF0','04','위치기반 안전','위치기반 안전',4,'Y','N',null,'iotV2','2018-01-19 14:37:09','iotV2','2018-01-19 14:37:09');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHX324FU4CBB45E1C','00EWIMJ281HJ57E78AF0','99','기타','기타',99,'Y','N',null,'iotV2','2018-01-19 14:37:09','iotV2','2018-01-19 14:37:09');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHXE9UG6K5F496FC1','00EWRGNER5FTA5F76E7D','000','없음','0_1',1,'Y','N',null,'iotV2','2018-01-19 14:48:27','iotV2','2018-01-19 14:48:27');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHXE9UG9M5F49745D','00EWRGNER5FTA5F76E7D','003','1회 이상 ~ 3회 미만','1_3',2,'Y','N',null,'iotV2','2018-01-19 14:48:27','iotV2','2018-01-19 14:48:27');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHXE9UGAV5F497625','00EWRGNER5FTA5F76E7D','010','3회 이상~ 10회 미만','3_10',3,'Y','N',null,'iotV2','2018-01-19 14:48:27','iotV2','2018-01-19 14:48:27');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXHXE9UGBO5F49774F','00EWRGNER5FTA5F76E7D','011','10회 이상','10_999999999',4,'Y','N',null,'iotV2','2018-01-19 14:48:27','iotV2','2018-01-19 14:48:27');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXLDWAV2OA5E7EFC6D','00EWRGPVNYQQFEFA79FB','005','5억 미만','5억 미만',1,'Y','N',null,'iotV2','2018-01-22 18:05:19','iotV2','2018-01-22 18:05:19');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXLDWAV2RU5E7F01BB','00EWRGPVNYQQFEFA79FB','010','5억 이상~ 10억 미만','5억 이상~ 10억 미만',2,'Y','N',null,'iotV2','2018-01-22 18:05:19','iotV2','2018-01-22 18:05:19');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXLDWAV2SW5E7F0342','00EWRGPVNYQQFEFA79FB','050','10억 이상~ 50억 미만','10억 이상~ 50억 미만',3,'Y','N',null,'iotV2','2018-01-22 18:05:19','iotV2','2018-01-22 18:05:19');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXLDWAV2TQ5E7F0470','00EWRGPVNYQQFEFA79FB','100','50억 이상~ 100억 미만','50억 이상~ 100억 미만',4,'Y','N',null,'iotV2','2018-01-22 18:05:19','iotV2','2018-01-22 18:05:19');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXLDWAV2UH5E7F0581','00EWRGPVNYQQFEFA79FB','101','100억 이상','100억 이상',5,'Y','N',null,'iotV2','2018-01-22 18:05:19','iotV2','2018-01-22 18:05:19');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXOOD2WPWJC7E70B18','00EG3OREQ1AK48D21E8B','LC03','Reference','라이브러리(cat.m1)',1,'Y','N','GNL102','iotV2','2018-01-25 17:43:13','iotV2','2018-01-25 17:43:13');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXOOD2WQ0AC7E71075','00EG3OREQ1AK48D21E8B','LC04','Document','라이브러리(cat.m1)',2,'Y','N','GNL102','iotV2','2018-01-25 17:43:13','iotV2','2018-01-25 17:43:13');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXPQNDXT9TD2F5D1EB','00EHJKZ8A26TD049681A','C01','우리넷(LGA)/WM-N400MS','우리넷(LGA)/WM-N400MS',1,'Y','N','N002','iotV2','2018-01-26 16:52:14','iotV2','2018-01-26 16:52:14');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXPQNDXTD0D2F5D6C3','00EHJKZ8A26TD049681A','C02','우리넷(Socket)/WM-N400MSE','우리넷(Socket)/WM-N400MSE',2,'Y','N','N002','iotV2','2018-01-26 16:52:14','iotV2','2018-01-26 16:52:14');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EXPQNDXTE1D2F5D83E','00EHJKZ8A26TD049681A','C03','AM텔레콤/AMM592','AM텔레콤/AMM592',3,'Y','N','N002','iotV2','2018-01-26 16:52:14','iotV2','2018-01-26 16:52:14');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00EZ39NYN8IZ88E4F8D0','00EWIQ2J35PT49F34A65','C01','WIZnet/Starter Kit','WIZnet/Starter Kit',1,'Y','N','N002','iotV2','2018-03-12 15:10:09','iotV2','2018-03-12 15:10:09');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('TEST','00EG3OREQ0Y548D20D18','123','123','123',0,'Y','N',null,'AYEON','2018-07-31 14:29:37','AYEON','2018-07-31 14:29:37');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('TEST','00EG3OREQ10T48D210D6','123','123','123',0,'Y','N',null,'AYEON','2018-07-31 14:34:27','AYEON','2018-07-31 14:34:27');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('TEST','00EG3OREQ0Y548D20D18','22','22','22',0,'Y','N',null,'AYEON','2018-07-31 14:36:34','AYEON','2018-07-31 14:36:34');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('TEST','00EG3OREQ0Y548D20D18','3','3','3',0,'Y','N',null,'AYEON','2018-07-31 14:37:06','AYEON','2018-07-31 14:37:06');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('TEST','00EG3OREQ10T48D210D6','778','nmj,mnn m,','ㅡ, ㅡㅜ',0,'Y','N',null,'AYEON','2018-07-31 16:43:11','AYEON','2018-07-31 16:43:11');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3LJNOI5MN03CD2A42','00F3LH14BIF0B3C5E411','ddd','ddd','ddd',1,'0','0','DDD','test','2018-08-06 19:25:17','test','2018-08-06 19:25:17');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3LJRV7JA59AAD33DD','00F3LH14BIF0B3C5E411','ff','ff','ff',2,'0','N','','test','2018-08-06 19:29:31','test','2018-08-06 19:29:31');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MD7QPBL8D1410174','00EMZJW166XYA13000B5','','','',0,'0','Y','','test','2018-08-07 13:17:37','test','2018-08-07 13:17:37');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MD7QPLRMD14304BA','00EMZJW166XYA13000B5','','','',0,'0','Y','','test','2018-08-07 13:17:37','test','2018-08-07 13:17:37');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MESVU51SDCB5E8E0','00ENXX5I0FM1589CB2A1','123','ddddddddddddd','sssssssssssssssss',3,'0','N','','test','2018-08-07 14:15:12','test','2018-08-07 14:15:12');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MF2GG9GX35B6D7B4','00EHDWFXR0NQ2E71BB1F','ㄹㄹ','ㄹㄹ','ㄹㄹ',12345,'0','N','','test','2018-08-07 14:24:51','test','2018-08-07 14:24:51');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MF3I1QZC5B5A80C2','00EHDWFXR0NQ2E71BB1F','ㄹㄹㄹ','ㄹㄹㄹ','ㄹㄹㄹ',123,'0','N','','test','2018-08-07 14:25:54','test','2018-08-07 14:25:54');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MF4KMCUQ81F831FF','00EHDWFXR0NQ2E71BB1F','00','00','00',-9,'0','N','','test','2018-08-07 14:26:59','test','2018-08-07 14:26:59');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MF573SP2987AB681','00F3LE2DQNT2ACDAE06D','ㅍ','ㅍ','ㅍ',1,'0','N','','test','2018-08-07 14:27:37','test','2018-08-07 14:27:37');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MF7J90GLECB82018','00F3LH14BIF0B3C5E411','6','6','6',6,'1','N','','test','2018-08-07 14:29:58','test','2018-08-07 14:29:58');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MF8FI74R0D02C458','00EHDY41F87AA48F52F6','222','222','222',222,'1','N','','test','2018-08-07 14:30:52','test','2018-08-07 14:30:52');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MF9D5TWU2EB48D14','00F3LH14BIF0B3C5E411','gg','gg','gg',2,'0','N','','test','2018-08-07 14:31:49','test','2018-08-07 14:31:49');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MF9Z09FR449343FB','00F3LGYW8KMZ6399D90E','cc','cc','ccdㄹ',1,'0','0','','test','2018-08-07 14:32:26','test','2018-08-07 14:32:26');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MFBFUDL97978B13A','00F3LGYW8KMZ6399D90E','dd','dd','dd',2,'1','N','','test','2018-08-07 14:33:54','test','2018-08-07 14:33:54');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MG4MZ5LH95CA830A','00EO0AQYZEON2AD7F722','2222','222222222','2222222222',22,'0','N','2222','test','2018-08-07 15:03:20','test','2018-08-07 15:03:20');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MG688FIRCF1D0603','00EHDWFXR0NQ2E71BB1F','ㅇㅇ','ㅇㅇ','ㅇㅇ',3,'0','N','','test','2018-08-07 15:04:56','test','2018-08-07 15:04:56');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MG6PD5NQE0439545','00EHE3CX8T213C0F3D37','11','11','11',11,'0','N','','test','2018-08-07 15:05:25','test','2018-08-07 15:05:25');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MG7LPMFF00A5943D','00F3LGYW8KMZ6399D90E','ㄹㄹ','ㄹㄹ','ㄹㄹ',3,'0','N','','test','2018-08-07 15:06:19','test','2018-08-07 15:06:19');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MG8779TH16294CDB','00EHDWFXR0NQ2E71BB1F','ㄹ','ㄹ','ㄹ',-1,'0','N','','test','2018-08-07 15:06:55','test','2018-08-07 15:06:55');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MG8TMX1C2C9F09C8','00F3LE2DQNT2ACDAE06D','ㄹㄹ','ㄹㄹ','ㄹㄹ',1,'0','N','','test','2018-08-07 15:07:33','test','2018-08-07 15:07:33');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MG9F0RMA4207B479','00F3LE2DQLNIACDA7368','ㄹ','ㄹ','ㄹ',1,'0','N','','test','2018-08-07 15:08:09','test','2018-08-07 15:08:09');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MJFIVJTE528608F8','00EHDWFXR0NQ2E71BB1F','111','111','111',123,'0','N','','test','2018-08-07 17:03:08','test','2018-08-07 17:03:08');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3MJG7DUR26B0F4794','00EHDY41F87AA48F52F6','ㄹㄹㄹ','ㄹㄹㄹ','ㄹㄹ',1,'0','N','','test','2018-08-07 17:03:50','test','2018-08-07 17:03:50');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3NHP8AZQH021A1A5C','00F3LE2DQLNIACDA7368','1','1','1',1,'0','N','','test','2018-08-08 13:46:26','test','2018-08-08 13:46:26');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3NHP8B4SY021B1AE6','00F3LE2DQLNIACDA7368','2','2','2',2,'0','N','','test','2018-08-08 13:46:26','test','2018-08-08 13:46:26');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3NIP6W6BN1226F453','00F3LE2DQLNIACDA7368','1','1','1',1,'0','N','','test','2018-08-08 14:22:40','test','2018-08-08 14:22:40');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3NIP6W6ER1226F898','00F3LE2DQLNIACDA7368','2','2','2',2,'0','N','','test','2018-08-08 14:22:40','test','2018-08-08 14:22:40');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3NNVUEURL594224D8','00F3NNVBK7HS4662C396','33','33','33',33,'0','N','','test','2018-08-08 17:30:47','test','2018-08-08 17:30:47');
+insert into `demo`.`CD`(`CD_ID`,`GRP_CD_ID`,`CD`,`CD_NM`,`CD_EXPLNATN`,`CD_ORD_NUM`,`CD_USE_YN`,`DEL_YN`,`FEFRNC_CD`,`COR_ID`,`COR_DT`,`MOR_ID`,`MDF_DT`) values ('00F3NNY97XXNB02A15B1','00F3NNVBK7KQ4662C7A3','44','44','44',44,'0','N','','test','2018-08-08 17:33:12','test','2018-08-08 17:33:12');
+
+
 
 

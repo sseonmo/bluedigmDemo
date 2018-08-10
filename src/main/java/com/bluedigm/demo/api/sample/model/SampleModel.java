@@ -1,5 +1,7 @@
 package com.bluedigm.demo.api.sample.model;
 
+import java.time.LocalDate;
+
 public class SampleModel {
 
 	String ADMN_ID;
@@ -8,18 +10,19 @@ public class SampleModel {
 	String ADMN_EMAL;
 	String ADMN_PHNNUM;
 	String COR_ID;
-	String COR_DT;
+	LocalDate COR_DT;
 	String MOR_ID;
-	String MOR_DT;
+	LocalDate MOR_DT;
 	Boolean DEL_YN;
 
-	public SampleModel(String ADMN_ID, String ADMN_NM, String ADMN_PW, String ADMN_EMAL, String ADMN_PHNNUM, Boolean DEL_YN) {
+	public SampleModel(String ADMN_ID, String ADMN_NM, String ADMN_PW, String ADMN_EMAL, String ADMN_PHNNUM, Boolean DEL_YN, LocalDate COR_DT) {
 		this.ADMN_ID = ADMN_ID;
 		this.ADMN_NM = ADMN_NM;
 		this.ADMN_PW = ADMN_PW;
 		this.ADMN_EMAL = ADMN_EMAL;
 		this.ADMN_PHNNUM = ADMN_PHNNUM;
 		this.DEL_YN = DEL_YN;
+		this.COR_DT = COR_DT;
 	}
 
 	public SampleModel() {}
@@ -73,11 +76,11 @@ public class SampleModel {
 		this.COR_ID = COR_ID;
 	}
 
-	public String getCOR_DT() {
+	public LocalDate getCOR_DT() {
 		return COR_DT;
 	}
 
-	public void setCOR_DT(String COR_DT) {
+	public void setCOR_DT(LocalDate COR_DT) {
 		this.COR_DT = COR_DT;
 	}
 
@@ -89,14 +92,13 @@ public class SampleModel {
 		this.MOR_ID = MOR_ID;
 	}
 
-	public String getMOR_DT() {
+	public LocalDate getMOR_DT() {
 		return MOR_DT;
 	}
 
-	public void setMOR_DT(String MOR_DT) {
+	public void setMOR_DT(LocalDate MOR_DT) {
 		this.MOR_DT = MOR_DT;
 	}
-
 
 	public Boolean getDEL_YN() {
 		return DEL_YN;

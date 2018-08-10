@@ -10,6 +10,7 @@ package com.bluedigm.demo.api.sample.service.impl;
 		import org.springframework.stereotype.Service;
 
 		import java.text.SimpleDateFormat;
+		import java.time.LocalDate;
 		import java.util.Date;
 		import java.util.List;
 
@@ -38,7 +39,13 @@ public class SampleServiceImpl implements SampleService {
 		SimpleDateFormat transFormat = new SimpleDateFormat("yyMMddHHmmss");
 
 
-		SampleModel model = new SampleModel(String.format("admin_%s", transFormat.format(new Date())), "seonmo", passwordEncoder.encode("password"), "alert('123')", "111", true);
+		SampleModel model = new SampleModel(String.format("admin_%s", transFormat.format(new Date()))
+				, "seonmo"
+				, passwordEncoder.encode("password")
+				, "alert('123')"
+				, "111"
+				, true
+				, LocalDate.now());
 		sampleMapper.insertSample(model);
 		return selectSample();
 	}

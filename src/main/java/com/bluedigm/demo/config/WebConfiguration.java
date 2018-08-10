@@ -1,7 +1,9 @@
 package com.bluedigm.demo.config;
 
+import com.bluedigm.demo.common.jsonSerializer.LocalDateSerializer;
 import com.bluedigm.demo.common.xss.HTMLCharacterEscapes;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -59,24 +62,36 @@ public class WebConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//		super.configureMessageConverters(converters);
 
-		// 5. WebMvcConfigurerAdapter에 MessageConverter 추가
+		// WebMvcConfigurerAdapter에 MessageConverter 추가
 		converters.add(htmlEscapingConveter());
 	}
 
 	@Bean
 	public HttpMessageConverter<?> htmlEscapingConveter() {
 		ObjectMapper objectMapper = new ObjectMapper();
-		// 3. ObjectMapper에 특수 문자 처리 기능 적용
+		// ObjectMapper에 특수 문자 처리 기능 적용
 		objectMapper.getFactory().setCharacterEscapes(new HTMLCharacterEscapes());
 
-		// 4. MessageConverter에 ObjectMapper 설정
-		MappingJackson2HttpMessageConverter htmlEscapingConverter =
-				new MappingJackson2HttpMessageConverter();
-		htmlEscapingConverter.setObjectMapper(objectMapper);
+		// LocalDate 처리
+		SimpleModule simpleModule = new SimpleModule();
+		simpleModule.addSerializer(LocalDate.class, new LocalDateSerializer());
+		objectMapper.registerModule(simpleModule);
 
-		return htmlEscapingConverter;
+		// MessageConverter에 ObjectMapper 설정
+		MappingJackson2HttpMessageConverter converter =	new MappingJackson2HttpMessageConverter();
+		converter.setObjectMapper(objectMapper);
+
+		return converter;
 	}
+
+/*
+	@Bean
+	public MappingJackson2HttpMessageConverter LocalDateMessageConverter(){
+		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+		converter.setObjectMapper(new LocalDateObjectMaper());
+		return converter;
+	}
+*/
 
 }

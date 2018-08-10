@@ -6,11 +6,11 @@ import com.bluedigm.demo.common.exception.ResourceNotFoundException;
 import com.bluedigm.demo.common.message.MessageCode;
 import com.bluedigm.demo.common.message.Messages;
 import com.bluedigm.demo.common.security.CustomUser;
+import com.bluedigm.demo.common.utils.AuthUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -98,7 +98,7 @@ public class SampleRestController {
 	@GetMapping(value = "/loginUserInfo")
 	public CustomUser loginUserInfo(Principal principal){
 		logger.debug("debug  - SamplePageController - loginUserInfo[{}]", principal.getName());
-		return (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return AuthUtil.getCurrentUser();
 	}
 
 }
